@@ -6,4 +6,4 @@ let product = {
 	}
 }
 
-alert('test')
+checkUpdates();
