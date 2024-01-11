@@ -6,3 +6,4 @@ let product = {
 	}
 }
 
+alert('test')
