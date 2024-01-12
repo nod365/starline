@@ -1,6 +1,6 @@
 let product = {
 		SLAF : {
-		currentBuild: 165,
+		currentBuild: 167,
 		currentBuildReleaseDate: '2024 Jan 12',
 		support: 'https://t.me/deadnode',
 	}
