@@ -3,6 +3,11 @@ let product = {
 		currentBuild: 167,
 		currentBuildReleaseDate: '2024 Jan 12',
 		support: 'https://t.me/deadnode',
+	},
+		MOTP : {
+		currentBuild: 283,
+		currentBuildReleaseDate: '2024 Jan 22',
+		support: 'https://t.me/deadnode',
 	}
 }
 
