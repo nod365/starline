@@ -5,7 +5,7 @@ let product = {
 		support: 'https://t.me/deadnode',
 	},
 		MOTP : {
-		currentBuild: 283,
+		currentBuild: 284,
 		currentBuildReleaseDate: '2024 Jan 22',
 		support: 'https://t.me/deadnode',
 	}
