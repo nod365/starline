@@ -8,6 +8,11 @@ let product = {
 		currentBuild: 285,
 		currentBuildReleaseDate: '2024 Jan 26',
 		support: 'https://t.me/deadnode',
+	},
+		CCPF : {
+		currentBuild: 1,
+		currentBuildReleaseDate: '2024 Jan 26',
+		support: 'https://t.me/deadnode',
 	}
 }
 
