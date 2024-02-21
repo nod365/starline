@@ -5,8 +5,8 @@ let product = {
 		support: 'https://t.me/deadnode',
 	},
 		MOTP : {
-		currentBuild: 285,
-		currentBuildReleaseDate: '2024 Jan 26',
+		currentBuild: 291,
+		currentBuildReleaseDate: '2024 Feb 21',
 		support: 'https://t.me/deadnode',
 	},
 		CCPF : {
