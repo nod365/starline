@@ -1,18 +1,18 @@
 let product = {
 		SLAF : {
-		currentBuild: 167,
-		currentBuildReleaseDate: '2024 Jan 12',
-		support: 'https://t.me/deadnode',
+		currentBuild: 172,
+		currentBuildReleaseDate: '2024 Feb 24',
+		support: 'https://t.me/nod365',
 	},
 		MOTP : {
 		currentBuild: 291,
 		currentBuildReleaseDate: '2024 Feb 21',
-		support: 'https://t.me/deadnode',
+		support: 'https://t.me/nod365',
 	},
 		CCPF : {
 		currentBuild: 1,
 		currentBuildReleaseDate: '2024 Jan 26',
-		support: 'https://t.me/deadnode',
+		support: 'https://t.me/nod365',
 	}
 }
 
