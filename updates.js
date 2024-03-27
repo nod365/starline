@@ -1,7 +1,7 @@
 let product = {
 		SLAF : {
-		currentBuild: 172,
-		currentBuildReleaseDate: '2024 Feb 24',
+		currentBuild: 174,
+		currentBuildReleaseDate: '2024 Mar 27',
 		support: 'https://t.me/nod365',
 	},
 		MOTP : {
