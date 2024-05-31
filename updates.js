@@ -1,12 +1,12 @@
 let product = {
 		SLAF : {
-		currentBuild: 174,
-		currentBuildReleaseDate: '2024 Mar 27',
+		currentBuild: 175,
+		currentBuildReleaseDate: '2024 May 31',
 		support: 'https://t.me/nod365',
 	},
 		MOTP : {
-		currentBuild: 295,
-		currentBuildReleaseDate: '2024 Mar 24',
+		currentBuild: 296,
+		currentBuildReleaseDate: '2024 May 23',
 		support: 'https://t.me/nod365',
 	},
 		CCPF : {
