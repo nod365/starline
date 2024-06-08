@@ -136,7 +136,7 @@ body {
 	<h1>Генератор таблиц</h1>
 	<updates id="centerDanger"></updates>
 	<div id="output">
-	<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;"><svg width="328" height="328" viewBox="0 0 328 328" fill="none" class="placeholder_rings"><path fill-rule="evenodd" clip-rule="evenodd" d="M164 242C207.078 242 242 207.078 242 164C242 120.922 207.078 86 164 86C120.922 86 86 120.922 86 164C86 207.078 120.922 242 164 242Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 8"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 284C230.274 284 284 230.274 284 164C284 97.7258 230.274 44 164 44C97.7258 44 44 97.7258 44 164C44 230.274 97.7258 284 164 284Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 327C254.022 327 327 254.022 327 164C327 73.9776 254.022 1 164 1C73.9776 1 1 73.9776 1 164C1 254.022 73.9776 327 164 327Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 36"></path></svg> <br> <h2>Чтобы сформировать таблицу, нажмите <div  class="supportButton fakeCur" onclick="document.getElementById('files').click();"><i class="icons10-file"></i> Открыть CSV-файл</div> в левом меню.</h2> <br> <div>Нужна дополнительная помощь с экспортом? Нажмите <div class="supportButton fakeCur" onclick="PU()"><i class="icons10-info"></i> Инструкция по использ.</div> в левом меню.</div> </div>
+	<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;"><svg width="328" height="328" viewBox="0 0 328 328" fill="none" class="placeholder_rings"><path fill-rule="evenodd" clip-rule="evenodd" d="M164 242C207.078 242 242 207.078 242 164C242 120.922 207.078 86 164 86C120.922 86 86 120.922 86 164C86 207.078 120.922 242 164 242Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 8"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 284C230.274 284 284 230.274 284 164C284 97.7258 230.274 44 164 44C97.7258 44 44 97.7258 44 164C44 230.274 97.7258 284 164 284Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 327C254.022 327 327 254.022 327 164C327 73.9776 254.022 1 164 1C73.9776 1 1 73.9776 1 164C1 254.022 73.9776 327 164 327Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 36"></path></svg> <br> <h2>Чтобы сформировать таблицу, нажмите <div  class="supportButton fakeCur" onclick="document.getElementById('files').click();"><i class="icons10-file"></i> Открыть CSV-файл</div> в левом меню.</h2> <br> <div>Нужна дополнительная помощь с экспортом? Нажмите <div class="supportButton fakeCur" onclick="PU()"><i class="icons10-info"></i> Инструкция по использ.</div> в левом меню.</div> </div>
 	</div>
 
 </main>
@@ -983,6 +983,8 @@ tr.insider {
 			padding: 8px;
 			border-radius: 10px;
 			margin: 5px;
+			white-space: nowrap;
+			line-height: 3;
 		}
 		
 		selfile#fileplace {
