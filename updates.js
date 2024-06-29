@@ -5,8 +5,8 @@ let product = {
 		support: 'https://t.me/nod365',
 	},
 		MOTP : {
-		currentBuild: 297,
-		currentBuildReleaseDate: '08 Июн 2024',
+		currentBuild: 298,
+		currentBuildReleaseDate: '29 Июнь 2024',
 		support: 'https://t.me/nod365',
 	},
 		CCPF : {
