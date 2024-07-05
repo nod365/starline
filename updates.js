@@ -5,7 +5,7 @@ let product = {
 		support: 'https://t.me/nod365',
 	},
 		MOTP : {
-		currentBuild: 301,
+		currentBuild: 302,
 		currentBuildReleaseDate: '30 Июнь 2024',
 		support: 'https://t.me/nod365',
 	},
