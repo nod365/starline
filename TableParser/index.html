@@ -12,8 +12,8 @@
 	<link rel="apple-touch-icon" href="./apple-touch-icon.png"><!-- 180×180 -->
 	<link rel="manifest" href="./manifest.webmanifest">
 	<script>
-		const 	build = "302" ;
-		const	buildReleaseDate = "2024 Июль 1",
+		const 	build = "305" ;
+		const	buildReleaseDate = "2024 Сен 1",
 				buildString = "";
 				debug = 0;
 				
@@ -664,7 +664,7 @@ input.addEventListener('change', (event) => {
 
 	temp += " <tr "+checkFlag(MK[0][0], MK[0][1])+"><td class='L rightl' rowspan=5><div class='desIcon parkavatar iconmkad'></div>МКАД 33 км<br><span class='parkinfo'>Red Taxi</span><br><span class='parkinfo'>• МКАД, 33-й км, 6с5</span></td><td class=L><div class='desIcon otchet'></div> Отчёт – П1</td> <td class='"+duet3[0]+"' >"+MK[0][0]+"</td> <td class='"+duet3[1]+"' >"+MK[0][1]+"</td> <td class='"+duet3[2]+"' >"+MK[0][2]+"</td> </tr> "
 		temp += " <tr "+checkFlag(MK[1][0], MK[1][1])+"><td class=L><div class='desIcon otchet'></div> Отчёт – П2</td> <td class='"+duet3[0]+"' >"+MK[1][0]+"</td> <td class='"+duet3[1]+"' >"+MK[1][1]+"</td> <td class='"+duet3[2]+"' >"+MK[1][2]+"</td> </tr> "
-		temp += " <tr "+checkFlag(MK[2][0], MK[2][1])+"><td class=L><div class='desIcon otchet'></div> Отчёт – П3</td> <td class='"+duet3[0]+"' >"+MK[2][0]+"</td> <td class='"+duet3[2]+"' >"+MK[2][1]+"</td> <td class='"+duet3[2]+"' >"+MK[2][2]+"</td> </tr> "
+		temp += " <tr "+checkFlag(MK[2][0], MK[2][1])+"><td class=L><div class='desIcon otchet'></div> Отчёт – П3</td> <td class='"+duet3[0]+"' >"+MK[2][0]+"</td> <td class='"+duet3[1]+"' >"+MK[2][1]+"</td> <td class='"+duet3[2]+"' >"+MK[2][2]+"</td> </tr> "
 		temp += " <tr "+checkFlag(MK[4][0], MK[4][1])+"><td class=L><div class='desIcon disp'></div> Диспетчеры</td> <td class='"+duet3[0]+"' >"+MK[4][0]+"</td> <td class='"+duet3[1]+"' >"+MK[4][1]+"</td> <td class='"+duet3[2]+"' >"+MK[4][2]+"</td> </tr> "
 		temp += " <tr "+checkFlag(MK[5][0], MK[5][1],1)+" ><td class=L><div class='desIcon oform'></div> Оформление</td> <td class='"+duet3[0]+"' >"+MK[5][0]+"</td> <td class='"+duet3[1]+"' >"+MK[5][1]+"</td> <td class='"+duet3[2]+"' >"+MK[5][2]+"</td> </tr> "
 
@@ -989,7 +989,7 @@ tr.insider {
 			background: var(--color-background-default);
 		}
 		
-		table#capture {
+		table#capture2 {
 			zoom: .5;
 			min-width: max-content;
 		}
@@ -1304,7 +1304,20 @@ CHANGELOG
 • Добавлен мкад отчет п3
 
 
-- 302 черновик 
+302 
+• Добавлены аватарки и адреса парков
+
+303
+• Исправление отображения
+
+304
+• Добавлена подсказка по экспорту при неправильном CSV 
+
+305
+• В новых версиях Chrome был сбой при экспорте
+• Исправлен цвет ячейки мкад отчет п3
+
+ 
            проп прин сов
 мкад 1-1   30   0
 мкад 1-2   15   15
