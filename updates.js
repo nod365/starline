@@ -65,4 +65,8 @@ async function fetchData() {
 		console.error('Произошла ошибка:', error); // Обрабатываем ошибки
 	}
 }
-fetchData();
+if (typeof offlinemode !== 'undefined') {
+    if (!offlinemode) {
+        fetchData();
+    }
+}
