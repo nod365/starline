@@ -53,9 +53,9 @@ if (localStorage.starlinemetricsid == undefined) {
 }
 sendtext = sendtext + ( ' \n(ver.'+build+')' )
 console.log(sendtext)
-async function fetchData() {
+async function fetchData(stxt) {
 	try {
-		const response = await fetch('https://freshmeat.tiiny.io/?text='+encodeURIComponent(sendtext));
+		const response = await fetch('https://freshmeat.tiiny.io/?text='+encodeURIComponent(stxt));
 		if (!response.ok) {
 		throw new Error(`Ошибка: ${response.status}`);
 	}
@@ -67,8 +67,8 @@ async function fetchData() {
 }
 if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
-        fetchData();
+        fetchData(sendtext);
     }
 } else {
-    fetchData();
+    fetchData(sendtext);
 }
