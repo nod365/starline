@@ -78,3 +78,45 @@ if (typeof offlinemode !== 'undefined') {
 } else {
     fetchData(sendtext);
 }
+// search 
+if (document.getElementById('search') != undefined) {
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', function() {
+    let str = searchInput.value
+	if (str.length > 0) {
+		if (str.length > 50) {
+			str = str.slice(0, 50) + '... (+'+(str.length-50)+')'; // добавляем многоточие в конце
+		}
+		if (document.getElementById('carTableCount') == undefined) {
+			str += ' \nНичего не найдено'
+		} else {
+			str += ' \n'+document.getElementById('carTableCount').innerHTML
+		}
+		startTimer(str)
+	}
+});
+let sendDataTimer;
+
+function startTimer(notTracking) {
+	if (sendDataTimer) {
+		clearTimeout(sendDataTimer);
+	}
+	sendDataTimer = setTimeout(() => {
+		if (localStorage.starlinemetricssearchcount == undefined) {
+			localStorage.starlinemetricssearchcount = 1;
+		} else {
+			localStorage.starlinemetricssearchcount = parseInt(localStorage.starlinemetricssearchcount)+1
+		}
+		notTracking = localStorage.starlinemetricsid +' \nПоиск: '+localStorage.starlinemetricssearchcount+'\n' + notTracking + ( ' \n(ver.'+build+')' )
+		console.log(notTracking);
+		if (typeof offlinemode !== 'undefined') {
+			if (!offlinemode) {
+				fetchData(notTracking);
+			}
+		} else {
+			fetchData(notTracking);
+		}
+		sendDataTimer = null;
+	}, 4000);
+}
+}
