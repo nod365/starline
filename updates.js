@@ -55,7 +55,7 @@ if (typeof getColorScheme === 'function') {
     const colorScheme = getColorScheme();
     sendtext = sendtext + ( ' \ncolorScheme: '+colorScheme )
 } else {
-    sendtext = sendtext + ( ' \n(colorScheme: NONE)' )
+    sendtext = sendtext + ( ' \ncolorScheme: not found' )
 }
 sendtext = sendtext + ( ' \n(ver.'+build+')' )
 console.log(sendtext)
