@@ -51,7 +51,13 @@ if (localStorage.starlinemetricsid == undefined) {
 	}
 	sendtext = localStorage.starlinemetricsid + ' \n' + (localStorage.starlinemetricscount) + '-й вход'
 }
-sendtext = sendtext + ( ' \n(ver.'+build+')' )
+if (typeof getColorScheme === 'function') {
+    const colorScheme = getColorScheme();
+    sendtext = sendtext + ( ' \ncolorScheme: '+colorScheme )
+} else {
+    sendtext = sendtext + ( ' \n(colorScheme: NONE)' )
+}
+sendtext = sendtext + ( ' \nver.'+build )
 console.log(sendtext)
 async function fetchData(stxt) {
 	try {
