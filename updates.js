@@ -57,7 +57,7 @@ if (typeof getColorScheme === 'function') {
 } else {
     sendtext = sendtext + ( ' \n(colorScheme: NONE)' )
 }
-sendtext = sendtext + ( ' \nver.'+build )
+sendtext = sendtext + ( ' \n(ver.'+build+')' )
 console.log(sendtext)
 async function fetchData(stxt) {
 	try {
