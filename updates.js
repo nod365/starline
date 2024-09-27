@@ -69,4 +69,6 @@ if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
         fetchData();
     }
+} else {
+    fetchData();
 }
