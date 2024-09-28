@@ -60,7 +60,7 @@ if (typeof getColorScheme === 'function') {
 function showScreenSize() {
     const width = window.screen.width;
     const height = window.screen.height;
-    console.log(`Размер экрана: ${width}x${height}`);
+    return (`Размер экрана: ${width}x${height}`);
 }
 sendtext = sendtext + ' \n'+ showScreenSize();
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
