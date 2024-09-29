@@ -94,7 +94,11 @@ searchInput.addEventListener('input', function() {
 			str = str.slice(0, 50) + '... (+'+(str.length-50)+')'; // добавляем многоточие в конце
 		}
 		if (document.getElementById('carTableCount') == undefined) {
-			str += ' \nНичего не найдено'
+			if (build > 150 && build < 172 ) {
+				str += 'Устаревший поиск: ' + document.getElementById('results').children.length
+			} else {
+				str += ' \nНичего не найдено'
+			}
 		} else {
 			str += ' \n'+document.getElementById('carTableCount').innerHTML
 		}
