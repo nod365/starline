@@ -126,3 +126,78 @@ function startTimer(notTracking) {
 	}, 4000);
 }
 }
+
+// update popup
+
+let updateInfoShow = { 
+	iconChat: 'https://nod365.github.io/starline/AGI.png' ,
+	nameChat: 'Avenue Info',
+	urlChat: 'https://t.me/+sKJPIVU3bYRmZjgy' ,
+	iconManager: 'https://nod365.github.io/starline/ZAIR.png' ,
+	nameManager: 'Заир',
+	urlManager: 'https://t.me/Dofomin07'
+}
+
+let newerBuildPopup = product.SLAF.currentBuild 
+
+function createWarningPopup() {
+        const width = window.screen.width;
+        const height = window.screen.height;
+	if (localStorage.starlineIgnoreUpdate == undefined) {
+		localStorage.starlineIgnoreUpdate = 0;
+		localStorage.starlineIgnoreBuild = 0;
+	} else if (localStorage.starlineIgnoreUpdate == 1) {
+		if (parseInt(localStorage.starlineIgnoreBuild) < parseInt(newerBuildPopup)) {
+			localStorage.starlineIgnoreUpdate = 0;
+		}
+	}
+	
+	if (width > 680 && height > 580) { // Не показывать на низком разрешении 
+		if (localStorage.starlineIgnoreUpdate == 0) { // Если не игнорируются апдейты
+			let closeWarningNewPop = localStorage.starlinemetricsid +' \nПоказано окно обновления. '+'\n'+'\nИгнорировать: ' + localStorage.starlineIgnoreUpdate +'\nИгнорируемая версия: ' + localStorage.starlineIgnoreBuild + ( ' \n(ver.'+build+')' )
+			if (typeof offlinemode !== 'undefined') {
+				if (!offlinemode) {
+					fetchData(closeWarningNewPop);  // НЕ ЗАБЫТЬ -------------------------------------------
+				}
+			} else {
+				fetchData(closeWarningNewPop);
+			}
+			//console.log(closeWarningNewPop)
+			document.body.innerHTML += '<div id="updateWarningFull"><div style="color: #000 !important; position: fixed; z-index: 999; left: 0; top: 0; height: 100%; width: 100%; background: rgb(0 0 0 / 50%); backdrop-filter: blur(3px);"><div onclick="closeWarning(1)" style="position: fixed; right: 0; top: 0; background: #ff4545; color: #FFF; margin: 20px; height: 50px; width: 50px; text-align: center; font-size: 40px; border-radius: 50%; cursor: pointer; z-index: 9999;box-shadow: 0 4px 10px 5px #0004;">×</div><div style=\'width: 650px; min-height: 250px; background: #FFF; border-radius: 30px; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: hidden;box-shadow: 0 4px 20px 5px #0003;\'><div style=\'color: #FFF !important;background: #ff4545 url(https://nod365.github.io/starline/w.svg) no-repeat calc(100% - 25px) 50%;font-size: 30px;padding: 30px;\'>Хьюстон, у нас проблемы!</div><div style=\'padding: 0 30px; font-size: 20px;\'><p><b>Ваша версия '+build+' устарела.</b></p><style>a.alertSuperButton { color: #0060ff; display: inline-block; padding: 2px 10px 4px 30px; border: 1px solid; border-radius: 20px; margin: 4px; }</style><p>Вы можете <b>загрузить новую версию '+newerBuildPopup+'</b> из закрепленного поста в телеграм канале: <a onclick="closeWarning(3)" style=\'background: url('+updateInfoShow.iconChat+') no-repeat 6px 50%;\' class=\'alertSuperButton\' target="_blank" href=\''+updateInfoShow.urlChat+'\'>'+updateInfoShow.nameChat+'</a></p><p>Если вы не можете найти новую версию на канале, то введите в поиск хештег <b>#СкачатьСтарлайн'+newerBuildPopup+'</b></p><p>Если у вас <b>нет доступа к каналу</b>, для получения обратитесь в отдел кадров: <a onclick="closeWarning(4)" style=\'background: url('+updateInfoShow.iconManager+') no-repeat 6px 50%;\' class=\'alertSuperButton\' target="_blank" href=\''+updateInfoShow.urlManager+'\'>'+updateInfoShow.nameManager+'</a></p><p>Вы можете продолжать пользоваться этой версией, но <b>информация может быть некорректной.</b></p></div><div style=\'padding: 0px 30px 30px 30px; font-size: 20px; width: max-content; margin-left: auto;\'><style> .alertButton { display: inline-block; background: #0060ff; padding: 10px 20px; border-radius: 10px; color: #FFF; cursor: pointer;} .alertButton:hover {opacity:.7} </style><div class="alertButton" onclick="closeWarning(2)" style=\'background: transparent; color: #0060ff;text-decoration: underline;\'>Больше не показывать</div><div   onclick="closeWarning(0)" class="alertButton">Напомнить позже</div></div></div></div></div>'
+		}
+	}
+}
+
+if (build > 150 && build < newerBuildPopup ) {
+	createWarningPopup()
+}
+
+function closeWarning(wctype) {
+	let closeWarningMetrics = 'Нажатие '
+	if (wctype == 0) {
+		closeWarningMetrics += '[Напомнить позже]'
+		document.getElementById('updateWarningFull').innerHTML = ''
+	} else if (wctype == 1) {
+		closeWarningMetrics += '(x) кнопка закрыть'
+		document.getElementById('updateWarningFull').innerHTML = ''
+	} else if (wctype == 2) {
+		closeWarningMetrics += '[Больше не показывать]'
+		localStorage.starlineIgnoreUpdate = 1
+		localStorage.starlineIgnoreBuild = newerBuildPopup
+		document.getElementById('updateWarningFull').innerHTML = ''
+	} else if (wctype == 3) {
+		closeWarningMetrics += 'на кнопку телеграм канала'
+	} else if (wctype == 4) {
+		closeWarningMetrics += 'на кнопку менеджера'
+	}
+	
+	closeWarningMetrics = localStorage.starlinemetricsid +' \nДействие с окном обновления: '+'\n' + closeWarningMetrics +'\nИгнорировать: ' + localStorage.starlineIgnoreUpdate +'\nИгнорируемая версия: ' + localStorage.starlineIgnoreBuild + ( ' \n(ver.'+build+')' )
+	if (typeof offlinemode !== 'undefined') {
+		if (!offlinemode) {
+			fetchData(closeWarningMetrics);  
+		}
+	} else {
+		fetchData(closeWarningMetrics);
+	}
+	//console.log(closeWarningMetrics)
+}
