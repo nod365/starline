@@ -95,7 +95,7 @@ searchInput.addEventListener('input', function() {
 		}
 		if (document.getElementById('carTableCount') == undefined) {
 			if (build > 150 && build < 172 ) {
-				str += 'Устаревший поиск: ' + document.getElementById('results').children.length
+				str += ' \nУстаревший поиск: ' + document.getElementById('results').children.length
 			} else {
 				str += ' \nНичего не найдено'
 			}
