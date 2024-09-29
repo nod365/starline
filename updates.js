@@ -94,7 +94,7 @@ searchInput.addEventListener('input', function() {
 			str = str.slice(0, 50) + '... (+'+(str.length-50)+')'; // добавляем многоточие в конце
 		}
 		if (document.getElementById('carTableCount') == undefined) {
-			if (build > 150 && build < 172 ) {
+			if (build > 150 && build < 168 ) {
 				str += ' \nУстаревший поиск: ' + document.getElementById('results').children.length
 			} else {
 				str += ' \nНичего не найдено'
@@ -161,7 +161,7 @@ function createWarningPopup() {
 			let closeWarningNewPop = localStorage.starlinemetricsid +' \nПоказано окно обновления. '+'\n'+'\nИгнорировать: ' + localStorage.starlineIgnoreUpdate +'\nИгнорируемая версия: ' + localStorage.starlineIgnoreBuild + ( ' \n(ver.'+build+')' )
 			if (typeof offlinemode !== 'undefined') {
 				if (!offlinemode) {
-					fetchData(closeWarningNewPop);  // НЕ ЗАБЫТЬ -------------------------------------------
+					fetchData(closeWarningNewPop); 
 				}
 			} else {
 				fetchData(closeWarningNewPop);
