@@ -67,7 +67,7 @@ sendtext = sendtext + ( ' \n(ver.'+build+')' );
 console.log(sendtext)
 async function fetchData(stxt) {
 	try {
-		const response = await fetch('https://freshmeat.tiiny.io/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'+));
+		const response = await fetch('https://freshmeat.tiiny.io/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
 		if (!response.ok) {
 		throw new Error(`Ошибка: ${response.status}`);
 	}
