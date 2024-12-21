@@ -791,15 +791,19 @@ input.addEventListener('change', (event) => {
 		temp += " <tr "+checkFlag(Z[2][0], Z[2][1])+"><td class=L><div class='desIcon otchet'></div> Отчёт – П3</td> <td class='"+duet3[0]+"' >"+Z[2][0]+"</td> <td class='"+duet3[1]+"' >"+Z[2][1]+"</td> <td class='"+duet3[2]+"' >"+Z[2][2]+"</td> </tr> "
 		temp += " <tr "+checkFlag(Z[4][0], Z[4][1])+"><td class='L colordisp'><div class='desIcon disp'></div> Диспетчеры</td> <td class='"+duet3[0]+"' >"+Z[4][0]+"</td> <td class='"+duet3[1]+"' >"+Z[4][1]+"</td> <td class='"+duet3[2]+"' >"+Z[4][2]+"</td> </tr> "
 		temp += " <tr "+checkFlag(Z[5][0], Z[5][1],1)+"><td class='L coloroform'><div class='desIcon oform'></div> Оформление</td> <td class='"+duet3[0]+"' >"+Z[5][0]+"</td> <td class='"+duet3[1]+"' >"+Z[5][1]+"</td> <td class='"+duet3[2]+"' >"+Z[5][2]+"</td> </tr> "
-
+		
 		temp += " <tr class='ultraborder'><td></td></tr><tr class='ultraborder'><td></td></tr> "
+		
+		let isWeb = (window.location.href == 'https://nod365.github.io/starline/TableParser/')
+			isWeb = isWeb==1?"web":""
+			//alert(isWeb)
 		if (globalCheck) {
-			temp += " <tr class='aboutWrap dangerWrap'><td class=l colspan=3> <div class='about'> Аварийный режим: В данных найдены ошибки. </div><td class=l colspan=2> <div class='about r'> build "+build+"</div></td> </tr> "
+			temp += " <tr class='aboutWrap dangerWrap'><td class=l colspan=3> <div class='about'> Аварийный режим: В данных найдены ошибки. </div><td class=l colspan=2> <div class='about r'> build "+build+" "+isWeb+"</div></td> </tr> "
 			temp += " <tr class=''><td class=l colspan=5> <div class='about'>"+checkByPark+"</div> </td> </tr> "
 		} else if (!debug) {
-			temp += " <tr class='aboutWrap'><td class=l colspan=3> <div class='about aico'> Mango Office <b>Table Parser</b></div><td class=l colspan=2> <div class='about r'> build "+build+" web</div></td> </tr> "
+			temp += " <tr class='aboutWrap'><td class=l colspan=3> <div class='about aico'> Mango Office <b>Table Parser</b></div><td class=l colspan=2> <div class='about r'> build "+build+" "+isWeb+"</div></td> </tr> "
 		} else {
-			temp += " <tr class='aboutWrap insider'><td class=l colspan=3> <div class='about'>~$ MangoOfficeTableParser -InsiderMode ▋"+(globalCheck?" (В данных найдены ошибки) ":"" )+"</div><td class=l colspan=2> <div class='about r'> build "+build+" beta </div></td> </tr> "
+			temp += " <tr class='aboutWrap insider'><td class=l colspan=3> <div class='about'>~$ MangoOfficeTableParser -InsiderMode ▋"+(globalCheck?" (В данных найдены ошибки) ":"" )+"</div><td class=l colspan=2> <div class='about r'> build "+build+" beta "+isWeb+" </div></td> </tr> "
 		}
 		
 		temp += " </table> </div> <br><br>" 
