@@ -64,25 +64,14 @@
 				<div><h1>Информация</h1><div class="app-hr"></div></div>
 				<div class="leftButton"><emoji>👍</emoji>Кнопка 1</div>
 				-->
-				
-				
-
-				
 			</div>
 			<div>
 				<div class="app-hr"></div>
 				<div id="infoplace"></div>
 				<div id="updatesinfo"><div class="leftButton Logo"><emoji class="rotating">⏳</emoji>Проверяю обновления...</div></div>
 			</div>
-			
-			
 		</leftmenu>
-		<container>
-			<!--<div class="intableFlex"><h1>Генератор таблиц</h1><div>16.01.2025, Четверг</div></div>-->
-			
-			
-			<input type="file" id="files" accept=".csv" style="display: none;">
-			
+		<container>	
 			<output>
 				<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;"><svg width="328" height="328" viewBox="0 0 328 328" fill="none" class="placeholder_rings"><path fill-rule="evenodd" clip-rule="evenodd" d="M164 242C207.078 242 242 207.078 242 164C242 120.922 207.078 86 164 86C120.922 86 86 120.922 86 164C86 207.078 120.922 242 164 242Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 8"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 284C230.274 284 284 230.274 284 164C284 97.7258 230.274 44 164 44C97.7258 44 44 97.7258 44 164C44 230.274 97.7258 284 164 284Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M164 327C254.022 327 327 254.022 327 164C327 73.9776 254.022 1 164 1C73.9776 1 1 73.9776 1 164C1 254.022 73.9776 327 164 327Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 36"></path></svg> <br> <h2>Чтобы сформировать таблицу, нажмите <div class="supportButton fakeCur" onclick="document.getElementById('files').click();"><emoji>📄</emoji>Открыть CSV-файл</div> в&nbsp;левом&nbsp;меню.</h2> <br> <div>Нужна дополнительная помощь с экспортом? Нажмите <div class="supportButton fakeCur" onclick="PU()"><emoji>📚</emoji>Руководство</div> в&nbsp;левом&nbsp;меню.</div> </div>
 			</output>
@@ -90,6 +79,9 @@
 	</wrap>
 	<render style="display:none;">
 	</render>
+	<files style="display: none;">
+				<input type="file" id="files" accept=".csv">
+	</files>
 	<style>
 	@font-face {
 		font-family: 'Wix Madefor Display';
@@ -101,21 +93,23 @@
 	body {
 		margin: 0;
 	}
-	
-	wrap.dark {
-		background: #181818;
+		
+	*:not(.tableOutput *) {
+		transition: .3s background, .3s color, .3s background-color;
 	}
-	
+
 	wrap {
 		display: flex;
 		flex-direction: row;
 	}
 	
+	wrap.dark {
+		background: #181818;
+	}
+		
 	.fakeCur {
 		cursor: pointer;
 	}
-	
-	
 	
 	leftmenu {
 		top: 0;
@@ -127,10 +121,6 @@
 		flex-direction: column;
 		max-width: 280px;
 		z-index: 600;
-	}
-	
-	.dark leftmenu {
-		background: #2e2e2e;
 	}
 	
 	.flexible {
@@ -162,40 +152,76 @@
 	.dark .leftButton:hover, .dark .buttonSelected {
 		background: #3f3f3f;
 	}
-	
-	.intableButton {
-		transform: scale(1.0);
-		transition: transform .1s;
-		cursor: pointer;
-		user-select: none;
+		
+	.tableWrap, .intableFlex div, leftmenu {
+		border: 1px solid #313a8d44;
+		box-shadow: 0 0 20px 5px #313a8d0a;
 	}
-	
-	.intableButton:hover {
-		transform: scale(1.05);
-		background: transparent !important;
+	.dark .tableWrap, .dark .intableFlex div, .dark leftmenu {
+		border: 1px solid #FFF4;
+		box-shadow: 0 0 20px 0 #24242445;
 	}
-	
-	.intableButton:active {
-		transform: scale(0.99);
-		background: transparent !important;
-	}
-	
 	.blinkOnce {
 			animation-duration: 1.5s;
 			animation-name: hey;
 			animation-iteration-count: 3;
 		}
 		
-		@keyframes hey {
-			0% {
-				background: #F50
-			}
-			
-			100% {
-				background: TRANSPARENT
-			}
-			
+	@keyframes hey {
+		0% {
+			background: #F50
 		}
+		
+		100% {
+			background: TRANSPARENT
+		}
+		
+	}
+	
+	.intableFlex {
+		display: flex;
+		margin: 35px 30px 0px 30px;
+		position: sticky;
+		top: 0;
+		z-index: 500;
+	}
+	
+	.intableFlex div:first-child {
+		flex-grow: 1;
+	}
+	
+	.intableFlex div {
+		border-radius: 50px;
+		margin: 20px 5px;
+		padding: 10px 20px;
+		backdrop-filter: blur(20px);
+		transition: border .3s, background .3s;
+	}
+	
+	.intableFlex div.intableButton {
+		cursor: pointer;
+		user-select: none;
+	}
+	
+	.intableFlex div.intableButton:hover {
+		animation-duration: 0s;
+		border: 1px solid #313a8d;
+		background: #313a8d11;
+	}
+	
+	.dark .intableFlex div.intableButton:hover {
+		animation-duration: 0s;
+		border: 1px solid #FFF;
+		background: #FFF2;
+	}
+	
+	/*
+	.intableFlex div.intableButton:active, .dark .intableFlex div.intableButton:active {
+		animation-duration: 0s;
+		border: 1px solid #676767;
+		background: #67676712;
+	}
+	*/
 	
 	@keyframes rotate {
 		from {
@@ -296,7 +322,6 @@
 		color: #313a8d;
 	}
 	
-		
 	.dark * {
 		color: #FFF;
 	}
@@ -304,11 +329,7 @@
 	*:not(b) {
 		font-weight: 500;
 	}
-	
-	*:not(.tableOutput *) {
-		transition: .3s background, .3s color, .3s background-color;
-	}
-	
+
 	.supportButton {
 		display: inline;
 		box-shadow: 0 0 0 1px;
@@ -324,26 +345,7 @@
 		margin: 50px;
 		color: var(--color-text-default);
 	}
-	
-	.intableFlex {
-		display: flex;
-		margin: 35px 30px 0px 30px;
-		position: sticky;
-		top: 0;
-		z-index: 500;
-	}
-	
-	.intableFlex div:first-child {
-		flex-grow: 1;
-	}
-	
-	.intableFlex div {
-		border-radius: 50px;
-		margin: 20px 5px;
-		padding: 10px 20px;
-		backdrop-filter: blur(20px);
-	}
-	
+
 	.errorInfo {
 		margin: 35px 35px 0px 35px;
 	}
@@ -464,17 +466,16 @@
 		border-radius: 30px;
 	}
 	
-	.dark .tableWrap, .dark .tableOutput {
+	.dark .tableWrap, .dark .tableOutput, .dark leftmenu  {
 		background: #242424;
 	}
-	.tableWrap, .intableFlex div {
-		border: 1px solid #313a8d44;
+
+	leftmenu, .dark leftmenu {
+		border-top: 0px;
+		border-left: 0px;
+		border-bottom: 0px;
 	}
 		
-	.dark .tableWrap, .dark .intableFlex div {
-		border: 1px solid #FFF4;
-	}
-
 	tr.ultraborder {
 		opacity: 0;
 	}
@@ -698,10 +699,12 @@
 
 	th.color0 {
 		background: linear-gradient(90deg, rgb(255 0 151) 0%, rgb(253 2 255) 100%);
+		box-shadow: 0 0 15px 0px #fe01cd55;
 		color: #FFF;
 	}
 	th.color1 {
 		background: linear-gradient(90deg, rgba(202,2,255,1) 0%, rgba(153,30,255,1) 50%, rgba(153,126,255,1) 100%);
+		box-shadow: 0 0 15px 0px #9924ff55;
 		color: #FFF;
 	}
 	th.color2  {
@@ -710,9 +713,8 @@
 		color: #FFF;
 		border-radius: 0px 25px 25px 0px;
 		padding-right: 15px;
+		box-shadow: 0 0 15px 0px #0aec8755;
 	}
-	
-
 	
 	.color0, .color1, .color2 {
 		min-width: 110px;
@@ -882,26 +884,25 @@
 		document.getElementById('gethelp').addEventListener('click', PU);
 		
 		window.addEventListener('resize', function() {
-  const container = document.querySelector('container');
-  const leftmenu = document.querySelector('leftmenu');
-  
-  if (container) {
-    const containerWidth = container.offsetWidth;
-    if ((window.innerWidth - leftmenu.offsetWidth) < 1100) {
-      const scaleValue = 1 / 1100 * (window.innerWidth - leftmenu.offsetWidth);
-      container.style.zoom = scaleValue;
-    } else {
-      container.style.zoom = 1;
-    }
-	
-	console.log('containerWidth :'+containerWidth)
-  }
-});
+		  const container = document.querySelector('container');
+		  const leftmenu = document.querySelector('leftmenu');
+		  
+		  if (container) {
+			const containerWidth = container.offsetWidth;
+			if ((window.innerWidth - leftmenu.offsetWidth) < 1100) {
+			  const scaleValue = 1 / 1100 * (window.innerWidth - leftmenu.offsetWidth);
+			  container.style.zoom = scaleValue;
+			} else {
+			  container.style.zoom = 1;
+			}
+			
+			console.log('containerWidth :'+containerWidth)
+		  }
+		});
 
-// Для первого запуска скрипта, если страница уже загружена и элемент есть на странице
-window.dispatchEvent(new Event('resize'));
+		// Для первого запуска скрипта, если страница уже загружена и элемент есть на странице
+		window.dispatchEvent(new Event('resize'));
 
-		
 		function scrollTo(id) {
 			document.querySelector('#'+id+'_scroll').scrollIntoView({
 				behavior: 'smooth'
@@ -1449,7 +1450,7 @@ window.dispatchEvent(new Event('resize'));
 					}
 					localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
 					
-					let isWeb = (window.location.href != window.location.href.replace("https://nod365.github.io/starline/TableParser", " ") )
+					let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 					isWeb = isWeb==1?"web":""
 					
 					localHTML += '<tr class="aboutWrap"><td class="left minitext" colspan="'+(tableExport.length*2)+'" ><div class="about aico '+(debug?'insico':'')+'">'+(!debug?'Mango Office <b>Table Parser 4</b>':'~$ MangoOfficeTableParser4 -InsiderMode _')+'</div></td><td colspan=2 class="right about minitext">build '+build+' '+isWeb+'</td></tr>'
@@ -1651,5 +1652,7 @@ CHANGELOG
 317
 • Файл руководства отдельно от index.html
 • Полноценный Сокол
+• Проверка на web через includes, а не replace 🤦
+• Немного подправлены стили CSS
 
  -->
