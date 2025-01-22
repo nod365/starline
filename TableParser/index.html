@@ -13,7 +13,7 @@
 	<script src="./dom-to-image.min.js"></script>
 	
 	<script>
-	const 	build = "315",
+	const 	build = "316",
 			buildReleaseDate = "21 января 2025";
 	let		debug = 0,
 			buildString = "";
@@ -126,6 +126,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 280px;
+		z-index: 600;
 	}
 	
 	.dark leftmenu {
@@ -326,10 +327,10 @@
 	
 	.intableFlex {
 		display: flex;
-		margin: 20px 30px -30px 30px;
+		margin: 35px 30px 0px 30px;
 		position: sticky;
 		top: 0;
-		z-index: 999;
+		z-index: 500;
 	}
 	
 	.intableFlex div:first-child {
@@ -430,18 +431,17 @@
 		height: 100vh;
 		padding: 0;
 		overflow: auto;
-		z-index: 9999;
+		z-index: 700;
 		opacity: .4;
 		pointer-events: none;
 	}
 
 	.scrollHere {
-		height: 40px;
+		height: 0px;
+		margin: -1px;
 	}
 
 	.tableWrap {
-		border-radius: 50px;
-		overflow: hidden;
 		width: max-content;
 		height: max-content;
 		margin: 0px auto;
@@ -847,12 +847,14 @@
             }
 
             leftmenu .flexible::-webkit-scrollbar-thumb {
-                background-color: #99999966
+                background-color: #99999966;
             }
 
             leftmenu .flexible::-webkit-scrollbar-thumb:hover {
                 background-color: #999999dd
             }
+	
+	
 	
 	</style>
 	<script>
@@ -862,6 +864,27 @@
 		});
 		
 		document.getElementById('gethelp').addEventListener('click', PU);
+		
+		window.addEventListener('resize', function() {
+  const container = document.querySelector('container');
+  const leftmenu = document.querySelector('leftmenu');
+  
+  if (container) {
+    const containerWidth = container.offsetWidth;
+    if ((window.innerWidth - leftmenu.offsetWidth) < 1100) {
+      const scaleValue = 1 / 1100 * (window.innerWidth - leftmenu.offsetWidth);
+      container.style.zoom = scaleValue;
+    } else {
+      container.style.zoom = 1;
+    }
+	
+	console.log('containerWidth :'+containerWidth)
+  }
+});
+
+// Для первого запуска скрипта, если страница уже загружена и элемент есть на странице
+window.dispatchEvent(new Event('resize'));
+
 		
 		function scrollTo(id) {
 			document.querySelector('#'+id+'_scroll').scrollIntoView({
@@ -1603,5 +1626,10 @@ CHANGELOG
 • Обновил руководство по использованию
 • Сводка по времени вызовов и попыток дозвонаЪ
 • Считаем производительность по процентам пропущенных
+
+316
+• z-index у leftmenu
+• Масштабирование у таблиц в листинге
+• Мелочи по дизайну
 
  -->
