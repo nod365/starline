@@ -74,39 +74,6 @@ h2 {
 	margin-top: 0;
 }
 
-.inlineInOut {
-	display: flex;
-	width: calc(100% - 60px);
-	height: 30px;
-	background: #0001;
-	margin: 10px auto;
-	border-radius: 4px;
-	overflow: hidden;
-}
-
-.dark .inlineInOut {
-	background: #FFF1;
-}
-
-.inlineIn {
-	background: #80d2ff;
-}
-
-.inlineOut {
-	background: #c1e17d;
-}
-
-
-
-.inlineInOut.helper {
-	margin: 0px auto;
-	background: none;
-}
-
-.inlineInOut.helper div:first-child {
-	flex-grow: 1;
-}
-
 body {
 	font-family: Arial, sans-serif;
 }
@@ -143,17 +110,50 @@ body {
 	margin: 0 5px;
 }
 
+
+.inlineInOut {
+	display: flex;
+	width: calc(100% - 60px);
+	height: 30px;
+	background: #0001;
+	margin: 10px auto;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.dark .inlineInOut {
+	background: #FFF1;
+}
+
+.inlineInOut.helper {
+	margin: 0px auto;
+	background: none;
+}
+
+.inlineInOut.helper div:first-child {
+	flex-grow: 1;
+}
+
+
 .incoming,
 .outgoing {
 	width: 100%;
 }
 
-.incoming {
+.incoming, .inlineIn {
 	background-color: #80d2ff;
 }
 
-.outgoing {
+.dark .incoming, .dark .inlineIn {
+	background-color: #527b91;
+}
+
+.outgoing, .inlineOut {
 	background-color: #c1e17d;
+}
+
+.dark .outgoing, .dark .inlineOut {
+	background-color: #778f43;
 }
 
 .date {
