@@ -26,8 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let index = 0;
 
         function newBackground() {
-            const animeDiv = document.getElementById('startpageAnime');
+            const animeDiv = document.body;
             if (!animeDiv) return; // Если div пропал, прекращаем выполнение
+
+            if (Images[index] == 17) {
+                Images[index] = 18
+            } 
 
             animeDiv.style.backgroundImage = 'url(https://nod365.github.io/tape/GIF/' + (Images[index] < 10 ? '0' : '') + Images[index] + '.gif)';
             

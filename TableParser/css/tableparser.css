@@ -18,14 +18,11 @@ wrap {
     flex-direction: row;
 }
 
-wrap.dark {
-    background-color: #181818;
-}
-
-#startpageAnime {
+body {
     background-color: #222;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
 .fakeCur {
@@ -37,11 +34,12 @@ leftmenu {
     left: 0;
     height: 100vh;
     position: sticky;
-    background: #f2f4f7;
     display: flex;
     flex-direction: column;
     max-width: 280px;
     z-index: 600;
+    background: #f2f4f7CC;
+    backdrop-filter: blur(25px);
 }
 
 .flexible {
@@ -66,18 +64,18 @@ leftmenu {
     position: relative;
 }
 
-leftmenu a  {
+leftmenu a {
     text-decoration: none !important;
 }
 
 .leftButton:hover,
 .buttonSelected {
-    background: #e5e8ed;
+    background: #00000014;
 }
 
 .dark .leftButton:hover,
 .dark .buttonSelected {
-    background: #3f3f3f;
+    background: #ffffff1c;
 }
 
 .tableWrap,
@@ -234,12 +232,12 @@ emoji {
 .app-hr {
     width: calc(100% - 20px);
     height: 1px;
-    background: #E2E2E2;
+    background: #1900d736;
     margin: 5px 10px;
 }
 
 .dark .app-hr {
-    background: #5d5d5d;
+    background: #FFFFFF36;
 }
 
 container {
@@ -406,9 +404,12 @@ render {
 }
 
 .dark .tableWrap,
-.dark .tableOutput,
-.dark leftmenu {
+.dark .tableOutput {
     background: #242424;
+}
+
+.dark leftmenu {
+    background: #1c1c1ccc;
 }
 
 leftmenu,
@@ -661,7 +662,9 @@ th.color2 {
     box-shadow: 0 0 15px 0px #0aec8755;
 }
 
-.color0, .color1, .color2 {
+.color0,
+.color1,
+.color2 {
     min-width: 130px;
 }
 
@@ -830,7 +833,15 @@ leftmenu .flexible::-webkit-scrollbar-thumb:hover {
     overflow-y: auto;
     overflow-x: hidden;
 }
-  
+
+.parent * {
+    color: #000 !important;
+}
+
+.dark .parent * {
+    color: #FFF !important;
+}
+
 .child {
     max-width: 100%;
     max-height: 100%;
@@ -841,11 +852,11 @@ leftmenu .flexible::-webkit-scrollbar-thumb:hover {
     filter: drop-shadow(0px 0px 6px #0006);
 }
 
-.parent.dimmer {
-    background: #FFFC;
+container {
+    background: #FFF8;
 }
 
-.dark .parent.dimmer {
+.dark container {
     background: #0008;
 }
 
