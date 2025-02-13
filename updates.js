@@ -10,7 +10,7 @@ let product = {
 		support: 'https://google.com',
 	},
 		CCPF : {
-		currentBuild: 9,
+		currentBuild: 10,
 		currentBuildReleaseDate: '13 февраля 2025',
 		support: 'https://google.com',
 	}
