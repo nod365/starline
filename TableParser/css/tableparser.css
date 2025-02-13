@@ -835,7 +835,7 @@ leftmenu .flexible::-webkit-scrollbar-thumb:hover {
 }
 
 .parent * {
-    color: #000 !important;
+    color: #00013d !important;
 }
 
 .dark .parent * {
