@@ -17,7 +17,7 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "8",
+		const build = "9",
 			buildReleaseDate = "13 февраля 2025";
 		let debug = 0,
 			buildString = "";
@@ -289,6 +289,7 @@
 								<div style="width: max-content; margin: auto">
 									<img src="${dataUrl}" alt="Сохранённое изображение" style="max-width:100%; height:auto;">
 								<div>
+									<a href="https://nod365.github.io/starline/TableParser/performance.html" targer="_blank" style="width: max-content; margin: 10px auto">Сформировать новый отчёт</a>
 							</body>
 						</html>`;
 
@@ -619,7 +620,7 @@
 							</g>
 						</svg>
 					`
-					htmlContent += `<div class='buildInfo'> ${buildString.replaceAll('○', '<br>')} </div>`
+					htmlContent += `<div class='buildInfo'> ${buildString.replaceAll('○', '<br>').replaceAll('Вы пользуетесь', 'Отчёт сформирован')} </div>`
 					htmlContent += "</div>"
 
 					document.getElementsByTagName('output')[0].innerHTML = `
@@ -651,8 +652,8 @@
 					});
 
 
-
 					document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
+				
 				} else {
 					document.getElementsByTagName('output')[0].innerHTML = '';
 					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', `
