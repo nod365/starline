@@ -69,12 +69,14 @@ leftmenu a {
 }
 
 .leftButton:hover,
-.buttonSelected {
+.buttonSelected,
+.buttonLogoSelected {
     background: #00000014;
 }
 
 .dark .leftButton:hover,
-.dark .buttonSelected {
+.dark .buttonSelected,
+.dark .buttonLogoSelected {
     background: #ffffff1c;
 }
 
@@ -185,7 +187,8 @@ background: #67676712;
     background: #60CDFF;
 }
 
-.buttonSelected::after {
+.buttonSelected::after,
+.buttonLogoSelected::after {
     height: 20px;
     transition: height 0.1s;
     transform: translate3d(0, 0, 0);
@@ -193,7 +196,6 @@ background: #67676712;
 
 .leftButton.Logo {
     cursor: default !important;
-    background: transparent !important;
 }
 
 .goodColor {

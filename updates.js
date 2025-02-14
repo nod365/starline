@@ -5,13 +5,13 @@ let product = {
 		support: 'https://google.com',
 	},
 		MOTP : {
-		currentBuild: 319,
-		currentBuildReleaseDate: '13 февраля 2025',
+		currentBuild: 320,
+		currentBuildReleaseDate: '14 февраля 2025',
 		support: 'https://google.com',
 	},
 		CCPF : {
-		currentBuild: 10,
-		currentBuildReleaseDate: '13 февраля 2025',
+		currentBuild: 11,
+		currentBuildReleaseDate: '14 февраля 2025',
 		support: 'https://google.com',
 	}
 }
