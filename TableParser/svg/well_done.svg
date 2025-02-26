@@ -1,0 +1,23 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50">
+	<title>download (1)</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m25 47.16c-12.25 0-22.16-9.91-22.16-22.16 0-12.25 9.91-22.16 22.16-22.16 12.25 0 22.16 9.91 22.16 22.16 0 12.25-9.91 22.16-22.16 22.16z"/>
+		</clipPath>
+		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(29.5,-29.5,29.5,29.5,10.25,39.75)">
+			<stop offset="0" stop-color="#1dc8c6"/>
+			<stop offset=".5" stop-color="#0fe398"/>
+			<stop offset="1" stop-color="#01fd6a"/>
+		</linearGradient>
+	</defs>
+	<style>
+		.s0 { fill: url(#g1) } 
+		.s1 { fill: #ffffff } 
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<g>
+			<path class="s0" d="m50 0v50h-50v-50z"/>
+			<path class="s1" d="m12.6 25.3l2.8-2.8c0.8-0.8 2.1-0.8 2.8 0l8.5 8.5c0.8 0.8 0.8 2 0 2.8l-2.8 2.9c-0.8 0.7-2.1 0.7-2.8 0l-8.5-8.5c-0.8-0.8-0.8-2.1 0-2.9zm23.9-9.7l2.8 2.8c0.8 0.8 0.8 2.1 0 2.8l-12.7 12.8c-0.8 0.7-2 0.7-2.8 0l-2.9-2.9c-0.7-0.7-0.7-2 0-2.8l12.8-12.7c0.8-0.8 2-0.8 2.8 0z"/>
+		</g>
+	</g>
+</svg>
