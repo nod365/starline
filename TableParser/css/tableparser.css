@@ -485,7 +485,7 @@ tr td:last-child {
     width: 10px;
     margin: 0px 5px 0px 0px;
     display: inline-block;
-    background-image: url(../images/logo_gradient.jpg);
+    background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAPAA8DASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQb/xAAfEAAABQQDAAAAAAAAAAAAAAAAAQQTIQIFERIUMWH/xAAVAQEBAAAAAAAAAAAAAAAAAAAFBv/EABwRAAEDBQAAAAAAAAAAAAAAAAEAAgQDBRESFP/aAAwDAQACEQMRAD8AftSpqjsOJ1zkZEZyWE5VeBK0rtyzMiPl0NgXJW3RTxtfhf/Z);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     border-radius: 50%;
