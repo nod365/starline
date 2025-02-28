@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обработка данных</title>
+</head>
+<body>
+
+    <h1>Обработка данных в формате процентов</h1>
+
+    <!-- Поле для ввода данных -->
+    <textarea id="inputData" rows="10" cols="50" placeholder="Введите данные в формате 100% 50%, 100% 56.6%, ..."></textarea><br><br>
+
+    <!-- Кнопка для обработки данных -->
+    <button onclick="processData()">Обработать данные</button><br><br>
+
+    <!-- Поле для вывода обработанных данных -->
+    <h3>Результат:</h3>
+    <textarea id="outputData" rows="10" cols="50" readonly></textarea>
+
+    <script>
+        function processData() {
+            // Получаем данные из поля ввода
+            const inputText = document.getElementById('inputData').value;
+
+            // Разделяем строку на отдельные строки по символу новой строки
+            const lines = inputText.split('\n');
+
+            // Массив для хранения обработанных данных
+            let processedData = [];
+
+            // Обрабатываем каждую строку
+            lines.forEach(line => {
+                // Убираем лишние пробелы и запятые
+                line = line.trim();
+                if (line) {
+                    // Разделяем строку по пробелу и удаляем лишние символы (%)
+                    let parts = line.split(' ');
+                    let x = parts[0].replace('%', ''); // Извлекаем первое значение (x)
+                    let y = parts[1].replace('%', '').replace(',',''); // Извлекаем второе значение (y)
+					
+					x = parseFloat(x)
+					y = parseFloat(y)
+					
+					if (x<50) {
+						x = '${1+Math.round((radius*('+x/100+'))*10)/10}px'
+					} else {
+						x = '${1+Math.round(((width - radius)+radius*('+x/100+'))*10)/10}px' 
+					}
+					
+					if (y<50) {
+						y = '${1+Math.round((radius*('+y/100+'))*10)/10}px'
+					} else {
+						y = '${1+Math.round(((height - radius)+radius*('+y/100+'))*10)/10}px' 
+					}
+					
+					
+                    // Формируем строку и добавляем в массив
+                    processedData.push(x + ' ' + y + ',');
+                }
+            });
+
+            // Выводим обработанные данные в поле вывода
+            document.getElementById('outputData').value = processedData.join('\n');
+        }
+    </script>
+
+</body>
+</html>
