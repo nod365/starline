@@ -150,7 +150,7 @@
 	<files style="display: none;">
 		<input type="file" id="files" accept=".csv">
 	</files>
-	<link rel="stylesheet" href="./css/tableparser.css?v321">
+	<link rel="stylesheet" href="./css/tableparser.css?v322">
 
 	<script>
 
@@ -699,10 +699,10 @@
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 
-						localHTML += '<tr class="aboutWrap"><td class="left minitext" colspan="' + (tableExport.length * 2) + '" ><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan=2 class="right about minitext">build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap '+(foundError?'warningLogoBottom':'')+'"><td class="left minitext" colspan="' + (tableExport.length * 2) + '" ><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + ''+(foundError?' / Найдены ошибки в данных':'')+'</div></td><td colspan=2 class="right about minitext">build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
-							localHTML += '<tr class="tableErrorInfo"><td colspan="' + (tableExport.length * 2 + 2) + '">'
-							localHTML += '<div>Обратите внимание:</div>'
+							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
+							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
 							localHTML += '<div class="badColor">'
 							localHTML += validationResult[keys[i]].join('</div><div class="badColor">')
 							localHTML += '</div>'
@@ -931,5 +931,6 @@ CHANGELOG
 
 322
 • Вернул Суперэллипс (Squircle) шапке отчёта, на этот раз через clip-path, а не SVG
-
+• Поправил отображение ошибки на самом отчёте
+ 
 -->
