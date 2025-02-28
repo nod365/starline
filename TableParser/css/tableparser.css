@@ -486,7 +486,7 @@ tr td:last-child {
     margin: 0px 5px 0px 0px;
     display: inline-block;
     background-image: url(../images/logo_gradient.jpg);
-    background-size: cover;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     border-radius: 50%;
 }
@@ -635,7 +635,7 @@ th.GR {
     color: var(--color-text-default);
     position: relative;
     background: linear-gradient(90deg, rgba(235, 237, 255, 1) 70%, rgba(241, 201, 236, 1)100%);
-    border-radius: 25px 0px 0px 25px;
+    /*border-radius: 25px 0px 0px 25px;*/
     padding-left: 15px;
 }
 
@@ -659,10 +659,10 @@ th.color2 {
     color: #FFF;
     background: linear-gradient(90deg, #1dc8c6 0%, #00ff66 100%);
     color: #FFF;
-    border-radius: 0px 25px 25px 0px;
+    /*border-radius: 0px 25px 25px 0px;*/
     padding-right: 25px;
     box-shadow: 0 0 25px 0px #0aec8761;
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 .color0,
@@ -673,8 +673,8 @@ th.color2 {
 
 .callIcon {
     background-size: 100%;
-    height: 24px;
-    width: 24px;
+    height: 26px;
+    width: 26px;
     margin-top: 2px;
     display: inline-block;
 }
@@ -692,7 +692,7 @@ th.color2 {
 }
 
 th {
-    padding: 10px;
+    padding: 13px 10px;
     font-weight: 600 !important;
 }
 

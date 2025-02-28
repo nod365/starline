@@ -14,11 +14,12 @@
 	<link rel="manifest" href="./manifest.webmanifest">
 	<script src="./script/dom-to-image.min.js"></script>
 	<script src="./script/darkside.js"></script>
+	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "321",
-			buildReleaseDate = "26 февраля 2025";
+		const build = "322",
+			buildReleaseDate = "28 февраля 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -564,7 +565,7 @@
 						localHTML += '<div class="tableOutput ' + (foundError ? 'opacitytext' : '') + '" id="' + randomID + '">'
 
 						localHTML += '<table>'
-						localHTML += '<thead><tr>'
+						localHTML += '<thead><tr class="squircle">'
 						localHTML += '<th colspan="2" class="left GR"><div class="desIcon parkid"></div><span class="thName">Парки и подразделения</span><br><span class="dateHeader opacitytext minitext">' + getDayOfWeek(keys[i]) + '</span>' + '</th>'
 
 						for (j = 0; j < tableExport.length; j++) {
@@ -714,7 +715,7 @@
 
 						document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', localHTML);
 						menuCursor();
-
+						applyClipPathToSquarcles();
 
 					}
 
@@ -927,5 +928,8 @@ CHANGELOG
 • Выровнил отступы в шапке справа и слева
 • Тени в шапке менее прозрачные 
 • Вынес иконки из css в отдельные файлы
+
+322
+• Вернул Суперэллипс (Squircle) шапке отчёта, на этот раз через clip-path, а не SVG
 
 -->
