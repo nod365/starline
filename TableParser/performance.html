@@ -17,8 +17,8 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "11",
-			buildReleaseDate = "14 февраля 2025";
+		const build = "12",
+			buildReleaseDate = "04 марта 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -333,7 +333,7 @@
 				const headers = lines[0]; // Заголовки
 				const data = lines.slice(1); // Данные
 
-				console.log("пизда")
+				console.log("Заголовки CSV:")
 				console.log(headers)
 
 				if (headers[0] == 'ФИО' && headers[1] == "Дата") {
@@ -341,8 +341,6 @@
 
 					const neededColumns = ['ФИО', 'Дата', 'Общее количество принятых вызовов', 'Количество совершенных вызовов', 'Количество попыток дозвона', 'Среднестатистическая продолжительность разговора (Все принятые вызовы)', 'Средняя скорость ответа', 'Суммарное время принятых групповых вызовов', 'Суммарное время совершенных вызовов'];
 					const namesCol = ['ФИО', 'Дата', 'Принятые', 'Исходящие', 'Попыток', 'В среднем', 'Скорость ответа', 'Время принятых', 'Время исходящих']
-
-					const employees = ['Петрунин Евгений', 'Магомедгаджиев Магомедтагир', 'Курбанбаев Нурбек', 'Гаджилов Руслан', 'Хажнагоев Аслан', 'Муртазалиев Рамзан', 'Мухаммадов Мухиддин', 'Ермаков Данила', 'Ибрагимов Ильхам'];
 
 					const indexes = neededColumns.map(col => headers.indexOf(col)).filter(index => index !== -1);
 
@@ -362,7 +360,7 @@
 						const tr = document.createElement("tr");
 						const employeeRow = []; // Создаём массив для сотрудника
 
-						for (let i = 1; i < indexes.length; i++) {
+						for (let i = 1; i < indexes.length; i++) { 
 							const td = document.createElement("td");
 							td.textContent = row[indexes[i]];
 							tr.appendChild(td);
@@ -370,7 +368,7 @@
 						}
 
 						if (row[0] == row[1]) {
-							if (employees.includes(row[0])) {
+							if (row[0] != "Итого") {
 								employeesData.push(employeeRow); // Добавляем массив сотрудника в общий массив
 							}
 						} else {
@@ -382,19 +380,21 @@
 
 
 					employeesData.forEach(employee => {
+						let countWorkingDays = byday[employee[0]].filter(day => parseInt(day.in) > 0 || parseInt(day.out) > 0).length;
 						const sum = (Number(employee[1]) || 0) + (Number(employee[2]) || 0); // Складываем [1] + [2]
-						employee.unshift(sum); // Вставляем сумму в начало массива
+						let averageCalls = countWorkingDays==0?0:(Math.round(sum/countWorkingDays*100)/100)
+						employee.unshift([sum, averageCalls, countWorkingDays] ); // Вставляем инфу в начало массива
 					});
 
 					// Сортируем массив по первому элементу (сумме)
-					employeesData.sort((a, b) => b[0] - a[0]); // Сортировка по убыванию
+					employeesData.sort((a, b) => b[0][1] - a[0][1]); // Сортировка по убыванию
 
 					// 3. Считаем общую сумму всех звонков
-					const totalCalls = employeesData.reduce((sum, employee) => sum + employee[0], 0);
+					const totalCalls = employeesData.reduce((sum, employee) => sum + employee[0][0], 0);
 
 					// 4. Добавляем процент звонков в конец каждого массива
 					employeesData.forEach(employee => {
-						const percentage = totalCalls > 0 ? ((employee[0] / totalCalls) * 100).toFixed(2) : 0;
+						const percentage = totalCalls > 0 ? ((employee[0][0] / totalCalls) * 100).toFixed(2) : 0;
 						employee.push(`${percentage}`);
 					});
 
@@ -424,6 +424,14 @@
 					});
 
 					// Результат
+					employeesData.forEach(employee => {
+						let rating = employee[10]==0?0:( employee[0][1] + ( ( (employee[10]/employee[0][2])/employee[0][1] ) * 0.5 ) )
+						
+						employee[0].push( rating )
+					});
+
+					employeesData.sort((a, b) => b[0][3] - a[0][3]); // Сортировка по убыванию
+					
 					console.log(employeesData); // Выводим копию с обновлениями
 
 
@@ -482,6 +490,7 @@
 					htmlContent = '<h1> Производительность сотрудников </h1>'
 					htmlContent += '<h2>' + ('Статистика за ' + (datesList.length + ((datesList.length > 10 && datesList.length < 20) ? " дней" : (datesList.length % 10 == 1 ? ' день' : ((datesList.length % 10 > 1 && datesList.length % 10 < 5) ? ' дня' : ' дней'))))) + ': ' + formatDateForTopList(getMinMaxDates().min) + ' - ' + formatDateForTopList(getMinMaxDates().max) + '</h2>'
 					htmlContent += '<h4 style="margin: 10px 30px; font-weight: 400; opacity: .6;">' + 'Отчёт сформирован ' + (new Date()) + '</h4>'
+					htmlContent += '<h4 style="margin: 10px 30px; font-weight: 400; opacity: .6;"> Способ расчета: Взвешенный рейтинг с бонусом за среднюю длительность звонка.<br>   Рассчитывается по формуле: EPS = C + (D × K)<br>Где:<br>   C = Количество звонков в день – основной фактор;<br>   D = Средняя длительность звонка в день (Среднее время в сек. / Кол-во).;<br>   K =  Коэффициент влияния длительности звонка, чтобы время влияло, но не доминировало.</h4>'
 
 					function parseTimeForCard(timeStr) {
 						const [hours, minutes, seconds] = timeStr.split(':').map(Number);
@@ -501,8 +510,35 @@
 					}
 
 
+					function findMaxValue(employeesData) {
+						if (!employeesData || employeesData.length === 0) return null;
+						
+						let maxVal = -Infinity;
+						
+						for (let i = 0; i < employeesData.length; i++) {
+							if (employeesData[i] && employeesData[i][9] !== undefined) {
+								maxVal = Math.max(maxVal, employeesData[i][9]);
+							}
+						}
+						
+						return maxVal === -Infinity ? null : maxVal;
+					}
 
+					let MaxWidthBros = findMaxValue(employeesData)
 
+					function findMaxProductivity(employeesData) {
+						let max = -Infinity;
+						
+						for (let i = 0; i < employeesData.length; i++) {
+							if (employeesData[i] && employeesData[i][0] && employeesData[i][0][3] !== undefined) {
+								max = Math.max(max, employeesData[i][0][3]);
+							}
+						}
+						
+						return max === -Infinity ? null : max; // Возвращает null, если данных нет
+					}
+
+					let MaxProductivity = findMaxProductivity(employeesData)
 
 					employeesData.forEach((employee, position) => {
 						let tempGenerate = ''
@@ -538,37 +574,45 @@
 						tempGenerate += '<div class="inline"><div class="avatarWrap"><div class="avatarInner" style="background-color: ' + stringToColor(employee[1]) + ';"><div class="avatarLetters">' + getInitials(employee[1]) + '</div></div></div></div>'
 						tempGenerate += '<div class="inline" style="color:' + stringToColor(employee[1]) + '">' + employee[1] + '</div>'
 						tempGenerate += '<div class="infoMargin">Данные за период: ' + formatDateForTopList(getMinMaxDates().min) + ' – ' + formatDateForTopList(getMinMaxDates().max) + '</div>'
-
+						
 						tempGenerate += '<div class="inlineInfo">'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + (position + 1) + '<span class="minidata"> из ' + employeesData.length + '</span></div><div class="inlineInfoBottom">Место</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + employee[9] + '% </div><div class="inlineInfoBottom">Принятых</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + employee[0] + ' </div><div class="inlineInfoBottom">Звонки</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">+' + (employee[4] - employee[3]) + ' </div><div class="inlineInfoBottom">Попыток</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + parseTimeForCard(employee[11]) + ' </div><div class="inlineInfoBottom">Время разговора</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">' + parseTimeForCard(secondsToHMS(hoursInDay)) + ' </div><div class="inlineInfoBottom">В день</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">' + parseTimeForCard(employee[6]) + ' </div><div class="inlineInfoBottom">Скорость ответа</div></div>'
-						tempGenerate += '</div>'
-
-
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + (position + 1) + '<span class="minidata"> из ' + employeesData.length + '</span></div><div class="inlineInfoBottom">Место</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">↓↑ ' + Math.round(employee[0][1]) + ' </div><div class="inlineInfoBottom">Сред. в день</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">' + parseTimeForCard(secondsToHMS(hoursInDay)) + ' </div><div class="inlineInfoBottom">Время в день</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + employee[9] + '% </div><div class="inlineInfoBottom">От общего</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">↓↑ ' + employee[0][0] + ' </div><div class="inlineInfoBottom">Звонки</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">+' + (employee[4] - employee[3]) + ' </div><div class="inlineInfoBottom">Попыток</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">' + parseTimeForCard(employee[6]) + ' </div><div class="inlineInfoBottom">Скорость ответа</div></div>'
+							tempGenerate += '</div>'
+							
+							tempGenerate += '<div class="infoMargin">Средняя производительность в день:</div>'
+							tempGenerate += '<div class="styles-legend-KpvHE"><div class="styles-legend-item-oxc3Y"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#ffb580"></circle></svg><span class="styles-text-wrapper-MbNOj"><div class="inlineInfoBottom">Employee Performance Score (EPS)</div></span></div></div>'
+							let widthProductivity = 100/MaxProductivity*employee[0][3]
+							tempGenerate += '<div class="inlineInOut"> <div class="inlineIn EPS" style="width: ' + widthProductivity + '%"><div class="avatarLetters">' + Math.round(employee[0][3]) + '<span class="textLegend"> EPS</span></div></div> </div>'
+							tempGenerate += '<div class="inlineInOut helper"> <div>0 EPS</div><div>' + Math.round(MaxProductivity) + ' EPS</div> </div>'
+							
+						tempGenerate += '<div class="infoMargin">Производительность за весь период:</div>'
 						tempGenerate += '<div class="styles-legend-KpvHE"><div class="styles-legend-item-oxc3Y"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#45c1ff"></circle></svg><span class="styles-text-wrapper-MbNOj"><div class="inlineInfoBottom">Входящие</div></span></div><div class="styles-legend-item-oxc3Y"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#7adb35"></circle></svg><span class="styles-text-wrapper-MbNOj"><div class="inlineInfoBottom">Исходящие</div></span></div></div>'
-
-						let widthAll = 100 / employeesData[0][9] * employee[9]
-
-						const total = employee[0];
-
+						
+						
+						let widthAll = 100 / MaxWidthBros * employee[9]
+						
+						const total = employee[0][0];
+						
 						const acceptedPercentage = (employee[2] / total) * 100;
 						const outgoingPercentage = (employee[3] / total) * 100;
 
 						let widthIn = widthAll / 100 * acceptedPercentage
 						let widthOut = widthAll / 100 * outgoingPercentage
-
+						
 						tempGenerate += '<div class="inlineInOut"> <div class="inlineIn" style="width: ' + widthIn + '%"><div class="avatarLetters">' + employee[2] + '</div></div> <div class="inlineOut" style="width: ' + widthOut + '%"><div class="avatarLetters">' + employee[3] + '</div></div> </div>'
 						tempGenerate += '<div class="inlineInOut helper"> <div>0%</div><div>' + employeesData[0][9] + '%</div> </div>'
-
+						
 						tempGenerate += '<div class="inlineInfo">'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + employee[2] + '<span class="minidata"> / ' + Math.round(countWorkingDays == 0 ? 0 : (employee[2] / countWorkingDays)) + ' в день</span> </div><div class="inlineInfoBottom">Входящие</div></div>'
-						tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + employee[3] + '<span class="minidata"> / ' + Math.round(countWorkingDays == 0 ? 0 : (employee[3] / countWorkingDays)) + ' в день</span> </div><div class="inlineInfoBottom">Исходящие</div></div>'
-						tempGenerate += '</div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">↓ ' + employee[2] + '<span class="minidata"> / ' + Math.round(countWorkingDays == 0 ? 0 : (employee[2] / countWorkingDays)) + ' в день</span> </div><div class="inlineInfoBottom">Входящие</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock">↑ ' + employee[3] + '<span class="minidata"> / ' + Math.round(countWorkingDays == 0 ? 0 : (employee[3] / countWorkingDays)) + ' в день</span> </div><div class="inlineInfoBottom">Исходящие</div></div>'
+							tempGenerate += '<div class="inlineInfoInner"><div class="inlineInfoBlock"> ' + parseTimeForCard(employee[11]) + ' </div><div class="inlineInfoBottom">Время разговора</div></div>'
+							tempGenerate += '</div>'
 
 						function generateChartHTML(startDate, days, callData) {
 
