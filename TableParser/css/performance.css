@@ -47,11 +47,9 @@
 	padding-block-start: 10px;
 	font-weight: 500;
 	letter-spacing: -0.01em;
-}
-
-.avatarLetters {
 	min-width: min-content;
 }
+
 
 .inlineInOut div {
 	overflow: hidden;
@@ -144,35 +142,31 @@ body {
 	width: 100%;
 }
 
-.incoming, .inlineIn {
+.incoming,
+.inlineIn {
 	background-color: #80d2ff;
 }
 
-.dark .incoming, .dark .inlineIn {
+.dark .incoming,
+.dark .inlineIn {
 	background-color: #527b91;
 }
 
-.outgoing, .inlineOut {
+.outgoing,
+.inlineOut {
 	background-color: #c1e17d;
 }
 
-.dark .outgoing, .dark .inlineOut {
+.dark .outgoing,
+.dark .inlineOut {
 	background-color: #778f43;
 }
-
-.inlineIn.EPS {
-    background: #ffb580;
-}
-
-.dark .inlineIn.EPS {
-    background: #815a3f;
-}
-
 
 .date {
 	font-size: 12px;
 	text-align: center;
 	margin: 5px;
+	font-family: monospace !important;
 }
 
 .styles-legend-KpvHE {
@@ -218,6 +212,9 @@ span.minidata {
 	font-weight: 400;
 	font-size: 18px;
 	opacity: .5;
+}
+.leftMini span.minidata {
+	font-size: 14px;
 }
 
 .dark div#parserWrap {
@@ -296,7 +293,74 @@ span.minidata {
 }
 
 span.textLegend {
-    color: inherit;
-    opacity: .5;
-    font-size: 14px;
+	color: inherit;
+	opacity: .5;
+	font-size: 14px;
+}
+
+.progress-container {
+	width: 100%;
+	background-color: #0001;
+	border-radius: 5px;
+	overflow: hidden;
+	height: 10px;
+}
+
+.dark .progress-container {
+	background-color: #FFF1;
+}
+
+.progress-bar {
+	height: 100%;
+	background: linear-gradient(90deg, #80d2ff 25%, #c1e17d 75%);
+	width: 0%;
+	transition: width 0.5s ease-in-out;
+}
+
+.dark .progress-bar {
+	background: linear-gradient(90deg, #527b91 25%, #778f43 75%);
+}
+
+table {
+    width: calc(100% - 60px);
+    margin: 30px;
+}
+
+tr td:first-child {
+    border-radius: 30px 0 0 30px !important;
+}
+
+td {
+    font-size: 18px;
+    text-align: right;
+    padding: 1px 12px 1px 0;
+}
+
+td.leftMini {
+    text-align: left;
+}
+
+td.maxWidthMini {
+    min-width: 150px;
+}
+
+tr:nth-child(even):not(.red) td {
+    background-color: #0014ff10;
+}
+
+.EPS {
+	background: #ffb580;
+}
+
+.dark .EPS {
+	background: #815a3f;
+}
+
+.avatarMini {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #FFF4;
+    border-radius: 50%;
+    margin: 0px 8px;
 }

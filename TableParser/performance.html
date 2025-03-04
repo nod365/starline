@@ -423,17 +423,86 @@
 						employee.push(secondsToHMS(totalTimeInSeconds)); // Добавляем сумму времени в секунду в конец массива
 					});
 
+					let miniInfo = [[],[]]
+
 					// Результат
 					employeesData.forEach(employee => {
-						let rating = employee[10]==0?0:( employee[0][1] + ( ( (employee[10]/employee[0][2])/employee[0][1] ) * 0.5 ) )
+						let k = 0.4
+						let rating = employee[10]==0?0:( employee[0][1] + ( (employee[4] - employee[3])/employee[0][2]*k ) + ( ( (employee[10]/employee[0][2])/employee[0][1] ) * k ) )
 						
 						employee[0].push( rating )
 					});
 
-					employeesData.sort((a, b) => b[0][3] - a[0][3]); // Сортировка по убыванию
-					
-					console.log(employeesData); // Выводим копию с обновлениями
+					employeesData.forEach(employee => {
+						miniInfo[0].push( [ employee[1],employee[0][0] ] )
+						miniInfo[1].push( [ employee[1],employee[0][3] ] )
+					});
 
+					employeesData.sort((a, b) => b[0][0] - a[0][0]); // Сортировка по убыванию
+					
+					miniInfo[0].sort((a, b) => b[1] - a[1]);
+					miniInfo[1].sort((a, b) => b[1] - a[1]);
+
+					console.log(employeesData); // Выводим копию с обновлениями
+					console.log(miniInfo); // Выводим копию с обновлениями
+
+					function generateRatingTable(miniInfo) {
+						const maxScoreAllTime = Math.max(...miniInfo[0].map(item => item[1]));
+						const maxScoreDaily = Math.max(...miniInfo[1].map(item => item[1]));
+						
+						let tableHTML = `
+							<table>
+								<thead>
+									<tr>
+										<th colspan="3">Общее количество звонков за период</th>
+										<th colspan="3">Оценка эффективности сотрудников</th>
+									</tr>
+									
+								</thead>
+								<tbody>
+						`;
+						
+						function truncateString(str) {
+							return str.length > 20 ? str.slice(0, 20) + '...' : str;
+						}
+
+						for (let i = 0; i < Math.max(miniInfo[0].length, miniInfo[1].length); i++) {
+							tableHTML += "<tr>";
+							
+							if (miniInfo[0][i]) {
+								tableHTML += `
+									<td><div class="avatarMini" style="background-color: ${stringToColor(miniInfo[0][i][0])};"></div>${i+1}. ${truncateString(miniInfo[0][i][0])}</td>
+									<td class="maxWidthMini">
+										<div class='progress-container'>
+											<div class='progress-bar' style='width: ${(miniInfo[0][i][1] / maxScoreAllTime) * 100}%'></div>
+										</div>
+									</td>
+									<td class="leftMini">📞${miniInfo[0][i][1]}<span class="minidata"> шт.</span></td>
+								`;
+							} else {
+								tableHTML += "<td></td><td></td>";
+							}
+							
+							if (miniInfo[1][i]) {
+								tableHTML += `
+									<td><div class="avatarMini" style="background-color: ${stringToColor(miniInfo[1][i][0])};"></div>${i+1}. ${truncateString(miniInfo[1][i][0])}</td>
+									<td class="maxWidthMini">
+										<div class='progress-container'>
+											<div class='progress-bar EPS' style='width: ${(miniInfo[1][i][1] / maxScoreDaily) * 100}%'></div>
+										</div>
+									</td>
+									<td class="leftMini">⚡${Math.round(miniInfo[1][i][1])}<span class="minidata"> EPS</span></td>
+								`;
+							} else {
+								tableHTML += "<td></td><td></td>";
+							}
+							
+							tableHTML += "</tr>";
+						}
+						
+						tableHTML += "</tbody></table>";
+						return tableHTML;
+					}
 
 
 					document.getElementsByTagName('output')[0].innerHTML = ''
@@ -490,7 +559,7 @@
 					htmlContent = '<h1> Производительность сотрудников </h1>'
 					htmlContent += '<h2>' + ('Статистика за ' + (datesList.length + ((datesList.length > 10 && datesList.length < 20) ? " дней" : (datesList.length % 10 == 1 ? ' день' : ((datesList.length % 10 > 1 && datesList.length % 10 < 5) ? ' дня' : ' дней'))))) + ': ' + formatDateForTopList(getMinMaxDates().min) + ' - ' + formatDateForTopList(getMinMaxDates().max) + '</h2>'
 					htmlContent += '<h4 style="margin: 10px 30px; font-weight: 400; opacity: .6;">' + 'Отчёт сформирован ' + (new Date()) + '</h4>'
-					htmlContent += '<h4 style="margin: 10px 30px; font-weight: 400; opacity: .6;"> Способ расчета: Взвешенный рейтинг с бонусом за среднюю длительность звонка.<br>   Рассчитывается по формуле: EPS = C + (D × K)<br>Где:<br>   C = Количество звонков в день – основной фактор;<br>   D = Средняя длительность звонка в день (Среднее время в сек. / Кол-во).;<br>   K =  Коэффициент влияния длительности звонка, чтобы время влияло, но не доминировало.</h4>'
+					htmlContent += '<h4 style="margin: 10px 30px; font-weight: 400; opacity: .6;"> Метод балансного расчета Employee Performance Score (EPS):<br>   Взвешенный рейтинг с бонусом за среднюю длительность звонка и попыток дозвона.<br>   Рассчитывается по формуле: EPS = C + (T × K) + (D × K)<br>Где:<br>   C = Количество звонков в день – основной фактор;<br>   T = Попытки дозвона в день<br>   D = Средняя длительность звонка в день (Среднее время в сек. / Кол-во).;<br>   K =  Коэффициент влияния длительности звонка, чтобы время влияло, но не доминировало.</h4>'
 
 					function parseTimeForCard(timeStr) {
 						const [hours, minutes, seconds] = timeStr.split(':').map(Number);
@@ -540,6 +609,13 @@
 
 					let MaxProductivity = findMaxProductivity(employeesData)
 
+
+
+					htmlContent += '<h2> Краткая сводка: </h2>'
+					htmlContent += generateRatingTable(miniInfo)
+
+
+					htmlContent += '<h2> Подробная информация: </h2>'
 					employeesData.forEach((employee, position) => {
 						let tempGenerate = ''
 
