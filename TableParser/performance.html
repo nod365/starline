@@ -428,7 +428,7 @@
 					// Результат
 					employeesData.forEach(employee => {
 						let k = 0.4
-						let rating = employee[10]==0?0:( employee[0][1] + ( (employee[4] - employee[3])/employee[0][2]*k ) + ( ( (employee[10]/employee[0][2])/employee[0][1] ) * k ) )
+						let rating = employee[10]==0?0:( (employee[0][1]) + ( (employee[4] - employee[3])/employee[0][2]*k ) + ( ( (employee[10]/employee[0][2])/employee[0][1] ) * k ) )
 						
 						employee[0].push( rating )
 					});
@@ -438,7 +438,7 @@
 						miniInfo[1].push( [ employee[1],employee[0][3] ] )
 					});
 
-					employeesData.sort((a, b) => b[0][0] - a[0][0]); // Сортировка по убыванию
+					employeesData.sort((a, b) => b[0][3] - a[0][3]); // Сортировка по убыванию
 					
 					miniInfo[0].sort((a, b) => b[1] - a[1]);
 					miniInfo[1].sort((a, b) => b[1] - a[1]);
