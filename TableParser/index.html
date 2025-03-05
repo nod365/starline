@@ -108,7 +108,7 @@
 				<div class="parent" id="startpageAnime">
 					<div class="parent dimmer">
 						<div class="child" id="startpage">
-							<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;"> 
+							<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;">
 								<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 298" width="900"
 									height="298">
 									<path id="Mango Office" fill="currentColor" class="s0"
@@ -202,6 +202,21 @@
 				let menuButton = document.getElementById(`${selectedId}_menu`);
 				if (menuButton) {
 					menuButton.classList.add('buttonSelected');
+					function scrollMenu(element) {
+						const container = document.getElementById("editable");
+						if (!container || !element) return;
+
+						const containerRect = container.getBoundingClientRect();
+						const elementRect = element.getBoundingClientRect();
+
+						if (elementRect.top < containerRect.top || elementRect.bottom > containerRect.bottom) {
+							container.scrollTo({
+								top: container.scrollTop + elementRect.top - containerRect.top,
+								behavior: "smooth"
+							});
+						}
+					}
+					scrollMenu(menuButton)
 				}
 			}
 		}
@@ -972,5 +987,6 @@ CHANGELOG
 • Исправлена сортировка keys по датам
 • Общая статистика в конце списка
 • На общем отчёте показаны даты периода
+• У меню появился автоскролл
 
 -->
