@@ -17,8 +17,8 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "12",
-			buildReleaseDate = "04 марта 2025";
+		const build = "14",
+			buildReleaseDate = "05 марта 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -434,7 +434,7 @@
 					});
 
 					employeesData.forEach(employee => {
-						miniInfo[0].push( [ employee[1],employee[0][0] ] )
+						miniInfo[0].push( [ employee[1],employee[0][0],employee[3] ] )
 						miniInfo[1].push( [ employee[1],employee[0][3] ] )
 					});
 
@@ -470,11 +470,12 @@
 							tableHTML += "<tr>";
 							
 							if (miniInfo[0][i]) {
+								let gradientWidth = 100-(100/miniInfo[0][i][1]*miniInfo[0][i][2]) ;
 								tableHTML += `
 									<td><div class="avatarMini" style="background-color: ${stringToColor(miniInfo[0][i][0])};"></div>${i+1}. ${truncateString(miniInfo[0][i][0])}</td>
 									<td class="maxWidthMini">
 										<div class='progress-container'>
-											<div class='progress-bar' style='width: ${(miniInfo[0][i][1] / maxScoreAllTime) * 100}%'></div>
+											<div class='progress-bar' style='background: linear-gradient(90deg, var(--blueVar) ${gradientWidth-5}%, var(--greenVar) ${gradientWidth+5}%); width: ${(miniInfo[0][i][1] / maxScoreAllTime) * 100}%'></div>
 										</div>
 									</td>
 									<td class="leftMini">📞${miniInfo[0][i][1]}<span class="minidata"> шт.</span></td>
@@ -667,7 +668,7 @@
 							tempGenerate += '<div class="inlineInOut"> <div class="inlineIn EPS" style="width: ' + widthProductivity + '%"><div class="avatarLetters">' + Math.round(employee[0][3]) + '<span class="textLegend"> EPS</span></div></div> </div>'
 							tempGenerate += '<div class="inlineInOut helper"> <div>0 EPS</div><div>' + Math.round(MaxProductivity) + ' EPS</div> </div>'
 							
-						tempGenerate += '<div class="infoMargin">Производительность за весь период:</div>'
+						tempGenerate += '<div class="infoMargin">Количество звонков за весь период:</div>'
 						tempGenerate += '<div class="styles-legend-KpvHE"><div class="styles-legend-item-oxc3Y"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#45c1ff"></circle></svg><span class="styles-text-wrapper-MbNOj"><div class="inlineInfoBottom">Входящие</div></span></div><div class="styles-legend-item-oxc3Y"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="4" fill="#7adb35"></circle></svg><span class="styles-text-wrapper-MbNOj"><div class="inlineInfoBottom">Исходящие</div></span></div></div>'
 						
 						
@@ -702,16 +703,17 @@
 							});
 
 							let html = '<div class="chart-container">';
-							html += '<div class="bar count"><div class="outgoing" style="background: transparent;text-align: center;padding-bottom: 32px;border-right: 1px solid #d9d9d9;color: #a3a3a3;margin-right: 5px;">' + maxCalls + '</div><div class="incoming" style="background: transparent;text-align: center;padding-top: 32px;border-right: 1px solid #d9d9d9;color: #a3a3a3;margin-right: 5px;">0</div><div class="date" style="opacity:0;">0</div></div>';
+							html += '<div class="bar count" style="    width: min-content; flex-grow: 0;"><div class="outgoing callstat" >' + maxCalls + '</div><div class="date" style="opacity:0;">0</div></div>';
 
 							callData.forEach((data, i) => {
 								let inHeight = (data.in / maxCalls) * 100;
 								let outHeight = (data.out / maxCalls) * 100;
+								let perc = 100-(100/(outHeight+inHeight)*outHeight)
 
 								let currentDate = new Date(startDate.getTime() + i * 86400000);
 								let dateColor = (currentDate.getDay() === 0 || currentDate.getDay() === 6) ? 'redDay' : 'blackDay';
 
-								html += '<div class="bar"><div class="outgoing" style="height: ' + outHeight + 'px;"></div><div class="incoming" style="height: ' + inHeight + 'px;"></div><div class="date ' + dateColor + '">' + currentDate.toLocaleDateString("ru-RU", { day: "2-digit" }) + '</div></div>';
+								html += '<div class="bar"><div class="outgoing" style="background: linear-gradient(0deg, var(--blueVar) '+(perc+10>100?90:perc-10)+'%, var(--greenVar) '+(perc+10>100?97:perc+10)+'%); height: ' + (outHeight+inHeight) + 'px;"></div><div class="date ' + dateColor + '">' + currentDate.toLocaleDateString("ru-RU", { day: "2-digit" }) + '</div></div>';
 							});
 
 							html += '</div>';

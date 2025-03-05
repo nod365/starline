@@ -18,9 +18,10 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "322",
-			buildReleaseDate = "28 февраля 2025";
+		const build = "323",
+			buildReleaseDate = "05 марта 2025";
 		let debug = 0,
+			ignoreError = 1,
 			buildString = "";
 		function checkUpdates() {
 
@@ -455,7 +456,8 @@
 
 							let parksInData = new Set(Object.keys(data[date])); // Все парки в parsedData на эту дату
 							let parksInCheckData = new Set(Object.keys(checkData)); // Все парки в checkData
-
+							
+							if (!ignoreError) {
 							// Проверяем парки, которые есть в checkData
 							for (let park in checkData) {
 								if (!data[date][park]) {
@@ -495,6 +497,7 @@
 									result[date][park] = "⚠️ Неизвестный парк";
 								}
 							}
+}
 						}
 
 						// Выводим ошибки в строковом формате
@@ -509,7 +512,10 @@
 						}
 						*/
 
-						if (Object.values(errorMessages).some(errors => errors.length > 0)) {
+						if (ignoreError) {
+							// выключена проверка
+							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo"><emoji>ℹ️</emoji>Проверка данных выкл.</div>'
+						} else if (Object.values(errorMessages).some(errors => errors.length > 0)) {
 							// есть ошибки 
 							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
 						} else {
@@ -699,7 +705,7 @@
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 
-						localHTML += '<tr class="aboutWrap '+(foundError?'warningLogoBottom':'')+'"><td class="left minitext" colspan="' + (tableExport.length * 2) + '" ><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + ''+(foundError?' / Найдены ошибки в данных':'')+'</div></td><td colspan=2 class="right about minitext">build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap '+(foundError?'warningLogoBottom':'')+'"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">'+(foundError?'Найдены ошибки в данных / ':'')+''+(ignoreError?'Проверка данных отключена / ':'')+'build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
 							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
@@ -932,5 +938,8 @@ CHANGELOG
 322
 • Вернул Суперэллипс (Squircle) шапке отчёта, на этот раз через clip-path, а не SVG
 • Поправил отображение ошибки на самом отчёте
- 
+
+323
+• Добавлен режим без проверки данных
+
 -->
