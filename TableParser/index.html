@@ -18,7 +18,7 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "323",
+		const build = "324",
 			buildReleaseDate = "05 марта 2025";
 		let debug = 0,
 			ignoreError = 1,
@@ -37,11 +37,9 @@
 				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo"><emoji>✨</emoji>Insider Mode ' + build + '</div>'
 				debug = 1;
 
-
 			} else {
 				//Версия актуальна
 				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Актуальная версия ' + build + '</div>'
-
 
 			}
 
@@ -110,21 +108,7 @@
 				<div class="parent" id="startpageAnime">
 					<div class="parent dimmer">
 						<div class="child" id="startpage">
-							<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;">
-								<!--<svg width="328" height="328" viewBox="0 0 328 328" fill="none" class="placeholder_rings">
-							<path fill-rule="evenodd" clip-rule="evenodd"
-								d="M164 242C207.078 242 242 207.078 242 164C242 120.922 207.078 86 164 86C120.922 86 86 120.922 86 164C86 207.078 120.922 242 164 242Z"
-								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-								stroke-dasharray="2 8"></path>
-							<path fill-rule="evenodd" clip-rule="evenodd"
-								d="M164 284C230.274 284 284 230.274 284 164C284 97.7258 230.274 44 164 44C97.7258 44 44 97.7258 44 164C44 230.274 97.7258 284 164 284Z"
-								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-								stroke-dasharray="2 16"></path>
-							<path fill-rule="evenodd" clip-rule="evenodd"
-								d="M164 327C254.022 327 327 254.022 327 164C327 73.9776 254.022 1 164 1C73.9776 1 1 73.9776 1 164C1 254.022 73.9776 327 164 327Z"
-								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-								stroke-dasharray="2 36"></path>
-						</svg>-->
+							<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;"> 
 								<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 298" width="900"
 									height="298">
 									<path id="Mango Office" fill="currentColor" class="s0"
@@ -226,21 +210,6 @@
 
 
 
-		function getDayOfWeek(dateString) {
-			const cleanDate = dateString.replace(/"/g, "");
-			const [day, month, year] = cleanDate.split(".");
-			const date = new Date(year, month - 1, day);
-			const daysOfWeek = [
-				"Воскресенье", "Понедельник", "Вторник", "Среда",
-				"Четверг", "Пятница", "Суббота"
-			];
-			const dayOfWeek = daysOfWeek[date.getDay()];
-			if (dateString != '"01.01.1970"') {
-				return `${cleanDate}, ${dayOfWeek}`;
-			} else {
-				return 'Общая статистика'
-			}
-		}
 
 		function capitalizeWords(text) {
 			return text
@@ -323,7 +292,10 @@
 					data.push(row);
 				});
 
+				console.log('=== DATA START ===')
 				console.log(data);
+				console.log('=== DATA END ===')
+
 				document.getElementsByTagName('output')[0].innerHTML = ''
 				document.getElementById('editable').innerHTML = '<div><h1>Отчеты по дням</h1><div class="app-hr"></div></div>'
 
@@ -344,7 +316,7 @@
 
 							let varDate = data[i][1]
 							if (data[i][0] == data[i][1]) { // отсекаем общие звонки
-								varDate = '"01.01.1970"'
+								varDate = '"31.12.2999"'
 							}
 
 							if (!structure[varDate]) {
@@ -367,7 +339,9 @@
 					}
 
 					// готово под парсинг
+					console.log('=== STRUCTURE START ===')
 					console.log(structure)
+					console.log('=== STRUCTURE END ===')
 					//console.log(JSON.stringify(structure))
 
 					const parkInfo = {
@@ -456,48 +430,48 @@
 
 							let parksInData = new Set(Object.keys(data[date])); // Все парки в parsedData на эту дату
 							let parksInCheckData = new Set(Object.keys(checkData)); // Все парки в checkData
-							
+
 							if (!ignoreError) {
-							// Проверяем парки, которые есть в checkData
-							for (let park in checkData) {
-								if (!data[date][park]) {
-									errorMessages[date].push(`${crossSign}Отсутствуют данные: ${park}`);
-									result[date][park] = "❌ Отсутствует в данных";
-									continue;
+								// Проверяем парки, которые есть в checkData
+								for (let park in checkData) {
+									if (!data[date][park]) {
+										errorMessages[date].push(`${crossSign}Отсутствуют данные: ${park}`);
+										result[date][park] = "❌ Отсутствует в данных";
+										continue;
+									}
+
+									let parkData = data[date][park];
+									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0 };
+
+									// Подсчитываем количество записей по ключевым словам
+									for (let entry of parkData) {
+										let name = entry[0].toUpperCase();
+										if (name.includes("ОТЧЕТ")) counts["ОТЧЕТ"]++;
+										if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
+										if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
+									}
+
+									// Сравниваем с ожидаемыми значениями
+									result[date][park] = {};
+									for (let key in checkData[park]) {
+										if (counts[key] !== checkData[park][key]) {
+											let errorMsg = `${crossSign}Несоответствие: ${park} - ${key}. Ожидалось ${checkData[park][key]}, найдено ${counts[key]}`;
+											errorMessages[date].push(errorMsg);
+											result[date][park][key] = `❌ ${errorMsg}`;
+										} else {
+											result[date][park][key] = "✅ Совпадает";
+										}
+									}
 								}
 
-								let parkData = data[date][park];
-								let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0 };
-
-								// Подсчитываем количество записей по ключевым словам
-								for (let entry of parkData) {
-									let name = entry[0].toUpperCase();
-									if (name.includes("ОТЧЕТ")) counts["ОТЧЕТ"]++;
-									if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
-									if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
-								}
-
-								// Сравниваем с ожидаемыми значениями
-								result[date][park] = {};
-								for (let key in checkData[park]) {
-									if (counts[key] !== checkData[park][key]) {
-										let errorMsg = `${crossSign}Несоответствие: ${park} - ${key}. Ожидалось ${checkData[park][key]}, найдено ${counts[key]}`;
-										errorMessages[date].push(errorMsg);
-										result[date][park][key] = `❌ ${errorMsg}`;
-									} else {
-										result[date][park][key] = "✅ Совпадает";
+								// Проверяем неизвестные парки (есть в parsedData, но нет в checkData)
+								for (let park of parksInData) {
+									if (!parksInCheckData.has(park)) {
+										errorMessages[date].push(`${warningSign}Новый неизвестный парк: ${park}`);
+										result[date][park] = "⚠️ Неизвестный парк";
 									}
 								}
 							}
-
-							// Проверяем неизвестные парки (есть в parsedData, но нет в checkData)
-							for (let park of parksInData) {
-								if (!parksInCheckData.has(park)) {
-									errorMessages[date].push(`${warningSign}Новый неизвестный парк: ${park}`);
-									result[date][park] = "⚠️ Неизвестный парк";
-								}
-							}
-}
 						}
 
 						// Выводим ошибки в строковом формате
@@ -514,7 +488,7 @@
 
 						if (ignoreError) {
 							// выключена проверка
-							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo"><emoji>ℹ️</emoji>Проверка данных выкл.</div>'
+							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo"><emoji>ℹ️</emoji>Проверка отключена</div>'
 						} else if (Object.values(errorMessages).some(errors => errors.length > 0)) {
 							// есть ошибки 
 							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
@@ -523,21 +497,73 @@
 							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
 						}
 
+						console.log('=== CHECK RESULT START ===')
 						console.log(result)
+						console.log('=== CHECK RESULT END ===')
+
 						return errorMessages;
 					}
 
 
 					// Запускает тест данных
 					const validationResult = checkReports(structure, checkData);
+					console.log('=== VALIDATION RESULT START ===')
 					console.log(validationResult);
+					console.log('=== VALIDATION RESULT END ===')
+
+					let keys = Object.keys(structure).sort((a, b) => {
+						let dateA = new Date(a.replace(/"/g, '').split('.').reverse().join('-'));
+						let dateB = new Date(b.replace(/"/g, '').split('.').reverse().join('-'));
+						return dateA - dateB;
+					});
+
+					function findMinMaxDates(keys) {
+						const dates = keys
+							.map(date => date.replace(/"/g, '')) // Убираем кавычки
+							.map(date => date.split('.').reverse().join('-')) // Преобразуем в формат YYYY-MM-DD
+							.filter(date => date !== '2999-12-31') // Исключаем 31.12.2999
+							.map(date => new Date(date)); // Преобразуем в объект Date
+
+						if (dates.length === 0) return { minDate: null, maxDate: null };
+
+						const minDate = new Date(Math.min(...dates));
+						const maxDate = new Date(Math.max(...dates));
+
+						return {
+							minDate: minDate.toISOString().split('T')[0].split('-').reverse().join('.'),
+							maxDate: maxDate.toISOString().split('T')[0].split('-').reverse().join('.')
+						};
+					}
+
+					function getDayOfWeek(dateString) {
+						const cleanDate = dateString.replace(/"/g, "");
+						const [day, month, year] = cleanDate.split(".");
+						const date = new Date(year, month - 1, day);
+						const daysOfWeek = [
+							"Воскресенье", "Понедельник", "Вторник", "Среда",
+							"Четверг", "Пятница", "Суббота"
+						];
+						const dayOfWeek = daysOfWeek[date.getDay()];
+						if (dateString != '"31.12.2999"') {
+							return `${cleanDate}, ${dayOfWeek}`;
+						} else {
+							return 'Все звонки ' + findMinMaxDates(keys).minDate + ' - ' + findMinMaxDates(keys).maxDate
+						}
+					}
 
 
-					let keys = Object.keys(structure).sort()
+					console.log('=== KEYS START ===')
+					console.log(keys)
+					console.log('=== keys.length ===')
+					console.log(keys.length)
+					console.log('=== KEYS MIN-MAX DATES ===')
+					console.log(findMinMaxDates(keys))
+					console.log('=== KEYS END ===')
+
 					let tableExport = [0, 2, 4]
 					let tableSubExport = [1, 3, 5]
 
-					for (i = (keys.length < 3 ? 1 : 0); i < keys.length; i++) {
+					for (i = 0; i < (keys.length > 2 ? keys.length : 1); i++) {
 						let randomID = 'id' + i
 						let localHTML = ''
 
@@ -705,7 +731,7 @@
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 
-						localHTML += '<tr class="aboutWrap '+(foundError?'warningLogoBottom':'')+'"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">'+(foundError?'Найдены ошибки в данных / ':'')+''+(ignoreError?'Проверка данных отключена / ':'')+'build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
 							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
@@ -941,5 +967,10 @@ CHANGELOG
 
 323
 • Добавлен режим без проверки данных
+
+324
+• Исправлена сортировка keys по датам
+• Общая статистика в конце списка
+• На общем отчёте показаны даты периода
 
 -->
