@@ -18,8 +18,8 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "324",
-			buildReleaseDate = "05 марта 2025";
+		const build = "325",
+			buildReleaseDate = "12 марта 2025";
 		let debug = 0,
 			ignoreError = 0,
 			buildString = "";
@@ -69,6 +69,13 @@
 				<div class="leftButton" id="themeToggleBtn">
 					<emoji>🌚</emoji>Тёмная тема
 				</div>
+				<a target="_blank" href="https://github.com/nod365/starline">
+					<div>
+						<div class="leftButton">
+							<emoji>🍴</emoji>Fork me on GitHub
+						</div>
+					</div>
+				</a>
 				<div>
 					<h1>Инструменты</h1>
 					<div class="app-hr"></div>
@@ -327,7 +334,7 @@
 					let structure = {}
 
 					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+						if (data[i][0].includes('ОТЧЕТ') || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
 
 							let varDate = data[i][1]
 							if (data[i][0] == data[i][1]) { // отсекаем общие звонки
@@ -379,54 +386,64 @@
 						"БАРХАТ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"ВАРШАВСКАЯ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"ИЗМАЙЛОВО": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 1
 						},
 						"МЕЛИТОПОЛЬСКАЯ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"МКАД 33": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"МОСПАРК": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"ОТРАДНОЕ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"СОКОЛ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0
 						},
 						"ЦАРИЦЫНО": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 1
 						},
 
 						/*
 						"ВАРШАВСКАЯ": {
 							"ОТЧЕТ": 0,
 							"ДИСПЕТЧЕР": 0,
-							"ОФОРМЛЕНИЕ": 0
+							"ОФОРМЛЕНИЕ": 0,
+							"СЕРВИС": 0
 						},
 						
 						*/
@@ -456,7 +473,7 @@
 									}
 
 									let parkData = data[date][park];
-									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0 };
+									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0, "СЕРВИС": 0 };
 
 									// Подсчитываем количество записей по ключевым словам
 									for (let entry of parkData) {
@@ -464,6 +481,7 @@
 										if (name.includes("ОТЧЕТ")) counts["ОТЧЕТ"]++;
 										if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
 										if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
+										if (name.includes("СЕРВИС")) counts["СЕРВИС"]++;
 									}
 
 									// Сравниваем с ожидаемыми значениями
@@ -633,7 +651,7 @@
 
 								parkKeys.forEach((parkKey) => {
 									structure[key][parkKey].sort((a, b) => {
-										const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ'];
+										const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ', 'СЕРВИС', 'ПРИЕМ'];
 
 										// Функция для определения индекса и извлечения числа
 										const getSortInfo = (str) => {
@@ -700,7 +718,7 @@
 
 								localHTML += '<tr class="' + red + '">'
 								if (x == 0) {
-									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + structure[keys[i]][parkKeys[j]].length + '">' + capitalizeWords(parkKeys[j])
+									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length+1) + '">' + capitalizeWords(parkKeys[j])
 									if (structure[keys[i]][parkKeys[j]].length > 3) {
 										let parkInfo = findParkName(parkKeys[j])
 										if (parkInfo != false) {
@@ -709,7 +727,11 @@
 									}
 									localHTML += '</td>'
 								}
-								let name = structure[keys[i]][parkKeys[j]][x][0].replaceAll(parkKeys[j], '').replaceAll('_', ' – П').replaceAll('"', '').replaceAll('ОТЧЕТ', 'ОТЧЁТ')
+								let name = structure[keys[i]][parkKeys[j]][x][0].replaceAll(parkKeys[j], '').replaceAll('"', '').replaceAll(' АВТО', '')
+								if (name.includes('ОТЧ')) {
+									name = name.replaceAll('ОТЧЕТ', 'ОТЧЁТ').replaceAll('_', ' – П')
+								}
+
 								let icon = ''
 								let color = ''
 								if (name.includes('ОТЧ')) {
@@ -718,7 +740,11 @@
 									icon = 'disp'
 								} else if (name.includes('ОФОР')) {
 									icon = 'oform'
-								}
+								} else if (name.includes('СЕРВИС')) {
+									icon = 'wrench'
+								} else if (name.includes('ПРИЕМ')) {
+									icon = 'handshake'
+								} 
 
 								localHTML += '<td class="left gradientLeft ' + icon + '"><div class="desIcon"></div>' + capitalizeWords(name) + '</td>'
 
@@ -738,6 +764,10 @@
 									}
 								}
 								localHTML += '</tr>'
+								
+								if (x == structure[keys[i]][parkKeys[j]].length - 1 && j != parkKeys.length-1 ) {
+									localHTML += '<tr class="ultraborder"><td></td></tr>  <tr class="ultraborder colorborder" data-x="'+x+'" data-i="'+i+'" data-j="'+j+'" ><td colspan="8"></td></tr>  <tr class="ultraborder"><td></td></tr>'  
+								}
 								//console.log( structure[keys[i]][parkKeys[j]][x] )
 							}
 						}

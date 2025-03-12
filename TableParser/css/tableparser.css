@@ -574,7 +574,7 @@ td.left.forceWhite {
     white-space: nowrap;
 }
 
-
+/*
 td.left.forceWhite:not(.hideUndrln) {
     border-bottom: 1px solid #313a8d44;
 }
@@ -586,13 +586,28 @@ td.left.forceWhite:not(.hideUndrln) {
 .hideUndrln {
     border-bottom: 1px solid #fff0;
 }
+*/
+
+tr.ultraborder.colorborder td {
+    background: linear-gradient(90deg, rgba(49, 58, 141, 0) 0%, rgba(49, 58, 141, 0.34) 20%, rgba(49, 58, 141, 0.34) 80%, rgba(49, 58, 141, 0) 100%);
+    padding: 1px 0 0 0;
+    height: 0px;
+}
+
+.dark tr.ultraborder.colorborder td {
+    background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 20%) 20%, rgb(255 255 255 / 20%) 80%, rgb(255 255 255 / 0%) 100%);
+}
+
+tr.ultraborder.colorborder {
+    opacity: 1;
+}
 
 .desIcon {
     background-size: 100%;
-    height: 20px;
-    width: 20px;
+    height: 23px;
+    width: 23px;
     display: inline-block;
-    margin: -4px 0;
+    margin: -3px 0;
 }
 
 .parkid {
@@ -603,7 +618,7 @@ td.left.forceWhite:not(.hideUndrln) {
     background-image: url(../images/otchet.png)
 }
 
-.red .otchet .desIcon {
+.red .otchet .desIcon, .semired .otchet .desIcon {
     background-image: url(../images/red_otchet.png)
 }
 
@@ -611,25 +626,34 @@ td.left.forceWhite:not(.hideUndrln) {
     background-image: url(../images/dispatcher.png)
 }
 
-.red .disp .desIcon {
+.red .disp .desIcon, .semired .disp .desIcon {
     background-image: url(../images/red_dispatcher.png)
-}
-
-.disp {
-    color: #8844c3;
 }
 
 .oform .desIcon {
     background-image: url(../images/oform.png)
 }
 
-.red .oform .desIcon {
+.red .oform .desIcon, .semired .oform .desIcon {
     background-image: url(../images/red_oform.png)
 }
 
-.oform {
-    color: #e18900;
+.wrench .desIcon {
+    background-image: url(../images/wrench.png)
 }
+
+.red .wrench .desIcon, .semired .wrench .desIcon {
+    background-image: url(../images/red_wrench.png)
+}
+
+.handshake .desIcon {
+    background-image: url(../images/handshake.png)
+}
+
+.red .handshake .desIcon, .semired .handshake .desIcon {
+    background-image: url(../images/red_handshake.png)
+}
+
 
 th.GR {
     color: var(--color-text-default);
@@ -700,7 +724,8 @@ th {
     color: #ff01a7;
 }
 
-.okay .info0 .needColor {
+.okay .info0 .needColor,
+.okay *:not(.forceWhite *):not(.forceWhite) {
     color: #00bf8a;
 }
 
@@ -751,8 +776,16 @@ tr:nth-child(even).red {
     font-weight: 700;
 }
 
-.warning .info0 .opacitytext {
+.semired .gradientLeft {
+    color: #F00;
+}
+
+.warning .info0 .opacitytext,
+.warning .gradientLeft {
     color: #ff5f01;
+}
+
+.warning .info0 .opacitytext {
     font-weight: 700;
 }
 
