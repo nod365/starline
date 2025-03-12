@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     function generateArray() {
-        const GIFcount = 127
+        const GIFcount = 128
         const array = [];
         for (let i = 2; i <= GIFcount; i++) {
             array.push(i);
