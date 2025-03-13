@@ -618,7 +618,8 @@ tr.ultraborder.colorborder {
     background-image: url(../images/otchet.png)
 }
 
-.red .otchet .desIcon, .semired .otchet .desIcon {
+.red .otchet .desIcon,
+.semired .otchet .desIcon {
     background-image: url(../images/red_otchet.png)
 }
 
@@ -626,7 +627,8 @@ tr.ultraborder.colorborder {
     background-image: url(../images/dispatcher.png)
 }
 
-.red .disp .desIcon, .semired .disp .desIcon {
+.red .disp .desIcon,
+.semired .disp .desIcon {
     background-image: url(../images/red_dispatcher.png)
 }
 
@@ -634,7 +636,8 @@ tr.ultraborder.colorborder {
     background-image: url(../images/oform.png)
 }
 
-.red .oform .desIcon, .semired .oform .desIcon {
+.red .oform .desIcon,
+.semired .oform .desIcon {
     background-image: url(../images/red_oform.png)
 }
 
@@ -642,7 +645,8 @@ tr.ultraborder.colorborder {
     background-image: url(../images/wrench.png)
 }
 
-.red .wrench .desIcon, .semired .wrench .desIcon {
+.red .wrench .desIcon,
+.semired .wrench .desIcon {
     background-image: url(../images/red_wrench.png)
 }
 
@@ -650,7 +654,8 @@ tr.ultraborder.colorborder {
     background-image: url(../images/handshake.png)
 }
 
-.red .handshake .desIcon, .semired .handshake .desIcon {
+.red .handshake .desIcon,
+.semired .handshake .desIcon {
     background-image: url(../images/red_handshake.png)
 }
 
@@ -806,9 +811,13 @@ tr:nth-child(even).red {
     padding-right: 40px
 }
 
+div#startpage h2 {
+    margin: 0;
+}
+
 .serverUpdatesInfo {
     width: max-content;
-    margin: 50px auto;
+    margin: 40px auto;
 }
 
 ::-webkit-scrollbar {
