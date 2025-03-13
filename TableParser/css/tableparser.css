@@ -913,3 +913,7 @@ container {
     width: max-content;
     margin: auto;
 }
+
+.animeCounter img {
+    image-rendering: pixelated;
+}
