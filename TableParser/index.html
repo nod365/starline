@@ -16,10 +16,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v325">
+	<link rel="stylesheet" href="./css/tableparser.css?v326">
 
 	<script>
-		const build = "325",
+		const build = "326",
 			buildReleaseDate = "12 марта 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -28,6 +28,10 @@
 
 			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + build + " сборкой от " + buildReleaseDate + ". Последняя сборка на сервере " + product.MOTP.currentBuild + " от " + product.MOTP.currentBuildReleaseDate
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
+
+			let animeVersion = build.match(/\d/g).map(Number);
+			let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="Image ${num}">`).join("");
+			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="animeCounter">' + animeVersionParsed + '</div>');
 
 			if (build < product.MOTP.currentBuild) {
 				//Версия устарела 
@@ -1024,5 +1028,8 @@ CHANGELOG
 • Цвет отдела зависит от кол-ва звонков
 • Разделитель между парками
 • Добавил отдел сервиса и прием-сдачу
+
+326
+• Миленько выводим версию снизу
 
 -->

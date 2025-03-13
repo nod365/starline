@@ -25,6 +25,11 @@
 
 			buildString = "Call Center Performance 2○ Вы пользуетесь " + build + " сборкой от " + buildReleaseDate + "○ Последняя сборка на сервере " + product.CCPF.currentBuild + " от " + product.CCPF.currentBuildReleaseDate
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString.replaceAll('○', '.') + '</div>');
+			
+			let animeVersion = build.match(/\d/g).map(Number);
+			let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="Image ${num}">`).join("");
+			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="animeCounter">' + animeVersionParsed + '</div>');
+			
 			console.log(buildString)
 
 			if (build < product.CCPF.currentBuild) {
