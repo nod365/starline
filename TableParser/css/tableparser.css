@@ -610,6 +610,11 @@ tr.ultraborder.colorborder {
     margin: -3px 0;
 }
 
+.GR .desIcon {
+    width: 20px;
+    height: 20px;
+}
+
 .parkid {
     background-image: url(../images/park.png);
 }
