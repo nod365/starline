@@ -560,7 +560,7 @@ tr.semired:nth-child(odd):not(.red) .gradientLeft {
 }
 
 .gradientLeft {
-    padding-right: 25px;
+    padding-right: 0px;
     padding-left: 25px;
 }
 
