@@ -318,9 +318,9 @@
 					data.push(row);
 				});
 
-				console.log('=== DATA START ===')
+				console.log('----- DATA BEGIN -----')
 				console.log(data);
-				console.log('=== DATA END ===')
+				console.log('----- DATA END -----')
 
 				document.getElementsByTagName('output')[0].innerHTML = ''
 				document.getElementById('editable').innerHTML = '<div><h1>Отчеты по дням</h1><div class="app-hr"></div></div>'
@@ -338,7 +338,7 @@
 					let structure = {}
 
 					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ') /* || data[i][0].includes('ОБЛ') */ || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+						if (data[i][0].includes('ОТЧЕТ')  || data[i][0].includes('КАЛУГА')  || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
 							
 							
 
@@ -351,7 +351,7 @@
 								structure[varDate] = {}
 							}
 							
-							//data[i][0] = data[i][0].replaceAll('ОБЛ.','ОБЛАСТЬ ')
+							data[i][0] = data[i][0].replaceAll('ОБЛ.','ОБЛАСТЬ ')
 							
 							let splitName = data[i][0]
 							const lastSpaceIndex = splitName.lastIndexOf(" ");
@@ -369,9 +369,9 @@
 					}
 
 					// готово под парсинг
-					console.log('=== STRUCTURE START ===')
+					console.log('----- STRUCTURE BEGIN -----')
 					console.log(structure)
-					console.log('=== STRUCTURE END ===')
+					console.log('----- STRUCTURE END -----')
 					//console.log(JSON.stringify(structure))
 
 					const parkInfo = {
@@ -395,6 +395,13 @@
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0,
+							"АДМИН": 0
+						},
+						"ОБЛАСТЬ": {
+							"ОТЧЕТ": 0,
+							"ДИСПЕТЧЕР": 0,
+							"ОФОРМЛЕНИЕ": 0,
 							"СЕРВИС": 0,
 							"АДМИН": 0
 						},
@@ -549,9 +556,9 @@
 							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
 						}
 
-						console.log('=== CHECK RESULT START ===')
+						console.log('----- CHECK RESULT BEGIN -----')
 						console.log(result)
-						console.log('=== CHECK RESULT END ===')
+						console.log('----- CHECK RESULT END -----')
 
 						return errorMessages;
 					}
@@ -559,9 +566,9 @@
 
 					// Запускает тест данных
 					const validationResult = checkReports(structure, checkData);
-					console.log('=== VALIDATION RESULT START ===')
+					console.log('----- VALIDATION RESULT BEGIN -----')
 					console.log(validationResult);
-					console.log('=== VALIDATION RESULT END ===')
+					console.log('----- VALIDATION RESULT END -----')
 
 					let keys = Object.keys(structure).sort((a, b) => {
 						let dateA = new Date(a.replace(/"/g, '').split('.').reverse().join('-'));
@@ -604,13 +611,13 @@
 					}
 
 
-					console.log('=== KEYS START ===')
+					console.log('----- KEYS BEGIN -----')
 					console.log(keys)
-					console.log('=== keys.length ===')
+					console.log('----- keys.length -----')
 					console.log(keys.length)
-					console.log('=== KEYS MIN-MAX DATES ===')
+					console.log('----- KEYS MIN-MAX DATES -----')
 					console.log(findMinMaxDates(keys))
-					console.log('=== KEYS END ===')
+					console.log('----- KEYS END -----')
 
 					let tableExport = [0, 2, 4]
 					let tableSubExport = [1, 3, 5]
@@ -982,7 +989,7 @@ CHANGELOG
 • Убрал серость из градиентов непринятых и красные иконки
 
 314
-• Squircle Corners https://observablehq.com/d/3fa39e15b5a6d3e8?source=post_page-----5ef11f646b72--------------------------------
+• Squircle Corners https://observablehq.com/d/3fa39e15b5a6d3e8
 
 Последняя версия 314 на старом движке находится в директории legacy, больше не обновляется. 
 
@@ -1051,4 +1058,8 @@ CHANGELOG
 326
 • Миленько выводим версию снизу (На стартовом экране)
 
+327
+• Добавил отображение администраторов 
+• Предварительно отключенная функция отображения областных парков (Кроме Калуги)
+• 
 -->
