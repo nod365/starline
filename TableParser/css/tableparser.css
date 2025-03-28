@@ -629,6 +629,24 @@ tr.ultraborder.colorborder {
     background-image: url(../images/red_otchet.png)
 }
 
+.adminFace .desIcon {
+    background-image: url(../images/adminFace.png)
+}
+
+.red .adminFace .desIcon,
+.semired .adminFace .desIcon {
+    background-image: url(../images/red_adminFace.png)
+}
+
+.undefinedType .desIcon {
+    background-image: url(../images/park.png)
+}
+
+.red .undefinedType .desIcon,
+.semired .undefinedType .desIcon {
+    background-image: url(../images/red_adminFace.png)
+}
+
 .disp .desIcon {
     background-image: url(../images/dispatcher.png)
 }

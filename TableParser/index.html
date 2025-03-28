@@ -16,11 +16,11 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v326_4">
+	<link rel="stylesheet" href="./css/tableparser.css?v327">
 
 	<script>
-		const build = "326",
-			buildReleaseDate = "12 марта 2025";
+		const build = "327",
+			buildReleaseDate = "28 марта 2025";
 		let debug = 0,
 			ignoreError = 0,
 			buildString = "";
@@ -311,7 +311,7 @@
 			reader.onload = (e) => {
 				const contents = e.target.result;
 				const lines = contents.split('\n');
-				const data = [];
+				let data = [];
 
 				lines.forEach((line) => {
 					const row = line.split(';');
@@ -338,7 +338,9 @@
 					let structure = {}
 
 					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ') || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+						if (data[i][0].includes('ОТЧЕТ') /* || data[i][0].includes('ОБЛ') */ || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+							
+							
 
 							let varDate = data[i][1]
 							if (data[i][0] == data[i][1]) { // отсекаем общие звонки
@@ -348,7 +350,9 @@
 							if (!structure[varDate]) {
 								structure[varDate] = {}
 							}
-
+							
+							//data[i][0] = data[i][0].replaceAll('ОБЛ.','ОБЛАСТЬ ')
+							
 							let splitName = data[i][0]
 							const lastSpaceIndex = splitName.lastIndexOf(" ");
 							splitName = lastSpaceIndex !== -1 ? splitName.slice(0, lastSpaceIndex) : splitName;
@@ -391,55 +395,64 @@
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"ВАРШАВСКАЯ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"ИЗМАЙЛОВО": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 1
+							"СЕРВИС": 1,
+							"АДМИН": 0
 						},
 						"МЕЛИТОПОЛЬСКАЯ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"МКАД 33": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"МОСПАРК": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"ОТРАДНОЕ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"СОКОЛ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						"ЦАРИЦЫНО": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 1
+							"СЕРВИС": 1,
+							"АДМИН": 1
 						},
 
 						/*
@@ -447,7 +460,8 @@
 							"ОТЧЕТ": 0,
 							"ДИСПЕТЧЕР": 0,
 							"ОФОРМЛЕНИЕ": 0,
-							"СЕРВИС": 0
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 						
 						*/
@@ -477,7 +491,7 @@
 									}
 
 									let parkData = data[date][park];
-									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0, "СЕРВИС": 0 };
+									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0, "СЕРВИС": 0, "АДМИН": 0 };
 
 									// Подсчитываем количество записей по ключевым словам
 									for (let entry of parkData) {
@@ -486,6 +500,7 @@
 										if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
 										if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
 										if (name.includes("СЕРВИС")) counts["СЕРВИС"]++;
+										if (name.includes("АДМИН")) counts["АДМИН"]++;
 									}
 
 									// Сравниваем с ожидаемыми значениями
@@ -655,7 +670,7 @@
 
 								parkKeys.forEach((parkKey) => {
 									structure[key][parkKey].sort((a, b) => {
-										const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ', 'СЕРВИС', 'ПРИЕМ'];
+										const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ', 'АДМИН', 'СЕРВИС', 'ПРИЕМ'];
 
 										// Функция для определения индекса и извлечения числа
 										const getSortInfo = (str) => {
@@ -748,6 +763,10 @@
 									icon = 'wrench'
 								} else if (name.includes('ПРИЕМ')) {
 									icon = 'handshake'
+								} else if (name.includes('АДМИН')) {
+									icon = 'adminFace'
+								} else {
+									icon = 'undefinedType'
 								} 
 
 								localHTML += '<td class="left gradientLeft ' + icon + '"><div class="desIcon"></div>' + capitalizeWords(name) + '</td>'
@@ -780,7 +799,7 @@
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 
-						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Режим максимальной совместимости / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
 							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
@@ -1030,6 +1049,6 @@ CHANGELOG
 • Добавил отдел сервиса и прием-сдачу
 
 326
-• Миленько выводим версию снизу
+• Миленько выводим версию снизу (На стартовом экране)
 
 -->
