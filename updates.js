@@ -205,3 +205,19 @@ function closeWarning(wctype) {
 	}
 	//console.log(closeWarningMetrics)
 }
+
+document.body.insertAdjacentHTML('beforeend', `<style>.app-color-danger {
+	animation: blink 1s steps(1, start) infinite;
+  }
+  
+  @keyframes blink {
+	0% {
+	  opacity: 1;
+	}
+	50% {
+	  opacity: 0;
+	}
+	100% {
+	  opacity: 1;
+	}
+  }</style>` )
