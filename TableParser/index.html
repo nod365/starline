@@ -806,7 +806,7 @@
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 
-						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Режим максимальной совместимости / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser 4</b> LTS' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Режим максимальной совместимости / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
 							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
