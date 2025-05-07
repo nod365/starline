@@ -12,17 +12,18 @@
 	<link rel="icon" href="./icons/favicon.ico" sizes="any"><!-- 32×32 -->
 	<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><!-- 180×180 -->
 	<link rel="manifest" href="./manifest.webmanifest">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 	<script src="./script/dom-to-image.min.js"></script>
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v327_2">
+	<link rel="stylesheet" href="./css/tableparser.css?v328">
 
 	<script>
-		const build = "327",
-			buildReleaseDate = "28 марта 2025";
+		const build = "328",
+			buildReleaseDate = "7 мая 2025";
 		let debug = 0,
-			ignoreError = 1,
+			ignoreError = 1, // эта функция упразднена по причине "не нужно"
 			buildString = "";
 		function checkUpdates() {
 
@@ -182,6 +183,116 @@
 			});
 		}
 
+		async function setBingImageAsBackground() {
+			console.log('Pending image...')
+  try {
+    // Запрос к API Bing
+    const response = await fetch("https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent("https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US"));
+    const data = await response.json();
+
+    // Извлечение URL изображения
+    const imageUrl =  "https://bing.com" + data.images[0].url;
+	
+	getAdjustedMainColor(imageUrl, function(hexColor) {
+		console.log("Итоговый цвет:", hexColor);
+
+		const style = document.createElement('style');
+    	style.textContent = `
+			* { color: ${hexColor} } 
+			.semicolortext, .semicolortext * { color: ${hexColor}b0 } 
+			tr:nth-child(even):not(.red) td {    background-color: ${hexColor}11; }
+			tr:nth-child(even):not(.red) .gradientLeft {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}11 100%); }
+			tr.ultraborder.colorborder td {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}70 20%, ${hexColor}70 80%, ${hexColor}00 100%); }
+			tr.aboutWrap { background: linear-gradient(90deg, #59c14733 0%, #ec4b251a 12%, #f9d11e33 24%, ${hexColor}14 36%); }
+			.about { color: ${hexColor} }
+		`;
+    	document.head.appendChild(style);
+	});
+
+    // Создание тега <style> с CSS
+    const style = document.createElement('style');
+    style.textContent = `
+		th.left.GR, .dark th.left.GR { background-image: url('${imageUrl}'); background-size: cover; background-position: center; color: #FFF; }
+		
+		span.dateHeader.opacitytext.minitext { background: #ffffffeb; border-radius: 10px 20px 20px 20px; opacity: 1; padding: 0 8px; }
+		
+		span.thName { background: #ffffffeb; border-radius: 20px 20px 20px 10px; }
+		.desIcon.parkid { display: none; }
+
+		.dark span.dateHeader.opacitytext.minitext,
+		.dark span.thName {
+			color: #FFF !important;
+			background: #242424;
+		}
+	`;
+
+    // Добавление стиля в конец <head>
+    document.head.appendChild(style);
+  } catch (error) {
+    console.error("Ошибка при получении изображения Bing:", error);
+  }
+}
+
+function getAdjustedMainColor(imageUrl, callback) {
+  const img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.src = imageUrl;
+
+  img.onload = () => {
+    const colorThief = new ColorThief();
+    const color = colorThief.getColor(img); // [r, g, b]
+
+    let hex = rgbToHex(color[0], color[1], color[2]);
+    if (!hasGoodContrast(color)) {
+      const darkerColor = darkenColor(color, 0.25);
+      hex = rgbToHex(darkerColor[0], darkerColor[1], darkerColor[2]);
+    }
+
+    callback(hex); // возвращает финальный hex цвет
+  };
+
+  img.onerror = () => {
+    console.error("Ошибка загрузки изображения.");
+    callback(null);
+  };
+
+  // Helpers
+  function rgbToHex(r, g, b) {
+    return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  function luminance(r, g, b) {
+    const [rs, gs, bs] = [r, g, b].map(v => {
+      v /= 255;
+      return v <= 0.03928
+        ? v / 12.92
+        : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+  }
+
+  function contrast(rgb1, rgb2) {
+    const lum1 = luminance(...rgb1);
+    const lum2 = luminance(...rgb2);
+    const brightest = Math.max(lum1, lum2);
+    const darkest = Math.min(lum1, lum2);
+    return (brightest + 0.05) / (darkest + 0.05);
+  }
+
+  function hasGoodContrast(rgb) {
+    const white = [255, 255, 255];
+    return contrast(rgb, white) >= 4.5; // WCAG AA уровень
+  }
+
+  function darkenColor([r, g, b], factor = 0.2) {
+    return [
+      Math.max(0, Math.floor(r * (1 - factor))),
+      Math.max(0, Math.floor(g * (1 - factor))),
+      Math.max(0, Math.floor(b * (1 - factor)))
+    ];
+  }
+}
+
 		function menuCursor() {
 			let elements = [];
 			let screenMiddle = window.innerHeight / 2;
@@ -338,8 +449,7 @@
 					let structure = {}
 
 					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ')  || data[i][0].includes('КАЛУГА')  || data[i][0].includes('ПРИЕМ-СДАЧА') || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
-							
+						if (data[i][0].includes('ОТЧЕТ')  || data[i][0].includes('КАЛУГА')  /*|| data[i][0].includes('ПРИЕМ-СДАЧА')*/ || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
 							
 
 							let varDate = data[i][1]
@@ -836,12 +946,17 @@
 					// Тряска на сервере
 
 					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
-
+					setBingImageAsBackground() 
+					
 
 				} else {
+					let dynamicErrorMSG = 'Неверный формат, проверьте данные экспорта.'
+					if (data[0][0] == 'ФИО' && data[0][1] == "Дата") {
+						dynamicErrorMSG = 'Вы ошиблись и экспортировали из Mango "Производительность сотрудников", а нужно экспортировать "Производительность групп"!'
+					}
 					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', `
 						<div class="issueInfo">
-							<div class="badColor"><emoji>❌</emoji>Неверный формат, проверьте данные экспорта.</div>
+							<div class="badColor"><emoji>❌</emoji>${dynamicErrorMSG}</div>
 							<br><br>Ознакомьтесь <span style="text-decoration: underline; cursor: pointer;" onclick="PU()">с инструкцией!</span>
 							<br><br>Аслан, тебя особенно касается!
 						</div>
@@ -1061,5 +1176,10 @@ CHANGELOG
 327
 • Добавил отображение администраторов 
 • Предварительно отключенная функция отображения областных парков (Кроме Калуги)
-• 
+
+328 
+• Убрал приём-сдачу потому что нахуй не нужна
+• Проверка откуда экспортирован файл производительность сотрудников или групп
+• Красивые картинки 
+
 -->

@@ -17,8 +17,8 @@
 	<script src="./script/vaporwave.js"></script>
 
 	<script>
-		const build = "14",
-			buildReleaseDate = "05 марта 2025";
+		const build = "15",
+			buildReleaseDate = "7 мая 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -789,10 +789,16 @@
 					document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
 				
 				} else {
+					
+					let dynamicErrorMSG = 'Неверный формат, проверьте данные экспорта.'
+					if (headers[0] == 'Группа' && headers[1] == "Дата") {
+						dynamicErrorMSG = 'Вы ошиблись и экспортировали из Mango "Производительность групп", а нужно экспортировать "Производительность сотрудников"!'
+					}
+
 					document.getElementsByTagName('output')[0].innerHTML = '';
 					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', `
 						<div class="issueInfo">
-							<div class="badColor"><emoji>❌</emoji>Неверный формат, проверьте данные экспорта.</div>
+							<div class="badColor"><emoji>❌</emoji>${dynamicErrorMSG}</div>
 							<br><br>Ознакомьтесь <span style="text-decoration: underline; cursor: pointer;" onclick="PU()">с инструкцией!</span>
 							<br><br>Эта штука чтобы отчеты по Колл Центру делать, а не в телеграм отправлять!!
 						</div>
