@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function newBackground() {
             const animeDiv = document.body;
-            if (!animeDiv) return; // Если div пропал, прекращаем выполнение
+            if (!animeDiv || animeDiv.dataset.locked === "true") return; // Если div пропал, прекращаем выполнение
 
             if (Images[index] == 17) {
                 Images[index] = 18
