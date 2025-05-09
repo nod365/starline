@@ -187,7 +187,7 @@
 			console.log('Pending image...')
   try {
     // Запрос к API Bing
-    const response = await fetch("https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent("https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US"));
+    const response = await fetch("http://avenuetaxi.ru/microsoft/bing.php");
     const data = await response.json();
 
     // Извлечение URL изображения
