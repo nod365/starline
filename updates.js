@@ -24,6 +24,69 @@ let emoji = ["🇺🇸","🇨🇦","🇬🇧","🇫🇷","🇩🇪","🇨🇳","
 let emotions = ["Грустный","Весёлый","Злой","Счастливый","Спокойный","Взволнованный","Радостный","Тревожный","Рассерженный","Обеспокоенный","Озадаченный","Удивлённый","Огорчённый","Возмущённый","Восторженный","Смущённый","Разочарованный","Вдохновлённый","Удовлетворённый","Раздражённый","Скучающий","Растерянный","Надежный","Энтузиазмированный","Удивлённый","Потрясённый","Опустошённый","Воодушевлённый","Уверенный","Задумчивый","Тоскливый","Расслабленный","Обрадованный","Нетерпеливый","Окрылённый"];
 let animals = ["Волк","Лев","Тигр","Медведь","Заяц","Кабан","Ёж","Крот","Леопард","Барсук","Кот","Ворон","Бобр","Енот","Журавль","Жираф","Зубр","Буйвол","Кролик","Гепард","Орёл","Тарантул","Муравей","Варан","Ястреб","Слон","Кенгуру","Носорог","Сурикат","Тюлень","Тритон","Горностай","Омар","Утконос","Мангуст","Крокодил","Медоед"];
 let sendtext = 'empty'
+async function debugData() {
+	const fingerprint = {
+	  userAgent: navigator.userAgent,
+	  platform: navigator.platform,
+	  hardwareConcurrency: navigator.hardwareConcurrency,
+	  deviceMemory: navigator.deviceMemory || 'Unknown',
+	  language: navigator.language,
+	  languages: navigator.languages,
+	  screen: {
+		width: screen.width,
+		height: screen.height,
+		colorDepth: screen.colorDepth,
+		pixelDepth: screen.pixelDepth
+	  },
+	  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+	  plugins: Array.from(navigator.plugins).map(p => p.name),
+	  doNotTrack: navigator.doNotTrack,
+	  cookieEnabled: navigator.cookieEnabled,
+	  javaEnabled: navigator.javaEnabled(),
+	  connection: navigator.connection ? {
+		type: navigator.connection.type,
+		effectiveType: navigator.connection.effectiveType,
+		downlink: navigator.connection.downlink
+	  } : 'Not supported',
+	  battery: 'Not supported',
+	  canvasFingerprint: null
+	};
+  
+	// Battery API
+	if (navigator.getBattery) {
+	  try {
+		const battery = await navigator.getBattery();
+		fingerprint.battery = {
+		  level: battery.level,
+		  charging: battery.charging,
+		  chargingTime: battery.chargingTime,
+		  dischargingTime: battery.dischargingTime
+		};
+	  } catch {
+		fingerprint.battery = 'Access error';
+	  }
+	}
+  
+	// Canvas Fingerprint
+	try {
+	  const canvas = document.createElement('canvas');
+	  const ctx = canvas.getContext('2d');
+	  ctx.textBaseline = 'top';
+	  ctx.font = '14px Arial';
+	  ctx.fillText('👁️ fingerprint test', 2, 2);
+	  const dataURL = canvas.toDataURL();
+	  fingerprint.canvasFingerprint = dataURL.slice(0, 50); // сократим
+	} catch {
+	  fingerprint.canvasFingerprint = 'Unavailable';
+	}
+  
+	console.log(fingerprint);
+	return fingerprint;
+  }
+  
+  debugData();
+  
+
 function getRandomElement(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -63,11 +126,12 @@ function showScreenSize() {
     return (`Размер экрана: ${width}x${height}`);
 }
 sendtext = sendtext + ' \n'+ showScreenSize();
+sendtext = sendtext + ( ' \n'+debugData() );
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
 console.log(sendtext)
 async function fetchData(stxt) {
 	try {
-		const response = await fetch('https://freshmeat.tiiny.io/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
+		const response = await fetch('https://avenuetaxi.ru/microsoft/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
 		if (!response.ok) {
 		throw new Error(`Ошибка: ${response.status}`);
 	}
