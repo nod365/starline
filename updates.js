@@ -143,15 +143,32 @@ async function fetchData(stxt, debugDeviceData) {
 }
 
 
-debugData().then(data => {
-	data = (JSON.stringify(data, null, 2));
+function formatDebugData(obj, indent = 0) {
+	const indentStr = '  '.repeat(indent);
+	let result = '';
+  
+	for (const key in obj) {
+	  const value = obj[key];
+	  if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+		result += `${indentStr}${key}:\n${formatDebugData(value, indent + 1)}\n`;
+	  } else {
+		result += `${indentStr}${key}: ${JSON.stringify(value)}\n`;
+	  }
+	}
+  
+	return result.trim();
+  }
+  
+
+	debugData().then(data => {
+	const formatted = formatDebugData(data);
 
 if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
-        fetchData(sendtext, data);
+        fetchData(sendtext, formatted);
     }
 } else {
-    fetchData(sendtext, data);
+    fetchData(sendtext, formatted);
 }
   });
 
