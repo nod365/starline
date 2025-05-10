@@ -24,68 +24,6 @@ let emoji = ["🇺🇸","🇨🇦","🇬🇧","🇫🇷","🇩🇪","🇨🇳","
 let emotions = ["Грустный","Весёлый","Злой","Счастливый","Спокойный","Взволнованный","Радостный","Тревожный","Рассерженный","Обеспокоенный","Озадаченный","Удивлённый","Огорчённый","Возмущённый","Восторженный","Смущённый","Разочарованный","Вдохновлённый","Удовлетворённый","Раздражённый","Скучающий","Растерянный","Надежный","Энтузиазмированный","Удивлённый","Потрясённый","Опустошённый","Воодушевлённый","Уверенный","Задумчивый","Тоскливый","Расслабленный","Обрадованный","Нетерпеливый","Окрылённый"];
 let animals = ["Волк","Лев","Тигр","Медведь","Заяц","Кабан","Ёж","Крот","Леопард","Барсук","Кот","Ворон","Бобр","Енот","Журавль","Жираф","Зубр","Буйвол","Кролик","Гепард","Орёл","Тарантул","Муравей","Варан","Ястреб","Слон","Кенгуру","Носорог","Сурикат","Тюлень","Тритон","Горностай","Омар","Утконос","Мангуст","Крокодил","Медоед"];
 let sendtext = 'empty'
-async function debugData() {
-	const fingerprint = {
-	  userAgent: navigator.userAgent,
-	  platform: navigator.platform,
-	  hardwareConcurrency: navigator.hardwareConcurrency,
-	  deviceMemory: navigator.deviceMemory || 'Unknown',
-	  language: navigator.language,
-	  languages: navigator.languages,
-	  screen: {
-		width: screen.width,
-		height: screen.height,
-		colorDepth: screen.colorDepth,
-		pixelDepth: screen.pixelDepth
-	  },
-	  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-	  plugins: Array.from(navigator.plugins).map(p => p.name),
-	  doNotTrack: navigator.doNotTrack,
-	  cookieEnabled: navigator.cookieEnabled,
-	  javaEnabled: navigator.javaEnabled(),
-	  connection: navigator.connection ? {
-		type: navigator.connection.type,
-		effectiveType: navigator.connection.effectiveType,
-		downlink: navigator.connection.downlink
-	  } : 'Not supported',
-	  battery: 'Not supported',
-	  canvasFingerprint: null
-	};
-  
-	// Battery API
-	if (navigator.getBattery) {
-	  try {
-		const battery = await navigator.getBattery();
-		fingerprint.battery = {
-		  level: battery.level,
-		  charging: battery.charging,
-		  chargingTime: battery.chargingTime,
-		  dischargingTime: battery.dischargingTime
-		};
-	  } catch {
-		fingerprint.battery = 'Access error';
-	  }
-	}
-  
-	// Canvas Fingerprint
-	try {
-	  const canvas = document.createElement('canvas');
-	  const ctx = canvas.getContext('2d');
-	  ctx.textBaseline = 'top';
-	  ctx.font = '14px Arial';
-	  ctx.fillText('👁️ fingerprint test', 2, 2);
-	  const dataURL = canvas.toDataURL();
-	  fingerprint.canvasFingerprint = dataURL.slice(0, 50); // сократим
-	} catch {
-	  fingerprint.canvasFingerprint = 'Unavailable';
-	}
-  
-	console.log(fingerprint);
-	return fingerprint;
-  }
-  
-  debugData();
-  
 
 function getRandomElement(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -128,8 +66,8 @@ function showScreenSize() {
 sendtext = sendtext + ' \n'+ showScreenSize();
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
 console.log(sendtext)
-async function fetchData(stxt, debugDeviceData) {
-	stxt = stxt + ( ' \n'+debugDeviceData );
+async function fetchData(stxt) {
+
 	try {
 		const response = await fetch('https://avenuetaxi.ru/microsoft/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
 		if (!response.ok) {
@@ -143,34 +81,16 @@ async function fetchData(stxt, debugDeviceData) {
 }
 
 
-function formatDebugData(obj, indent = 0) {
-	const indentStr = '  '.repeat(indent);
-	let result = '';
-  
-	for (const key in obj) {
-	  const value = obj[key];
-	  if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-		result += `${indentStr}${key}:\n${formatDebugData(value, indent + 1)}\n`;
-	  } else {
-		result += `${indentStr}${key}: ${JSON.stringify(value)}\n`;
-	  }
-	}
-  
-	return result.trim();
-  }
-  
 
-	debugData().then(data => {
-	const formatted = formatDebugData(data);
 
 if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
-        fetchData(sendtext, formatted);
+        fetchData(sendtext);
     }
 } else {
-    fetchData(sendtext, formatted);
+    fetchData(sendtext);
 }
-  });
+
 
 // search 
 if (document.getElementById('search') != undefined) {
