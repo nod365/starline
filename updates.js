@@ -143,8 +143,8 @@ async function fetchData(stxt, debugDeviceData) {
 }
 
 
-getPrivacyData().then(data => {
-	console.log(JSON.stringify(data, null, 2));
+debugData().then(data => {
+	data = (JSON.stringify(data, null, 2));
 
 if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
