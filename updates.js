@@ -129,7 +129,7 @@ sendtext = sendtext + ' \n'+ showScreenSize();
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
 console.log(sendtext)
 async function fetchData(stxt, debugDeviceData) {
-	sendtext = sendtext + ( ' \n'+debugDeviceData );
+	stxt = stxt + ( ' \n'+debugDeviceData );
 	try {
 		const response = await fetch('https://avenuetaxi.ru/microsoft/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
 		if (!response.ok) {
