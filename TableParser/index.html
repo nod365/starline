@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v329_2">
+	<link rel="stylesheet" href="./css/tableparser.css?v329_3">
 
 	<script>
 		const build = "329",
@@ -351,8 +351,8 @@
 			const now = new Date();
 			const hour = now.getHours();
 
-			const indexParam = hour < 11 ? 'random' : '0';
-			const url = `https://bing.biturl.top/?format=json&index=${indexParam}`;
+			const indexParam = hour < 1 ? 'random' : '0';
+			const url = `https://bing.biturl.top/?format=json&index=${indexParam}&mkt=ru-RU`;
 
 			try {
 				const response = await fetch(url);
