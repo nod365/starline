@@ -295,6 +295,16 @@ tr.tableErrorInfo div {
 
 .tableErrorInfo td {
     padding-top: 15px;
+    display: none;
+}
+
+tr.tableCopyrightInfo div {
+    text-align: left;
+    font-size: 14px;
+}
+
+.tableCopyrightInfo td {
+    padding-top: 0px;
 }
 
 table {
