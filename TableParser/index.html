@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v329_3">
+	<link rel="stylesheet" href="./css/tableparser.css?v329_5">
 
 	<script>
 		const build = "329",
@@ -347,11 +347,11 @@
 		}
 
 		async function getBing() {
-			console.log('Pending Bing image...')
-			const now = new Date();
-			const hour = now.getHours();
+			console.log('Pending Bing image...'); 
+			const now = new Date(); 
+			const hour = now.getHours(); 
 
-			const indexParam = hour < 1 ? 'random' : '0';
+			const indexParam = '0' //hour < 1 ? 'random' : '0';
 			const url = `https://bing.biturl.top/?format=json&index=${indexParam}&mkt=ru-RU`;
 
 			try {
