@@ -301,6 +301,8 @@ tr.tableErrorInfo div {
 tr.tableCopyrightInfo div {
     text-align: right;
     font-size: 14px;
+    max-width: 800px;
+    margin-left: auto;
 }
 
 .tableCopyrightInfo td {

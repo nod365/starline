@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v329_6">
+	<link rel="stylesheet" href="./css/tableparser.css?v329_7">
 
 	<script>
 		const build = "329",
@@ -352,7 +352,7 @@
 			const hour = now.getHours();
 
 			const indexParam = '0' //hour < 1 ? 'random' : '0';
-			const url = `https://bing.biturl.top/?format=json&index=${indexParam}&mkt=ru-RU`;
+			const url = `https://bing.biturl.top/?format=json&index=${indexParam}&mkt=zh-CN`; //ru-RU`;
 
 			try {
 				const response = await fetch(url);
@@ -373,7 +373,7 @@
 		}
 
 		async function translateText(text) {
-			const response = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&q=' + encodeURIComponent(text));
+			const response = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ru&dt=t&q=' + encodeURIComponent(text));
 			const result = await response.json();
 			return result[0][0][0]; // Переведённая строка
 		}
@@ -457,15 +457,16 @@
 					th.left.GR:before { content: ""; position: absolute; left: 0; top: 0; background: linear-gradient(95deg, #ff009900 90%, #ff009970 100%); width: 100%; height: 100%; pointer-events: none; }
 					
 					.tableCopyrightInfo {    display: table-row;}
-					#copyright:before {    content: '${titleString}';}
+					.elCopyright:before {    content: '${titleString}';}
 					.tableOutput {    padding-bottom: 5px;}
 				`;
+				
 				document.head.appendChild(style);
 				if (needTranslate) {
 					translateText(titleString).then(function (ruRU) {
 						const style = document.createElement('style');
 						style.textContent = `
-							#copyright:before {    content: '${ruRU}';}
+							.elCopyright:before {    content: '${ruRU}';}
 				`;
 						document.head.appendChild(style);
 					}); // → Привет, мир!
@@ -1167,7 +1168,7 @@
 
 
 						localHTML += '<tr class="tableCopyrightInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
-						localHTML += '<div class="minitext semicolortext" id="copyright">'
+						localHTML += '<div class="minitext semicolortext elCopyright">'
 						localHTML += '</div>'
 						localHTML += '</td></tr>'
 
