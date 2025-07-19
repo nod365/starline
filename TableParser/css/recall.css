@@ -6,14 +6,100 @@ canvas {
     filter: invert(0) hue-rotate(0deg);
 }
 
-container, .dark container {
+container,
+.dark container {
     background: transparent !important;
 }
 
-leftmenu {
+leftmenu, .card {
     background: #f2f4f763 !important;
 }
 
-.dark leftmenu {
+.dark leftmenu, .dark .card {
     background: #1c1c1c4a !important;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+wrap, container, output, .fullscreen {
+    height: 100%;
+}
+
+.fullscreen {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.card {
+    border-radius: 8px;
+    padding: 15px 20px;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid #313a8d44;
+    box-shadow: 0 0 20px 5px #313a8d0a;
+}
+
+.dark .card {
+    border: 1px solid #FFF4;
+    box-shadow: 0 0 20px 0 #24242445;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+}
+
+.stat-line {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.pie {
+    width: 180px;
+    height: 180px;
+    margin-left: auto;
+    background-image: conic-gradient(orange 64%, blue 64%, blue 81%, black 81%);
+    border-radius: 50%;
+    mask: radial-gradient(transparent 74px, #000 75px);
+}
+
+.card-flex {
+    display: flex;
+}
+
+.card-flex div:first-child {
+    margin-right: 50px;
+}
+
+.circleColor {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin: 0px 10px 0 0 !important;
+    border-radius: 50%;
+    vertical-align: bottom;
+}
+
+button.goButton {
+    background: transparent;
+    border: 1px solid;
+    border-radius: 50px;
 }
