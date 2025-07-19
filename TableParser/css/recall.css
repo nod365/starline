@@ -1,0 +1,19 @@
+canvas {
+    filter: invert(1) hue-rotate(360deg);
+}
+
+.dark canvas {
+    filter: invert(0) hue-rotate(0deg);
+}
+
+container, .dark container {
+    background: transparent !important;
+}
+
+leftmenu {
+    background: #f2f4f763 !important;
+}
+
+.dark leftmenu {
+    background: #1c1c1c4a !important;
+}
