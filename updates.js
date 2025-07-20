@@ -15,8 +15,8 @@ let product = {
 		support: 'https://google.com',
 	},
 		CRTA : {
-		currentBuild: 1,
-		currentBuildReleaseDate: '19 июля 2025',
+		currentBuild: 2,
+		currentBuildReleaseDate: '20 июля 2025',
 		support: 'https://google.com',
 	}
 }

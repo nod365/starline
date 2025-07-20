@@ -103,3 +103,28 @@ button.goButton {
     border: 1px solid;
     border-radius: 50px;
 }
+
+.card-title {
+    display: flex;
+    align-items: center;
+}
+
+.card-title>*:first-child {
+    margin-right: auto;
+}
+
+
+.intableButton.blinkOnce.copybutton {
+    border: 1px solid #313a8d44;
+    padding: 3px 12px 5px 8px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.dark .intableButton.blinkOnce.copybutton {
+    border: 1px solid #FFF4;
+}
+
+render .copybutton {
+    display: none;
+}

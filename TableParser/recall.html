@@ -20,8 +20,8 @@
 	<link rel="stylesheet" href="./css/recall.css">
 
 	<script>
-		const build = "1",
-			buildReleaseDate = "19 июля 2025";
+		const build = "2",
+			buildReleaseDate = "20 июля 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -180,6 +180,44 @@
 		const requiredColumnsFile1 = ['Группа', 'Дата', 'Общее количество принятых эффективных вызовов', 'Количество совершенных вызовов'];
 		const requiredColumnsFile2 = ['Когда пропустили', 'Статус', 'Кто звонил', 'Куда звонил', 'Кому звонил', 'Первая попытка', 'Всего попыток', 'Последняя попытка'];
 
+		function GetImage(tableID, button) {
+			button.innerHTML = '<emoji class="rotating">⏳</emoji>Подождите...';
+			document.getElementsByTagName('render')[0].innerHTML = '<div class="tableOutput" id="renderOutput">' + document.getElementById(tableID).innerHTML + '</div>'
+			document.getElementsByTagName('render')[0].style.display = "inherit"
+
+			domtoimage.toBlob(document.getElementById('renderOutput'))
+				.then(function (blob) {
+					try {
+						navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+							.then(() => {
+								showError(button, '<emoji>✔️</emoji>Скопировано!');
+							})
+							.catch(err => {
+								console.error('Ошибка при копировании в буфер обмена:', err);
+								showError(button, '<emoji>❌</emoji>Ошибка копирования');
+							});
+					} catch (error) {
+						console.error('Ошибка внутри try/catch:', error);
+						showError(button, '<emoji>❌</emoji>Ошибка копирования');
+					}
+				})
+				.catch(function (error) {
+					console.error('Ошибка при создании изображения:', error);
+					showError(button, '<emoji>❌</emoji>Ошибка создания изображения');
+				});
+		}
+
+		// Функция для показа ошибки на кнопке
+		function showError(button, message) {
+			button.innerHTML = message;
+			setTimeout(() => {
+				button.innerHTML = '<emoji>📋</emoji>Скопировать';
+			}, 4000);
+			document.getElementsByTagName('render')[0].style.display = "none"
+			document.getElementsByTagName('render')[0].innerHTML = ''
+
+		}
+
 		let table1Data = [];
 		let table2Data = [];
 
@@ -272,7 +310,7 @@
 
 		function menuCursor() {
 			let elements = [];
-			
+
 			let screenMiddle = window.innerHeight / 2;
 
 			// Поиск всех элементов с id вида #id0, #id1, #id2, ...
@@ -321,7 +359,7 @@
 			}
 		}
 
-		
+
 
 		function GO() {
 			const keywords = ['авито', 'гараж', 'ваканс'];
@@ -512,19 +550,21 @@
 
 				randomID++
 
+
+
 				let menudiv = document.createElement('div');
 				menudiv.innerHTML = '<emoji>📅</emoji>' + title;
 				menudiv.classList.add('leftButton');
 				menudiv.id = 'id' + randomID + '_menu';
-				
-				let localID = 'id'+randomID;
+
+				let localID = 'id' + randomID;
 				menudiv.addEventListener('click', () => {
 					console.log(localID)
 					scrollTo(localID)
 				});
 				document.getElementById('editable').appendChild(menudiv);
 				document.querySelector('.parent.dimmer').addEventListener('scroll', menuCursor);
-				
+
 				let scrollDiv = document.createElement('div');
 				scrollDiv.className = 'scrollHere'
 				scrollDiv.id = 'id' + randomID + '_scroll'
@@ -594,7 +634,22 @@
 
 				const titleEl = document.createElement('div');
 				titleEl.className = 'card-title';
-				titleEl.textContent = title;
+
+				let titleName = document.createElement('div');
+				titleName.innerHTML = title
+				let titleButton = document.createElement('div');
+				titleButton.innerHTML = '<emoji>📋</emoji>Скопировать'
+				titleButton.id = 'id' + randomID + '_button'
+				titleButton.dataset.id = 'id' + randomID
+				titleButton.className = 'intableButton blinkOnce copybutton'
+				titleButton.addEventListener('click', function () {
+					let id = this.getAttribute('data-id'); // Получаем id из data-id
+					GetImage(id, this);
+				});
+
+				titleEl.appendChild(titleName);
+				titleEl.appendChild(titleButton);
+
 				div.appendChild(titleEl);
 
 				const firstFlex = document.createElement('div')
@@ -670,6 +725,8 @@
 					secondFlex.appendChild(secondFlexRight);
 					div.appendChild(secondFlex);
 				}
+
+				/*document.getElementById('id'+randomID+'_button')*/
 
 				return div;
 			}
