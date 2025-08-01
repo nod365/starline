@@ -152,9 +152,19 @@ div#switcher > div {
     margin: 2px;
     border-radius: 50px;
     background-color: #FFF;
+
+    transition: .3s;
 }
 
 .zair > div  {
     background-image: url('https://nod365.github.io/starline/media/ZAIR.png');
     background-size: 100% 100%;
+    transform: rotate(0deg);
+}
+
+.avito > div  {
+    background-image: url('https://nod365.github.io/starline/media/avito.png');
+    background-size: 100% 100%;
+    transform: rotate(90deg);
+    margin-left: 22px !important;
 }

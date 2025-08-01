@@ -18,10 +18,12 @@
 	<script src="./script/darkside.js"></script>
 	<link rel="stylesheet" href="./css/shukov.css">
 	<link rel="stylesheet" href="./css/recall.css">
+	<link rel="preload" as="image" href="https://nod365.github.io/starline/media/avito.png">
+	<link rel="preload" as="image" href="https://nod365.github.io/starline/media/ZAIR.png">
 
 	<script>
-		const build = "2",
-			buildReleaseDate = "20 июля 2025";
+		const build = "3",
+			buildReleaseDate = "1 августа 2025";
 		let debug = 0,
 			buildString = "";
 		function checkUpdates() {
@@ -153,7 +155,9 @@
 							</div> в&nbsp;левом&nbsp;меню.</h2>-->
 								<div class="radio">
 									<span id="label">ЗАИР</span>
-									<div id="switcher" class="zair"> <div></div> </div>
+									<div id="switcher" class="zair">
+										<div></div>
+									</div>
 									<span>ВСЁ Авито</span>
 								</div>
 
@@ -183,6 +187,21 @@
 
 
 	<script>
+
+		const switcher = document.getElementById('switcher');
+		const label = document.getElementById('label');
+		
+
+		switcher.addEventListener('click', () => {
+			if (switcher.classList.contains('zair')) {
+				switcher.classList.remove('zair');
+				switcher.classList.add('avito');
+			} else {
+				switcher.classList.remove('avito');
+				switcher.classList.add('zair');
+			}
+		});
+
 		const requiredColumnsFile1 = ['Группа', 'Дата', 'Общее количество принятых эффективных вызовов', 'Количество совершенных вызовов'];
 		const requiredColumnsFile2 = ['Когда пропустили', 'Статус', 'Кто звонил', 'Куда звонил', 'Кому звонил', 'Первая попытка', 'Всего попыток', 'Последняя попытка'];
 
@@ -368,7 +387,24 @@
 
 
 		function GO() {
-			const keywords = ['авито', 'гараж', 'ваканс'];
+			
+			
+			let keywords
+			let groupsTitleInfo
+
+			function getKeywords() {
+				if (switcher.classList.contains('zair')) {
+					console.log('ЗАИР ВЫБРАН')
+					groupsTitleInfo = " (Команда Заира)"
+					return ['z'];
+				} else {
+					console.log('ВЕСЬ АВИТО ВЫБРАН')
+					groupsTitleInfo = " (Все группы)"
+					return ['авито', 'гараж', 'ваканс'];
+				}
+			}
+
+			keywords = getKeywords()
 
 			// Фильтрация по ключевым словам для первого файла
 			const filtered1 = table1Data.filter(row =>
@@ -642,7 +678,7 @@
 				titleEl.className = 'card-title';
 
 				let titleName = document.createElement('div');
-				titleName.innerHTML = title
+				titleName.innerHTML = title + groupsTitleInfo
 				let titleButton = document.createElement('div');
 				titleButton.innerHTML = '<emoji>📋</emoji>Скопировать'
 				titleButton.id = 'id' + randomID + '_button'
