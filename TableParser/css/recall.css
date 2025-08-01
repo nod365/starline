@@ -128,3 +128,33 @@ button.goButton {
 render .copybutton {
     display: none;
 }
+
+
+.radio {
+    display: flex
+;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+div#switcher {
+    width: 50px;
+    height: 30px;
+    border: 1px solid;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+div#switcher > div {
+    width: 26px;
+    height: 26px;
+    margin: 2px;
+    border-radius: 50px;
+    background-color: #FFF;
+}
+
+.zair > div  {
+    background-image: url('https://nod365.github.io/starline/media/ZAIR.png');
+    background-size: 100% 100%;
+}
