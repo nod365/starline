@@ -1,7 +1,7 @@
 let product = {
 		SLAF : {
-		currentBuild: 180,
-		currentBuildReleaseDate: '14 мая 2025',
+		currentBuild: 182,
+		currentBuildReleaseDate: '5 августа 2025',
 		support: 'https://google.com',
 	},
 		MOTP : {
@@ -149,7 +149,7 @@ function startTimer(notTracking) {
 let updateInfoShow = { 
 	iconChat: 'https://nod365.github.io/starline/media/AGI.png' ,
 	nameChat: 'Скачать из Avenue Info',
-	urlChat: 'https://t.me/c/2019723498/140' ,
+	urlChat: 'https://t.me/c/2019723498/152' ,
 	iconManager: 'https://nod365.github.io/starline/media/ZAIR.png' ,
 	nameManager: 'Заир',
 	urlManager: 'https://t.me/Dofomin07'
