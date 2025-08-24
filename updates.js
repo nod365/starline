@@ -190,7 +190,7 @@ function createWarningPopup() {
 						Требуется обновление!
 					</div>
 					<div style="padding: 0 30px; font-size: 20px;">
-						<p><b>Ваша версия ${build} устарела.</b></p>
+						<p><b>Ваша версия ${build} устарела.</b> (${buildReleaseDate})</p>
 						<style>
 						a.alertSuperButton {
 							color: #0060ff;
