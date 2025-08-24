@@ -149,7 +149,7 @@ function startTimer(notTracking) {
 let updateInfoShow = { 
 	iconChat: 'https://nod365.github.io/starline/media/AGI.png' ,
 	nameChat: 'Скачать из Avenue Info',
-	urlChat: 'https://t.me/c/2019723498/152' ,
+	urlChat: 'https://t.me/c/2019723498/156' ,
 	iconManager: 'https://nod365.github.io/starline/media/ZAIR.png' ,
 	nameManager: 'Заир',
 	urlManager: 'https://t.me/Dofomin07'
