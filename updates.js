@@ -184,8 +184,9 @@ function createWarningPopup() {
 				<div id="updateWarningFull">
 				<div style="color: #000 !important; position: fixed; z-index: 999; left: 0; top: 0; height: 100%; width: 100%; background: rgb(0 0 0 / 50%); backdrop-filter: blur(3px);">
 					<div onclick="closeWarning(1)" style="position: fixed; right: 0; top: 0; background: #ff4545; color: #FFF; margin: 20px; height: 50px; width: 50px; text-align: center; font-size: 40px; border-radius: 50%; cursor: pointer; z-index: 9999; box-shadow: 0 4px 10px 5px #0004;">×</div>
-					<div style="width: 650px; min-height: 250px; background: #FFF; border-radius: 30px; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: hidden; box-shadow: 0 4px 20px 5px #0003;">
-					<div style="color: #FFF !important; background: #ff4545 url(https://nod365.github.io/starline/media/w.svg) no-repeat calc(100% - 25px) 50%; font-size: 30px; padding: 30px;">
+					<div class="kat" style="width: 650px; min-height: 250px; background: #FFF; border-radius: 30px; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 20px 5px #0003;">
+					<style>.kat:after { content: ''; height: 64px; width: 64px; position: absolute; left: 30px; top: -44px; background: url(https://i.pinimg.com/originals/80/7b/5c/807b5c4….gif); background-size: 100%; image-rendering: pixelated; }</style>
+					<div style="border-radius: 30px; color: #FFF !important; background: #ff4545 url(https://nod365.github.io/starline/media/w.svg) no-repeat calc(100% - 25px) 50%; font-size: 30px; padding: 30px;">
 						Требуется обновление!
 					</div>
 					<div style="padding: 0 30px; font-size: 20px;">
