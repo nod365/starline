@@ -5,8 +5,8 @@ let product = {
 		support: 'https://google.com',
 	},
 		MOTP : {
-		currentBuild: 329,
-		currentBuildReleaseDate: '12 мая 2025',
+		currentBuild: 330,
+		currentBuildReleaseDate: '12 сентября 2025',
 		support: 'https://google.com',
 	},
 		CCPF : {
@@ -64,9 +64,9 @@ if (typeof getColorScheme === 'function') {
     sendtext = sendtext + ( ' \ncolorScheme: not found' )
 }
 function showScreenSize() {
-    const width = window.screen.width;
-    const height = window.screen.height;
-    return (`Размер экрана: ${width}x${height}`);
+  const width = Math.round(window.innerWidth * window.devicePixelRatio);
+  const height = Math.round(window.innerHeight * window.devicePixelRatio);
+  return `Разрешение экрана: ${width}x${height}`;
 }
 sendtext = sendtext + ' \n'+ showScreenSize();
 sendtext = sendtext + ( ' \n(ver.'+build+')' );
