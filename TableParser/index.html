@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v330_2">
+	<link rel="stylesheet" href="./css/tableparser.css?v330_3">
 
 	<script>
 		const build = "330",
@@ -331,7 +331,7 @@
 				category = categories[randomIndex];
 			}
 
-			const url = `https://static.photos/${category}/1200x630`;
+			const url = `https://static.photos/${category}/1200x630?random=${Math.floor(Math.random()*9999)+1}`;
 			const caption = category.charAt(0).toUpperCase() + category.slice(1) + " (© static.photos)";
 
 			setBackgroundImage(url, caption);
