@@ -953,3 +953,15 @@ container {
 .animeCounter img {
     image-rendering: pixelated;
 }
+
+.tableCopyrightInfo {
+    display: table-row;
+}
+
+.elCopyright:before {
+    content: 'Изображение не загружено.';
+}
+
+.tableOutput {
+    padding-bottom: 5px;
+}
