@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v330_3">
+	<link rel="stylesheet" href="./css/tableparser.css?v330_5">
 
 	<script>
 		const build = "330",
@@ -448,7 +448,12 @@
 				// Устанавливаем цвет фона и цвет текста
 				let hexColor = '#' + rgbColor.match(/\d+/g).map(x => (+x).toString(16).padStart(2, '0')).join('');
 
+				// Удаляем предыдущий, если есть
+				const oldStyle = document.getElementById('dynamic-bg-style');
+				if (oldStyle) oldStyle.remove();
+
 				const style = document.createElement('style');
+				style.id = 'dynamic-bg-style';
 				style.textContent = `
 					* { color: ${hexColor} } 
 					.semicolortext, .semicolortext * { color: ${hexColor}b0 } 
@@ -476,6 +481,9 @@
 					.tableCopyrightInfo {    display: table-row;}
 					.elCopyright:before {    content: '${titleString}';}
 					.tableOutput {    padding-bottom: 5px;}
+					.tableWrap, .intableFlex div, leftmenu {    border: 1px solid ${hexColor}44; }
+					.app-hr { background: ${hexColor}36; }
+					.leftButton::after { background: ${hexColor}; }
 				`;
 
 				document.head.appendChild(style);
@@ -625,6 +633,7 @@
 						navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
 							.then(() => {
 								showError(button, '<emoji>✔️</emoji>Скопировано!');
+								setBackgroundImageDefault()
 							})
 							.catch(err => {
 								console.error('Ошибка при копировании в буфер обмена:', err);
@@ -1457,5 +1466,6 @@ CHANGELOG
 • Убрал предупреждение выключенной проверки
 • Если надпись отсутствует, то верстка не едет
 • Нормальный контроль контрастности текста
+• Исключаем одинаковые картинки
 
 -->
