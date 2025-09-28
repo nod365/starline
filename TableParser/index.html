@@ -20,10 +20,10 @@
 	<link rel="stylesheet" href="./css/tableparser.css?v330_6">
 
 	<script>
-		const build = "330",
-			buildReleaseDate = "12 сентября 2025";
+		const build = "20250928",
+			buildReleaseDate = "28 сентября 2025";
 		let debug = 0,
-			ignoreError = 1, // эта функция упразднена по причине "не нужно"
+			ignoreError = 0,
 			buildString = "";
 		function checkUpdates() {
 
@@ -746,7 +746,7 @@
 					let structure = {}
 
 					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ') || data[i][0].includes('КАЛУГА')  /*|| data[i][0].includes('ПРИЕМ-СДАЧА')*/ || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+						if (data[i][0].includes('ОТЧЕТ')  /*|| data[i][0].includes('КАЛУГА') || data[i][0].includes('ПРИЕМ-СДАЧА')*/ || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
 
 
 							let varDate = data[i][1]
@@ -798,31 +798,24 @@
 
 					const checkData = {
 						"БАРХАТ": {
-							"ОТЧЕТ": 3,
+							"ОТЧЕТ": 1,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
 							"СЕРВИС": 0,
 							"АДМИН": 0
-						},
+						},/*
 						"ОБЛАСТЬ": {
 							"ОТЧЕТ": 0,
 							"ДИСПЕТЧЕР": 0,
 							"ОФОРМЛЕНИЕ": 0,
 							"СЕРВИС": 0,
 							"АДМИН": 0
-						},
+						},*/
 						"ВАРШАВСКАЯ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
 							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"ИЗМАЙЛОВО": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 1,
 							"АДМИН": 0
 						},
 						"МЕЛИТОПОЛЬСКАЯ": {
@@ -844,16 +837,9 @@
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
 							"СЕРВИС": 0,
-							"АДМИН": 0
+							"АДМИН": 1
 						},
 						"ОТРАДНОЕ": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"СОКОЛ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
 							"ОФОРМЛЕНИЕ": 1,
@@ -1211,8 +1197,10 @@
 
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
+						//мешает 
+						isWeb = ''
 
-						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser4 -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' /*+ (ignoreError ? 'Режим максимальной совместимости / ' : '')*/ + 'build ' + build + ' ' + isWeb + '</td></tr>'
+						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
 						if (foundError) {
 							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
@@ -1499,5 +1487,10 @@ CHANGELOG
 • Нормальный контроль контрастности текста
 • Исключаем одинаковые картинки
 • Готовь сани летом, а новогоднюю пасхалку осенью
+
+20250928
+• Переход на дата-версионирование
+• Отключил областные парки
+• Включил проверку данных
 
 -->
