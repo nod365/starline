@@ -289,18 +289,17 @@ container {
 }
 
 tr.tableErrorInfo div {
-    text-align: left;
+    text-align: right;
     font-size: 14px;
 }
 
 .tableErrorInfo td {
-    padding-top: 15px;
+    padding: 15px 0 3px 0;
 }
 
 tr.tableCopyrightInfo div {
     text-align: right;
     font-size: 14px;
-    max-width: 800px;
     margin-left: auto;
 }
 
@@ -374,6 +373,7 @@ thead tr {
     height: max-content;
     padding: 35px;
     background: #FFF;
+    position: relative;
 }
 
 render {
@@ -801,14 +801,25 @@ tr:nth-child(even).red {
     color: #F00 !important;
 }
 
-.red td.noPaddingLeft.left.info2,
-.semired td.noPaddingLeft.left.info2,
-.okay td.noPaddingLeft.left.info2,
-.warning td.noPaddingLeft.left.info2 {
+.red .warningSideIcon,
+.semired .warningSideIcon,
+.okay .warningSideIcon,
+.warning .warningSideIcon {
     background-image: url(../svg/red_warning.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
+}
+
+.tdWarning {
+    padding: 0;
+    margin: 0;
+    width: 0;
+}
+
+.warningSideIcon {
+    width: 32px;
+    height: 32px;
 }
 
 .red .info0 .opacitytext,
@@ -835,16 +846,12 @@ tr:nth-child(even).red {
     font-weight: 700;
 }
 
-.okay td.noPaddingLeft.left.info2 {
+.okay .warningSideIcon {
     background-image: url(../svg/well_done.svg)
 }
 
-.warning td.noPaddingLeft.left.info2 {
+.warning .warningSideIcon  {
     background-image: url(../svg/warning.svg)
-}
-
-.left.info2 {
-    padding-right: 40px
 }
 
 div#startpage h2 {
@@ -956,6 +963,7 @@ container {
 
 .tableCopyrightInfo {
     display: table-row;
+    opacity: .3;
 }
 
 .elCopyright:before {
@@ -963,5 +971,27 @@ container {
 }
 
 .tableOutput {
-    padding-bottom: 5px;
+    padding-bottom: 0px;
+}
+
+svg.reportLogo {
+    position: absolute;
+    right: 0;
+    margin-right: -15px;
+    top: 30px;
+    opacity: .06;
+    transform-origin: 100% 0%;
+    transform: scale(1);
+}
+
+.newFlex {
+    display: flex;
+}
+
+.newFlex div:last-child {
+    flex: 1;
+}
+
+tr.tableCopyrightInfo td {
+    padding: 3px 0;
 }

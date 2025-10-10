@@ -17,10 +17,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v2510101346">
+	<link rel="stylesheet" href="./css/tableparser.css?2510101839">
 
 	<script>
-		const build = "2510101346",
+		const build = "2510101839",
 			buildReleaseDate = "1 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -59,10 +59,39 @@
 			return formattedDate;
 		}
 
+		function scaleReportLogos() {
+			const logos = document.querySelectorAll('.reportLogo');
+			logos.forEach(logo => {
+				// Высота самого логотипа
+				const logoHeight = logo.getBBox().height;
+				console.log('logoHeight '+logoHeight)
+
+				// Третий родитель
+				const parent = logo.closest('tbody');
+				if (!parent) return;
+
+				console.log('parent '+parent)
+				const parentHeight = parent.offsetHeight;
+
+				// Проверка на нулевые значения
+				if (parentHeight === 0 || logoHeight === 0) return;
+
+				// Рассчёт разницы
+				console.log(parentHeight)
+				console.log(logoHeight)
+				const scale = parentHeight / (logoHeight+120);
+
+				// Применяем масштабирование
+				console.log(scale)
+				logo.style.transform = `scale(${scale})`;
+				//logo.style.transformOrigin = 'top left'; // чтобы масштаб шёл от угла, можно поменять по вкусу
+			});
+		}
+
 		function checkUpdates() {
 			console.log(product.MOTP.currentBuild)
-			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + "сборкой от " + formatVersion(build.toString()) + "." + (build!=product.MOTP.currentBuild?(" Последняя сборка на сервере " + "от " + formatVersion(product.MOTP.currentBuild.toString())):' Актуальная версия.')
-			
+			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + "сборкой от " + formatVersion(build.toString()) + "." + (build != product.MOTP.currentBuild ? (" Последняя сборка на сервере " + "от " + formatVersion(product.MOTP.currentBuild.toString())) : ' Актуальная версия.')
+
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
 
 			let animeVersion = build.match(/\d/g).map(Number);
@@ -500,9 +529,9 @@
 
 					th.left.GR, .dark th.left.GR { background-image: url('${dataURL}'); background-size: cover; background-position: center; color: #FFF; }
 				
-					span.dateHeader.opacitytext.minitext { background: #ffffffeb; border-radius: 10px 20px 20px 20px; opacity: 1; padding: 0 8px; }
+					span.dateHeader.opacitytext.minitext { background: #ffffffeb; border-radius: 5px 20px 20px 20px; opacity: 1; padding: 0 8px; }
 					
-					span.thName { background: #ffffffeb; border-radius: 20px 20px 20px 10px; }
+					span.thName { background: #ffffffeb; border-radius: 20px 20px 20px 5px; }
 					.desIcon.parkid { display: none; }
 
 					.dark span.dateHeader.opacitytext.minitext,
@@ -515,7 +544,7 @@
 					
 					.tableCopyrightInfo {    display: table-row;}
 					.elCopyright:before {    content: '${titleString}';}
-					.tableOutput {    padding-bottom: 5px;}
+					.tableOutput {    padding-bottom: 0px;}
 					.tableWrap, .intableFlex div, leftmenu {    border: 1px solid ${hexColor}44; }
 					.app-hr { background: ${hexColor}36; }
 					.leftButton::after { background: ${hexColor}; }
@@ -659,6 +688,8 @@
 				isInRange = true;
 			}
 
+			//isInRange = true;
+			
 			if (isInRange) {
 				const style = document.createElement("style");
 				style.textContent = `
@@ -1090,12 +1121,15 @@
 						}
 						localHTML += '<div class="tableOutput ' + (foundError ? 'opacitytext' : '') + '" id="' + randomID + '">'
 
+						let reportLogoVariable = '<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 1184" width="96" height="1184" class="reportLogo"><path fill="currentColor" d="m46.9 11.9q6.6 4.4 10.3 12.2 0.2 0.4 0.5 0.8l35.6-24.9v25.8l-32.4 21.4v38.8l32.4 1.3v21.3l-90.9-3.6v-65.6q0-9.9 3.6-17.4 3.7-7.4 10.3-11.3 6.6-4 15.3-3.7 8.8 0.5 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22 0.9v-44.4q0-5.4-2.8-8.7-3-3.4-8.2-3.6-5-0.1-8 2.9zm-3.1 192.7l-18.1-0.8v-107.5l18.1 0.7zm36-103.8v105.1l-17.9-0.7v-105.2zm36.8-1v107.6l-18-0.7v-107.6zm-71 141.2q-3.4 6.4-3.4 13.3 0 6.7 2.4 11 2.6 4.3 6.7 4.4 2.3 0.2 3.9-1.5 1.7-1.6 2.9-5.7 1.3-4.2 2.5-11.6 1.8-11.5 5.6-19.1 3.7-7.5 9.6-11.3 5.9-3.7 13.9-3.2 8.8 0.2 15.4 5.4 6.5 5.3 10 14 3.5 8.7 3.5 20 0 13.3-4.7 23.6-4.9 10.3-12.3 16.6l-14.6-14.6q4-2.5 7-7 2.8-4.4 4.4-9.6 1.4-5.1 1.4-10.3 0-5.2-1-9-1.1-3.7-3.1-5.5-1.9-2-4.6-2-3.9-0.2-6.4 3.8-2.6 3.9-4.3 15-1.7 11.9-5.5 19.3-3.5 7.6-9.1 11.2-5.4 3.4-13 3.1-8.5-0.2-15.2-5.2-6.6-5.1-10.3-13.3-3.7-8.5-3.7-19.1 0-12.4 4.7-22 4.7-9.4 12.2-15.7l14.4 14.4q-5.8 4-9.3 10.6zm24.5 66.1q6.6 4.4 10.3 12.1 0.3 0.5 0.4 0.9l35.8-24.9v25.8l-32.5 21.4v38.8l32.5 1.1v21.3l-91-3.4v-65.7q0-9.8 3.7-17.3 3.7-7.4 10.2-11.4 6.6-3.9 15.3-3.6 8.7 0.3 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22.1 0.9v-44.4q0-5.4-3-8.9-3-3.2-8.1-3.4-5-0.3-8 2.9zm69.8 85.4v22.9l-16.6 5.1v36l16.6 6.5v22.2l-91-38.1v-23.6zm-67.2 44.1l32.4 12.8v-23.1zm20.9 42.4q6.6 4.5 10.3 12.2 3.6 7.7 3.6 17.6v44.3l32.5 1.3v21.3l-91-3.4v-65.6q0-10.1 3.7-17.5 3.7-7.3 10.3-11.3 6.6-4 15.3-3.6 8.6 0.3 15.3 4.7zm-23.4 19.8q-2.9 3-3 8.4v44.4l22.1 0.8v-44.3q0-5.5-3-8.7-3-3.3-8-3.6-5.1-0.2-8.1 3zm-18.2 367.7q3-6.6 8.3-10.1 5.1-3.5 12.3-3.2 6.7 0.2 12 4.2 4.4 3.3 7.3 8.8 0 0 0-0.1 3-7.3 8.4-11.3 5.5-4 13.1-3.7 8 0.3 14 4.7 6 4.4 9.3 12 3.4 7.7 3.4 17.8v67.6l-91-3.4v-67.8q0-8.9 2.9-15.5zm70.1 64.8v-46.6q0-5.4-2.7-8.7-2.7-3.3-7.6-3.5-4.4-0.1-7 2.9-2.6 3.1-2.6 8.6v46.5zm-52.8-54.1q-2.3 2.4-2.3 7v44.9l17.9 0.7v-44.9q0-4.6-2.4-7.3-2.6-2.5-6.9-2.7-4-0.1-6.3 2.3zm54.2 112.6v35.9l16.6 6.5v22.2l-90.9-38v-23.8l90.9-31v22.9zm-50.7 16l32.6 12.9v-23.2zm-5.5 76.4l72.5 2.7v21.3l-72.5-2.7v40.9l-18.4-0.7v-103.1l18.4 0.7zm-18.4-264.1l64.3 2.6 9.1 0.4v-68.3l17.5 0.7v89.5l-90.9-3.6zm73.4-181.9l17.5 0.7v107.6l-17.5-0.6zm-19.2 106.8l-18-0.7v-105.2l18 0.7zm-54.2-2.2v-107.5l18.1 0.7v107.5z"/></svg>'
+
 						localHTML += '<table>'
 						localHTML += '<thead><tr class="squircle">'
 						localHTML += '<th colspan="2" class="left GR"><div class="desIcon parkid"></div><span class="thName">Парки и подразделения</span><br><span class="dateHeader opacitytext minitext">' + getDayOfWeek(keys[i]) + '</span>' + '</th>'
 
 						for (j = 0; j < tableExport.length; j++) {
-							localHTML += '<th colspan="2" class="minitext color' + j + '">'
+							let widthColSpan = j==tableExport.length-1?3:2
+							localHTML += '<th colspan="'+widthColSpan+'" class="minitext color' + j + '">'
 							localHTML += '<div class="callIcon"></div><br>' + tableParseName[tableExport[j]] + '<br>' + '<span class="minitext semiWhite">' + tableParseName[tableSubExport[j]] + '</span>'
 							localHTML += '</th>'
 						}
@@ -1168,7 +1202,7 @@
 									} else if (red >= 95) {
 										red = 'red'
 									} else if (red > 75) {
-										red = 'semired'
+										red = 'red'
 									} else if (red >= 50) {
 										red = 'warning'
 									} else {
@@ -1179,7 +1213,7 @@
 
 								localHTML += '<tr class="' + red + '">'
 								if (x == 0) {
-									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length + 1) + '">' + capitalizeWords(parkKeys[j])
+									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length + 0) + '">' + (j == 0 ? reportLogoVariable : '') + capitalizeWords(parkKeys[j])
 									if (structure[keys[i]][parkKeys[j]].length > 1) {
 										let parkInfo = findParkName(parkKeys[j])
 
@@ -1234,6 +1268,7 @@
 										localHTML += '</td>'
 									}
 								}
+								localHTML += '<td class="tdWarning"> <div class="warningSideIcon"></div> </td>'
 								localHTML += '</tr>'
 
 								if (x == structure[keys[i]][parkKeys[j]].length - 1 && j != parkKeys.length - 1) {
@@ -1242,16 +1277,17 @@
 								//console.log( structure[keys[i]][parkKeys[j]][x] )
 							}
 						}
-						localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
+						//localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
 
 						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
 						isWeb = isWeb == 1 ? "web" : ""
 						//мешает 
 						isWeb = ''
 
-						localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
+						//localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
+
 						if (foundError) {
-							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
+							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
 							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
 							localHTML += '<div class="badColor">'
 							localHTML += validationResult[keys[i]].join('</div><div class="badColor">')
@@ -1260,8 +1296,10 @@
 						}
 
 
-						localHTML += '<tr class="tableCopyrightInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 2) + '">'
-						localHTML += '<div class="minitext semicolortext elCopyright">'
+						localHTML += '<tr class="tableCopyrightInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
+						localHTML += '<div class="minitext newFlex">'
+						localHTML += '<div class="elCopyright"> </div>'
+						localHTML += '<div> build ' + build.toString() +'</div>'
 						localHTML += '</div>'
 						localHTML += '</td></tr>'
 
@@ -1289,6 +1327,7 @@
 					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
 					//
 
+					scaleReportLogos()
 					loading(1)
 					setBackgroundImageDefault()
 
@@ -1555,5 +1594,11 @@ CHANGELOG
 2510101346
 • На небольших парках отображается адрес без названия
 • Номера версий отображаются более очевидно
+
+2510101839
+• Предварительно убрал semired 
+• Исправлен rowspan по старой схеме на новых разделителях версии 325
+• Убрал подвал, перенес логотип
+• Перенёс иконки в отдельный div, чтобы у них не плясал размер
 
 -->
