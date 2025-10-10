@@ -17,17 +17,52 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v2510101320">
+	<link rel="stylesheet" href="./css/tableparser.css?v2510101346">
 
 	<script>
-		const build = "2510101320",
+		const build = "2510101346",
 			buildReleaseDate = "1 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
 			buildString = "";
-		function checkUpdates() {
 
-			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + build + " сборкой от " + buildReleaseDate + ". Последняя сборка на сервере " + product.MOTP.currentBuild + " от " + product.MOTP.currentBuildReleaseDate
+		function formatVersion(versionString) {
+			// Проверяем, что строка имеет правильную длину
+			if (versionString.length !== 10) {
+				throw new Error('Некорректный формат версии. Ожидается строка длиной 10 символов: ГГММДДЧЧММ');
+			}
+
+			// Извлекаем компоненты даты и времени
+			const year = '20' + versionString.substring(0, 2); // Добавляем "20" для полного года
+			const month = versionString.substring(2, 4);
+			const day = versionString.substring(4, 6);
+			const hours = versionString.substring(6, 8);
+			const minutes = versionString.substring(8, 10);
+
+			// Создаем объект Date
+			const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}:00`);
+
+			// Проверяем валидность даты
+			if (isNaN(date.getTime())) {
+				throw new Error('Некорректная дата в версии');
+			}
+
+			// Массив с названиями месяцев
+			const months = [
+				'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+				'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+			];
+
+			// Форматируем результат
+			const formattedDate = `${parseInt(day)} ${months[parseInt(month) - 1]} ${year} ${hours}:${minutes}`;
+
+			return formattedDate;
+		}
+
+		function checkUpdates() {
+			console.log(product.MOTP.currentBuild)
+			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + "сборкой от " + formatVersion(build.toString()) + "." + (build!=product.MOTP.currentBuild?(" Последняя сборка на сервере " + "от " + formatVersion(product.MOTP.currentBuild.toString())):' Актуальная версия.')
+			
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
 
 			let animeVersion = build.match(/\d/g).map(Number);
@@ -45,7 +80,7 @@
 
 			} else {
 				//Версия актуальна
-				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Версия ' + build + '</div>'
+				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo goodColor">Версия от ' + formatVersion(build.toString()) + '</div>'
 
 			}
 
@@ -1145,10 +1180,16 @@
 								localHTML += '<tr class="' + red + '">'
 								if (x == 0) {
 									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length + 1) + '">' + capitalizeWords(parkKeys[j])
-									if (structure[keys[i]][parkKeys[j]].length > 3) {
+									if (structure[keys[i]][parkKeys[j]].length > 1) {
 										let parkInfo = findParkName(parkKeys[j])
+
+										let checkLengthReport = 0
+										if (structure[keys[i]][parkKeys[j]].length > 3) {
+											checkLengthReport = 1
+										}
+
 										if (parkInfo != false) {
-											localHTML += '<br><span class="minitext semicolortext">' + parkInfo[0] + '</span><br><span class="minitext semicolortext">• ' + parkInfo[1] + '</span>'
+											localHTML += '<br>' + (checkLengthReport ? ('<span class="minitext semicolortext">' + parkInfo[0] + '</span><br>') : "") + ' <span class="minitext semicolortext">• ' + parkInfo[1] + '</span>'
 										}
 									}
 									localHTML += '</td>'
@@ -1510,5 +1551,9 @@ CHANGELOG
 
 2510101320
 • Добавлен парк Горбунова
+
+2510101346
+• На небольших парках отображается адрес без названия
+• Номера версий отображаются более очевидно
 
 -->
