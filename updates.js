@@ -5,8 +5,8 @@ let product = {
 		support: 'https://google.com',
 	},
 		MOTP : {
-		currentBuild: 2510011357,
-		currentBuildReleaseDate: '1 октября 2025',
+		currentBuild: 2510101320,
+		currentBuildReleaseDate: '10 октября 2025',
 		support: 'https://google.com',
 	},
 		CCPF : {

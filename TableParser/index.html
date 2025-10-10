@@ -17,10 +17,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v2510011357">
+	<link rel="stylesheet" href="./css/tableparser.css?v2510101320">
 
 	<script>
-		const build = "2510011357",
+		const build = "2510101320",
 			buildReleaseDate = "1 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -790,6 +790,7 @@
 						"ОТРАДНОЕ": ['ТК Магия', 'Высоковольтный пр-д., 2'],
 						"МОСПАРК": ['МОСПАРК', '1-я ул. Измайловского Зверинца, 8'],
 						"ЦАРИЦЫНО": ['Борт №1', 'Кавказский бул., 52Б'],
+						"ГОРБУНОВА": ['Горбунова', 'Горбунова yл., 8, стр. 1']
 					}
 
 					function findParkName(parkName) {
@@ -852,6 +853,13 @@
 							"ОФОРМЛЕНИЕ": 1,
 							"СЕРВИС": 1,
 							"АДМИН": 1
+						},
+						"ГОРБУНОВА": {
+							"ОТЧЕТ": 1,
+							"ДИСПЕТЧЕР": 1,
+							"ОФОРМЛЕНИЕ": 1,
+							"СЕРВИС": 0,
+							"АДМИН": 0
 						},
 
 						/*
@@ -1499,5 +1507,8 @@ CHANGELOG
 
 2510011357
 • Не оторбазались результаты проверки в отчете
+
+2510101320
+• Добавлен парк Горбунова
 
 -->
