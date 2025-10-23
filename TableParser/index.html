@@ -17,11 +17,11 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?2510122235">
+	<link rel="stylesheet" href="./css/tableparser.css?2510231849">
 
 	<script>
-		const build = "2510122235",
-			buildReleaseDate = "1 октября 2025";
+		const build = "2510231849",
+			buildReleaseDate = "23 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
 			buildString = "";
@@ -911,6 +911,13 @@
 							"СЕРВИС": 0,
 							"АДМИН": 1
 						},
+						"ИЗМАЙЛОВО": {
+							"ОТЧЕТ": 2,
+							"ДИСПЕТЧЕР": 0,
+							"ОФОРМЛЕНИЕ": 0,
+							"СЕРВИС": 0,
+							"АДМИН": 0
+						},
 						"ОТРАДНОЕ": {
 							"ОТЧЕТ": 3,
 							"ДИСПЕТЧЕР": 1,
@@ -945,10 +952,12 @@
 						*/
 					};
 
+					let errorTextAdvise = ''
 
 					function checkReports(data, checkData) {
 						let result = {};
 						let errorMessages = {}; // Сюда будем собирать ошибки по датам
+						
 
 						for (let date in data) { // Перебираем даты
 							result[date] = {};
@@ -965,6 +974,7 @@
 									if (!data[date][park]) {
 										errorMessages[date].push(`${crossSign}Отсутствуют данные: ${park}`);
 										result[date][park] = "❌ Отсутствует в данных";
+										errorTextAdvise = '<br><br>Похоже, что в данных не хватает ожидаемого парка.<br> Проверьте в Контакт-центре MANGO OFFICE параметры экспорта.<br> Выберите "Все парки" и сформируйте заново.<br> Если это не помогло, обратитесь администратору ВАТС.'
 										continue;
 									}
 
@@ -1120,7 +1130,7 @@
 						if (foundError) {
 							localHTML += '<div class="errorInfo">'
 							localHTML += '<div class="badColor">'
-							localHTML += validationResult[keys[i]].join('</div><div class="badColor">')
+							localHTML += validationResult[keys[i]].join('</div><div class="badColor">') + errorTextAdvise
 							localHTML += '</div>'
 							localHTML += '</div>'
 						}
@@ -1638,5 +1648,9 @@ CHANGELOG
 (337) 2510122235 
 • Исправил scaleReportLogos(), правильный масштаб и убрал увеличение
 • Дополнил лог из разных источников
+
+(338) 2510231849
+• Добавлена подсказка в UI, если не хватает парка в данных
+• Добавлен парк Измайлово в проверку данных 
 
 -->
