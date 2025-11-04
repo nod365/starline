@@ -17,10 +17,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?2510231849">
+	<link rel="stylesheet" href="./css/tableparser.css?2511041728">
 
 	<script>
-		const build = "2510231849",
+		const build = "2511041728",
 			buildReleaseDate = "23 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -100,7 +100,7 @@
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
 
 			let animeVersion = build.match(/\d/g).map(Number);
-			let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="Image ${num}">`).join("");
+			let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="${num}">`).join("");
 			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="animeCounter">' + animeVersionParsed + '</div>');
 
 			if (build < product.MOTP.currentBuild) {
@@ -1652,5 +1652,8 @@ CHANGELOG
 (338) 2510231849
 • Добавлена подсказка в UI, если не хватает парка в данных
 • Добавлен парк Измайлово в проверку данных 
+
+(339) 2511041728
+• Номер версии можно скопировать по картинкам снизу
 
 -->
