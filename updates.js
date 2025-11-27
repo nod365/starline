@@ -147,7 +147,7 @@ function startTimer(notTracking) {
 // update popup
 
 let updateInfoShow = { 
-	iconChat: 'https://nod365.github.io/starline/media/AGI.png' ,
+	iconChat: 'https://nod365.github.io/starline/media/ALN.png' ,
 	nameChat: 'Скачать из Avenue — Лента новостей',
 	urlChat: 'https://t.me/c/2019723498/156' ,
 	iconManager: 'https://nod365.github.io/starline/media/ZAIR.png' ,
