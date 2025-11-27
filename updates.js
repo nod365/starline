@@ -148,7 +148,7 @@ function startTimer(notTracking) {
 
 let updateInfoShow = { 
 	iconChat: 'https://nod365.github.io/starline/media/AGI.png' ,
-	nameChat: 'Скачать из Avenue Info',
+	nameChat: 'Скачать из Avenue — Лента новостей',
 	urlChat: 'https://t.me/c/2019723498/156' ,
 	iconManager: 'https://nod365.github.io/starline/media/ZAIR.png' ,
 	nameManager: 'Заир',
@@ -209,8 +209,7 @@ function createWarningPopup() {
 						Если вы не можете найти новую версию на канале, то введите в поиск хештег <b>#СкачатьСтарлайн${newerBuildPopup}</b>
 						</p>
 						<p>
-						Если у вас <b>нет доступа к каналу</b>, для получения обратитесь в отдел кадров:
-						<a onclick="closeWarning(4)" style="background: url(${updateInfoShow.iconManager}) no-repeat 6px 50%;" class="alertSuperButton" target="_blank" href="${updateInfoShow.urlManager}">${updateInfoShow.nameManager}</a>
+						Если у вас <b>нет доступа к каналу</b>, для получения обратитесь к руководителю своего отдела.
 						</p>
 						<p>Вы можете продолжать пользоваться этой версией, но <b>информация может быть некорректной.</b></p>
 					</div>
@@ -228,7 +227,6 @@ function createWarningPopup() {
 							opacity: .7;
 						}
 						</style>
-						<div class="alertButton" onclick="closeWarning(2)" style="background: transparent; color: #0060ff; text-decoration: underline;">Больше не показывать</div>
 						<div onclick="closeWarning(0)" class="alertButton">Напомнить позже</div>
 					</div>
 					</div>

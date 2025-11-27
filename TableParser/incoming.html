@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Анализатор CSV Call-Center</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f5f5f5;
+		}
+
+		.container {
+			background-color: white;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: #333;
+			text-align: center;
+		}
+
+		.upload-section {
+			margin: 20px 0;
+			padding: 15px;
+			background-color: #f0f0f0;
+			border-radius: 5px;
+			text-align: center;
+		}
+
+		.date-range {
+			margin: 10px 0;
+			font-weight: bold;
+			color: #555;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}
+
+		th {
+			background-color: #4CAF50;
+			color: white;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		.total-row {
+			font-weight: bold;
+			background-color: #e0e0e0;
+		}
+
+		.percent {
+			font-size: 0.9em;
+			color: #666;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+
+		.info {
+			margin-top: 20px;
+			padding: 10px;
+			background-color: #e7f3ff;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Анализатор CSV для Call-Center групп</h1>
+
+		<div class="upload-section">
+			<input type="file" id="csvFile" accept=".csv">
+			<button onclick="loadCSV()">Загрузить и проанализировать CSV</button>
+		</div>
+
+		<div id="dateRange" class="date-range"></div>
+
+		<div id="tableContainer"></div>
+
+		<div class="info">
+			<p><strong>Целевые группы:</strong> Call-Center, Call-Center [ДТП], Call-Center [Поломки], Call-Center
+				[ГИБДД], КОНТРОЛЬ КАЧЕСТВА</p>
+			<p>Таблица показывает данные только для итоговых строк (где дата равна названию группы)</p>
+		</div>
+	</div>
+
+	<script>
+		const targetGroups = [
+			"Call - Center",
+			"Call - Center [ДТП]",
+			"Call - Center [Поломки]",
+			"Call - Center [ГИБДД]",
+			"КОНТРОЛЬ КАЧЕСТВА"
+		];
+
+		function loadCSV() {
+			const fileInput = document.getElementById('csvFile');
+			const file = fileInput.files[0];
+
+			if (!file) {
+				alert('Пожалуйста, выберите CSV файл');
+				return;
+			}
+
+			const reader = new FileReader();
+
+			reader.onload = function (e) {
+				const contents = e.target.result;
+				processCSV(contents);
+			};
+
+			reader.readAsText(file, 'Windows-1251');
+		}
+
+		function processCSV(csvText) {
+			const lines = csvText.split('\n');
+			const data = [];
+
+			// Парсим CSV
+			for (let i = 0; i < lines.length; i++) {
+				const line = lines[i].trim();
+				if (line) {
+					// Разделяем по точке с запятой, учитывая кавычки
+					const row = parseCSVLine(line);
+					data.push(row);
+				}
+			}
+
+			if (data.length < 2) {
+				alert('CSV файл пуст или содержит недостаточно данных');
+				return;
+			}
+
+			// Получаем заголовки и находим индексы нужных колонок
+			const headers = data[0];
+			const groupIndex = headers.indexOf('Группа');
+			const dateIndex = headers.indexOf('Дата');
+			const acceptedIndex = headers.indexOf("Количество принятых вызовов");
+			const completedIndex = headers.indexOf("Количество совершенных вызовов");
+			const missedIndex = headers.indexOf("Количество пропущенных вызовов");
+
+			if (groupIndex === -1 || dateIndex === -1) {
+				alert('CSV файл не содержит необходимых колонок (Группа, Дата)');
+				return;
+			}
+
+			// Собираем данные для целевых групп (только строки, где дата равна группе)
+			const groupData = {};
+			const dates = [];
+
+			for (let i = 1; i < data.length; i++) {
+				const row = data[i];
+				if (row.length <= Math.max(groupIndex, dateIndex, acceptedIndex, completedIndex, missedIndex)) {
+					continue;
+				}
+
+				const group = row[groupIndex].replace(/"/g, '');
+				const date = row[dateIndex].replace(/"/g, '');
+
+				// Проверяем, является ли дата действительной (в формате дд.мм.гггг)
+				if (/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+					dates.push(date);
+				}
+
+				// Если группа входит в целевые и дата равна группе (итоговая строка)
+				if (targetGroups.some(target => group.includes(target)) && group === date) {
+					const accepted = parseInt(row[acceptedIndex]?.replace(/"/g, '') || 0);
+					const completed = parseInt(row[completedIndex]?.replace(/"/g, '') || 0);
+					const missed = parseInt(row[missedIndex]?.replace(/"/g, '') || 0);
+
+					groupData[group] = {
+						accepted,
+						completed,
+						missed
+					};
+				}
+			}
+
+			// Находим минимальную и максимальную даты
+			let minDate = null;
+			let maxDate = null;
+
+			if (dates.length > 0) {
+				const dateObjects = dates.map(dateStr => {
+					const [day, month, year] = dateStr.split('.');
+					return new Date(year, month - 1, day);
+				});
+
+				minDate = new Date(Math.min(...dateObjects));
+				maxDate = new Date(Math.max(...dateObjects));
+			}
+
+			// Отображаем диапазон дат
+			const dateRangeElement = document.getElementById('dateRange');
+			if (minDate && maxDate) {
+				const formatDate = date => {
+					const day = String(date.getDate()).padStart(2, '0');
+					const month = String(date.getMonth() + 1).padStart(2, '0');
+					const year = date.getFullYear();
+					return `${day}.${month}.${year}`;
+				};
+
+				dateRangeElement.textContent = `Отчет с ${formatDate(minDate)} по ${formatDate(maxDate)}`;
+			} else {
+				dateRangeElement.textContent = 'Диапазон дат не определен';
+			}
+
+			// Сортируем данные по проценту принятых вызовов
+			const sortedGroupData = sortByAcceptedPercent(groupData);
+
+			// Создаем таблицу
+			createTable(sortedGroupData);
+
+		}
+
+		function parseCSVLine(line) {
+			const result = [];
+			let current = '';
+			let inQuotes = false;
+
+			for (let i = 0; i < line.length; i++) {
+				const char = line[i];
+
+				if (char === '"') {
+					inQuotes = !inQuotes;
+				} else if (char === ';' && !inQuotes) {
+					result.push(current);
+					current = '';
+				} else {
+					current += char;
+				}
+			}
+
+			result.push(current);
+			return result;
+		}
+
+		function sortByAcceptedPercent(groupData) {
+			const entries = Object.entries(groupData);
+
+			// Сначала вычисляем общую сумму принятых для расчета процентов
+			let totalAccepted = 0;
+			for (const group in groupData) {
+				totalAccepted += groupData[group].accepted;
+			}
+
+			entries.sort((a, b) => {
+				const percentA = totalAccepted > 0 ? (a[1].accepted / totalAccepted) * 100 : 0;
+				const percentB = totalAccepted > 0 ? (b[1].accepted / totalAccepted) * 100 : 0;
+
+				return percentB - percentA; // по убыванию
+			});
+
+			return Object.fromEntries(entries);
+		}
+
+		function createTable(groupData) {
+			const tableContainer = document.getElementById('tableContainer');
+			tableContainer.innerHTML = '';
+
+			if (Object.keys(groupData).length === 0) {
+				tableContainer.innerHTML = '<p>Нет данных для отображения</p>';
+				return;
+			}
+
+			// Вычисляем общие суммы
+			let totalAccepted = 0;
+			let totalCompleted = 0;
+			let totalMissed = 0;
+
+			for (const group in groupData) {
+				totalAccepted += groupData[group].accepted;
+				totalCompleted += groupData[group].completed;
+				totalMissed += groupData[group].missed;
+			}
+
+			const table = document.createElement('table');
+
+			// Заголовок таблицы
+			const headerRow = document.createElement('tr');
+			headerRow.innerHTML = `
+                <th>Группа</th>
+                <th>Принято ↓</th>
+                <th>Совершено</th>
+                <th>Пропущено</th>
+            `;
+			table.appendChild(headerRow);
+
+			// Данные по группам
+			for (const group in groupData) {
+				const data = groupData[group];
+				const row = document.createElement('tr');
+
+				const acceptedPercent = totalAccepted > 0 ? ((data.accepted / totalAccepted) * 100).toFixed(1) : 0;
+				const completedPercent = totalCompleted > 0 ? ((data.completed / totalCompleted) * 100).toFixed(1) : 0;
+				const missedPercent = totalMissed > 0 ? ((data.missed / totalMissed) * 100).toFixed(1) : 0;
+
+				row.innerHTML = `
+                    <td>${group}</td>
+                    <td>${data.accepted} <span class="percent">(${acceptedPercent}%)</span></td>
+                    <td>${data.completed} <span class="percent">(${completedPercent}%)</span></td>
+                    <td>${data.missed} <span class="percent">(${missedPercent}%)</span></td>
+                `;
+				table.appendChild(row);
+			}
+
+			// Итоговая строка
+			const totalRow = document.createElement('tr');
+			totalRow.className = 'total-row';
+			totalRow.innerHTML = `
+                <td><strong>ИТОГО</strong></td>
+                <td><strong>${totalAccepted}</strong></td>
+                <td><strong>${totalCompleted}</strong></td>
+                <td><strong>${totalMissed}</strong></td>
+            `;
+			table.appendChild(totalRow);
+
+			tableContainer.appendChild(table);
+		}
+	</script>
+</body>
+
+</html>
