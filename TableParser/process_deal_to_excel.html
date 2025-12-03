@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+
+  <title>Обработчик данных сделок</title>
+  <meta charset="UTF-8" />
+  <meta name="theme-color" content="#EEE" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./css/tableparser.css">
+  <script src="./script/darkside.js"></script>
+
+  <link rel="icon" href="./icons/favicon.ico" sizes="any"><!-- 32×32 -->
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><!-- 180×180 -->
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <!-- CDN библиотеки -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.9/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.9/plugin/customParseFormat.js"></script>
+
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --card: #fff;
+      --accent: #4CAF50;
+      --muted: #666;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+    }
+
+    h1 {
+      margin: 0 0 16px 0;
+      font-size: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(20, 20, 20, 0.06);
+      margin-bottom: 16px;
+    }
+
+    .dark .card {
+      background: #222;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .row-col {
+      flex: 1;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    .dark input[type="text"],
+    .dark input[type="date"],
+    .dark select {
+      background: #333;
+      border: 1px solid #444;
+    }
+
+    input[type="file"] {
+      font-size: 14px;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      background: #1976d2;
+    }
+
+    .log {
+      height: 240px;
+      font-family: monospace;
+      overflow: auto;
+      white-space: pre-wrap;
+      background: #111;
+      color: #e8f5e9;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    @media (max-width:640px) {
+      .row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <wrap class="dark">
+    <leftmenu>
+      <div>
+        <a href="./index.html">
+          <div>
+            <div class="leftButton">
+              <emoji>🥭</emoji>Mango Office <b>Table Parser 4</b>
+            </div>
+          </div>
+        </a>
+        <a href="./performance.html">
+          <div>
+            <div class="leftButton">
+              <emoji>📈</emoji>Call Center <b>Performance 2</b>
+            </div>
+          </div>
+        </a>
+        <div class="leftButton Logo buttonLogoSelected">
+          <emoji>📊</emoji>Обработчик данных сделок
+        </div>
+        <!--<a href="./recall.html">
+					<div>
+						<div class="leftButton">
+							<emoji>☎️</emoji>Response <b>Time Analytics</b>
+						</div>
+					</div>
+				</a>-->
+        <div class="leftButton" id="themeToggleBtn">
+          <emoji>🌚</emoji>Тёмная тема
+        </div>
+        <a target="_blank" href="https://github.com/nod365/starline">
+          <div>
+            <div class="leftButton">
+              <emoji>🍴</emoji>Fork me on GitHub
+            </div>
+          </div>
+        </a>
+        <div>
+          <h1>Инструменты</h1>
+          <div class="app-hr"></div>
+        </div>
+        <div class="leftButton" id="opencsv">
+          <emoji>📄</emoji>Открыть CSV-файл
+        </div>
+        <div class="leftButton" id="gethelp">
+          <emoji>📚</emoji>Руководство
+        </div>
+      </div>
+      <div class="flexible" id="editable">
+        <div>
+          <h1>Добро пожаловать</h1>
+          <div class="app-hr"></div>
+        </div>
+        <div class="leftButton buttonSelected">
+          <emoji>👩🏻‍💻</emoji>Генератор таблиц
+        </div>
+        <!--
+				<div><h1>Информация</h1><div class="app-hr"></div></div>
+				<div class="leftButton"><emoji>👍</emoji>Кнопка 1</div>
+				-->
+      </div>
+      <div>
+        <div class="app-hr"></div>
+        <div id="infoplace"></div>
+        <div id="updatesinfo">
+          <div class="leftButton Logo">
+            <emoji class="rotating">⏳</emoji>Проверяю обновления...
+          </div>
+        </div>
+      </div>
+    </leftmenu>
+    <container>
+      <div class="container">
+        <h1>Обработчик данных сделок</h1>
+
+        <div class="card">
+          <label>CSV файл с данными сделок (разделитель `;`):</label>
+          <input id="csvFile" type="file" accept=".csv,text/csv" />
+          <div class="small">Файл должен содержать колонку "Источник" и колонки с датами (названия содержащие "дата" или
+            "date").</div>
+        </div>
+
+        <div class="card">
+          <label>Excel шаблон (КЦ Авеню.xlsx):</label>
+          <input id="templateFile" type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+          <div class="small">Шаблон используется как основа для записи результатов (листы: те же, что в конфиге).</div>
+        </div>
+
+        <div class="card">
+          <div class="flex-between">
+            <div style="flex:1; margin-right:12px;">
+              <label>Выходной файл (имя):</label>
+              <input id="outputName" type="text" value="КЦ Авеню_обработано.xlsx" />
+            </div>
+            <div>
+              <label>Период анализа:</label>
+              <div class="row">
+                <input id="startDate" type="date" />
+                <input id="endDate" type="date" />
+              </div>
+              <div class="controls" style="margin-top:8px;">
+                <button id="currentMonth">Текущий месяц</button>
+                <button id="setDefaults" class="secondary">Сбросить даты</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <button id="processBtn" style="font-size:16px; padding:12px 18px;">Обработать данные</button>
+            <div class="small">Результат будет скачан как .xlsx.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <label>Лог выполнения:</label>
+          <div id="log" class="log"></div>
+          <div class="footer-note">Информация о ходе выполнения и найденных ошибках/предупреждениях.</div>
+        </div>
+      </div>
+    </container>
+  </wrap>
+
+  <script>
+    dayjs.extend(dayjs_plugin_customParseFormat);
+
+    /* Конфигурация (копия логики из Python) */
+    const SHEET_CFG = {
+      'Авито': ["Easy Park (Сокол)", "Mospark Two (Можайка)", "МАГИЯ", "МЁД", "Борт №1", "ЧАРТЕР", "МОСФИЛЬМПАРК"],
+      'Ягараж': ["Яндекс.Гараж", "ChatApp - WhatsApp (external provider) - Яндекс.Гараж"],
+      'Сайт': ["Сайт"],
+      'Прочий трафик': [] // остальные
+    };
+
+    const BAD_LEADS_REASONS = ["ДУБЛЬ", "Не проходит по требованию", "Действующий водитель",
+      "Спам", "Некорректный номер", "ТЕСТ", "ДУБЛЬ! БОРТ№1/ЧАРТЕР ПЕРЕДАЛИ ЗАИРУ!"];
+
+    const STAGE_MAPPING = {
+      'Без обратной связи': 'D',
+      'Чаты Авито': 'E',
+      'Презентация': 'F',
+      'Проверка СБ': 'G',
+      'Дожим': 'H',
+      'Собеседование': 'I',
+      'Приехал в тксопарк': 'J',
+      'Сделка не состоялась': 'K',
+      'Бизнес класс': 'L',
+      'Выкуп': 'M',
+      'Авто под доставку': 'N',
+      'В парке': 'O'
+    };
+
+    /* UI элементы */
+    const csvFileInput = document.getElementById('csvFile');
+    const templateFileInput = document.getElementById('templateFile');
+    const outputNameInput = document.getElementById('outputName');
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const currentMonthBtn = document.getElementById('currentMonth');
+    const setDefaultsBtn = document.getElementById('setDefaults');
+    const processBtn = document.getElementById('processBtn');
+    const logEl = document.getElementById('log');
+
+    function log(msg) {
+      const time = new Date().toLocaleTimeString();
+      logEl.textContent += `${time}: ${msg}\n`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    /* Установка дат: текущий месяц */
+    function setCurrentMonth() {
+      const now = new Date();
+      const first = new Date(now.getFullYear(), now.getMonth(), 1);
+      const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      startDateInput.value = first.toISOString().slice(0, 10);
+      endDateInput.value = last.toISOString().slice(0, 10);
+    }
+
+    /* Сброс дат */
+    function resetDates() {
+      startDateInput.value = '';
+      endDateInput.value = '';
+    }
+
+    /* Вспомогательные функции для работы с Excel (SheetJS) */
+    function setCell(ws, cell, value) {
+      ws[cell] = { t: (typeof value === 'number' ? 'n' : 's'), v: value };
+    }
+
+    /* Основная логика обработки */
+    processBtn.addEventListener('click', async () => {
+      logEl.textContent = '';
+      log('Запуск обработки...');
+
+      const csvFile = csvFileInput.files[0];
+      const templateFile = templateFileInput.files[0];
+      const outName = outputNameInput.value.trim() || 'КЦ Авеню_обработано.xlsx';
+
+      if (!csvFile) {
+        alert('Выберите CSV файл!');
+        return;
+      }
+      if (!templateFile) {
+        alert('Выберите Excel шаблон!');
+        return;
+      }
+      if (!startDateInput.value || !endDateInput.value) {
+        alert('Укажите даты начала и конца периода!');
+        return;
+      }
+
+      const startDate = dayjs(startDateInput.value, 'YYYY-MM-DD').startOf('day');
+      const endDate = dayjs(endDateInput.value, 'YYYY-MM-DD').startOf('day');
+
+      if (startDate.isAfter(endDate)) {
+        alert('Дата начала должна быть раньше даты окончания!');
+        return;
+      }
+
+      log(`Период: ${startDate.format('DD.MM.YYYY')} - ${endDate.format('DD.MM.YYYY')}`);
+
+      // 1) Прочитать CSV
+      log('Чтение CSV...');
+      const csvText = await readFileAsText(csvFile);
+      const parsed = Papa.parse(csvText, {
+        delimiter: ";",
+        header: true,
+        skipEmptyLines: true,
+        dynamicTyping: false
+      });
+
+      if (parsed.errors && parsed.errors.length) {
+        log(`Предупреждение: обнаружены ошибки при парсинге CSV: ${parsed.errors.length}`);
+        parsed.errors.slice(0, 5).forEach(e => log(`  ${e.message}`));
+      }
+
+      let records = parsed.data;
+      log(`Загружено ${records.length} строк из CSV`);
+
+      // Очистить пробелы в названиях колонок
+      const headers = parsed.meta.fields.map(h => h.replace(/\n/g, '').trim());
+      // Привязка: создаём массив объектов с чистыми ключами
+      records = records.map(row => {
+        const nr = {};
+        headers.forEach(h => nr[h] = (row[h] !== undefined ? row[h] : row[h]));
+        return nr;
+      });
+
+      // 2) Найти колонки с датами
+      const dateCols = headers.filter(h => /дата|date/i.test(h));
+      log(`Найденные колонки с датами: ${dateCols.join(', ')}`);
+
+      if (dateCols.length < 2) {
+        log('Ошибка: не найдено >=2 колонок с датами. Останов.');
+        alert('Не найдены колонки с датами (ожидается минимум 2). Проверьте CSV.');
+        return;
+      }
+
+      const creationCol = dateCols[0];
+      const changeCol = dateCols[1];
+
+      // Функция для парсинга дат: пробуем несколько форматов
+      function parseDateVal(val) {
+        if (val === undefined || val === null || String(val).trim() === '') return null;
+        const s = String(val).trim();
+        // Популярные форматы: DD.MM.YYYY, YYYY-MM-DD, DD/MM/YYYY, ISO
+        const formats = ['DD.MM.YYYY', 'D.M.YYYY', 'YYYY-MM-DD', 'DD/MM/YYYY', 'YYYY/MM/DD', 'DD.MM.YY', 'YYYY-MM-DDTHH:mm:ss'];
+        for (const f of formats) {
+          const d = dayjs(s, f, true);
+          if (d.isValid()) return d.startOf('day');
+        }
+        // fallback: try Date
+        const d2 = dayjs(new Date(s));
+        return d2.isValid() ? d2.startOf('day') : null;
+      }
+
+      // Добавим колонки _created_date и _changed_date как dayjs
+      records.forEach(r => {
+        r._created = parseDateVal(r[creationCol]);
+        r._changed = parseDateVal(r[changeCol]);
+      });
+
+      // 3) Загрузить Excel шаблон
+      log('Чтение Excel шаблона...');
+      const templateArrayBuffer = await readFileAsArrayBuffer(templateFile);
+      const workbook = XLSX.read(templateArrayBuffer, { type: 'array' });
+
+      // 4) Для каждого листа из SHEET_CFG обработать записи
+      for (const sheetName of Object.keys(SHEET_CFG)) {
+        log(`Обрабатываем лист: ${sheetName}`);
+
+        // Выбрать данные для этого листа
+        let sheetRecords;
+        if (sheetName === 'Прочий трафик') {
+          // все записи, у которых источник не входит в перечисленные
+          const allSourcesFlatten = Object.values(SHEET_CFG).flat();
+          sheetRecords = records.filter(r => !allSourcesFlatten.includes(String(r['Источник'] || '').trim()));
+        } else {
+          const sources = SHEET_CFG[sheetName];
+          sheetRecords = records.filter(r => sources.includes(String(r['Источник'] || '').trim()));
+        }
+
+        // Фильтрация по датам
+        const groupA = sheetRecords.filter(r => r._created && r._changed
+          && !r._created.isBefore(startDate) && !r._created.isAfter(endDate)
+          && !r._changed.isBefore(startDate) && !r._changed.isAfter(endDate)
+        );
+
+        const groupB = sheetRecords.filter(r => r._created && r._changed
+          && r._created.isBefore(startDate)
+          && !r._changed.isBefore(startDate) && !r._changed.isAfter(endDate)
+        );
+
+        log(`  Группа A: ${groupA.length} записей`);
+        log(`  Группа B: ${groupB.length} записей`);
+
+        // Проверяем, существует ли лист в шаблоне
+        if (!workbook.Sheets[sheetName]) {
+          log(`  Внимание: лист "${sheetName}" не найден в шаблоне. Пропускаем запись на этот лист.`);
+          continue;
+        }
+        const ws = workbook.Sheets[sheetName];
+
+        // Обновляем строки: row 3 для A, row 9 для B
+        updateRowExcel(ws, groupA, 3, 'A');
+        updateRowExcel(ws, groupB, 9, 'B');
+
+        // Суммирование: row 15 = row3 + row9 для столбцов D..O (D=4..O=15)
+        sumValuesOnSheet(ws, 3, 9, 15);
+      }
+
+      // Сохранить и скачать
+      log('Сохранение результата...');
+      const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([wbout], { type: 'application/octet-stream' });
+      triggerDownload(blob, outName);
+      log(`Обработка завершена. Файл "${outName}" загружен.`);
+    });
+
+    /* Обновление строки: записывает A{row} (total), B{row} (# bad), C{row} (qual), и стадии по STAGE_MAPPING */
+    function updateRowExcel(ws, data, rowNum, groupName) {
+      // Определяем 11-й столбец данных (по индексу 10) — это логика пользователя:
+      // Попробуем взять имя 11-й колонки если есть, иначе не считать плохие лиды.
+      let badLeadsCount = 0;
+      if (data.length > 0) {
+        const cols = Object.keys(data[0]);
+        const reasonCol = cols[10] || null;
+        if (reasonCol) {
+          const reasons = data.map(r => (r[reasonCol] || '').toString().trim()).filter(x => x !== '');
+          const badMask = reasons.filter(x => BAD_LEADS_REASONS.includes(x));
+          badLeadsCount = badMask.length;
+          // Лог
+          //log(`    Группа ${groupName}: найдено ${badLeadsCount} плохих лидов (по колонке "${reasonCol}")`);
+        } else {
+          //log(`    Группа ${groupName}: 11-й столбец не найден`);
+          badLeadsCount = 0;
+        }
+      } else {
+        badLeadsCount = 0;
+      }
+
+      const total = data.length;
+      const qual = total - badLeadsCount;
+
+      setCell(ws, `B${rowNum}`, Number(badLeadsCount));
+      setCell(ws, `A${rowNum}`, Number(total));
+      setCell(ws, `C${rowNum}`, Number(qual));
+
+      // Подсчёт по стадиям
+      for (const stage in STAGE_MAPPING) {
+        const colLetter = STAGE_MAPPING[stage]; // e.g. 'D'
+        const count = data.filter(r => (r['Стадия сделки'] || '').toString().trim() === stage).length;
+        setCell(ws, `${colLetter}${rowNum}`, Number(count));
+      }
+    }
+
+    /* Суммирование ряда значений: складываем числовые клетки между D..O (включительно) и пишем в targetRow, также колонка A */
+    function sumValuesOnSheet(ws, rowA, rowB, targetRow) {
+      // колонки D (4) .. O (15) -> letters D..O
+      const letters = [];
+      for (let i = 68; i <= 79; i++) { // ASCII D=68 ... O=79
+        letters.push(String.fromCharCode(i));
+      }
+
+      for (const letter of letters) {
+        const cellA = `${letter}${rowA}`;
+        const cellB = `${letter}${rowB}`;
+        const valA = getNumericCell(ws[cellA]);
+        const valB = getNumericCell(ws[cellB]);
+        setCell(ws, `${letter}${targetRow}`, Number(valA + valB));
+      }
+
+      // Колонка A
+      const aA = getNumericCell(ws[`A${rowA}`]);
+      const aB = getNumericCell(ws[`A${rowB}`]);
+      setCell(ws, `A${targetRow}`, Number(aA + aB));
+    }
+
+    /* Взять число из клетки ws[cell] или 0 */
+    function getNumericCell(cell) {
+      if (!cell) return 0;
+      if (typeof cell.v === 'number') return cell.v;
+      const n = Number(cell.v);
+      return isNaN(n) ? 0 : n;
+    }
+
+    /* Вспомогательные: чтение файлов */
+    function readFileAsText(file) {
+      return new Promise((res, rej) => {
+        const fr = new FileReader();
+        fr.onload = () => res(fr.result);
+        fr.onerror = () => rej(fr.error);
+        fr.readAsText(file, 'utf-8');
+      });
+    }
+    function readFileAsArrayBuffer(file) {
+      return new Promise((res, rej) => {
+        const fr = new FileReader();
+        fr.onload = () => res(fr.result);
+        fr.onerror = () => rej(fr.error);
+        fr.readAsArrayBuffer(file);
+      });
+    }
+    function triggerDownload(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    /* Инициализация UI */
+    currentMonthBtn.addEventListener('click', setCurrentMonth);
+    setDefaultsBtn.addEventListener('click', resetDates);
+
+    /* Удобство: если пользователь не указал даты — поставить текущий месяц */
+    window.addEventListener('load', () => {
+      setCurrentMonth();
+      log('Готово. Выберите CSV и шаблон, затем запустите обработку.');
+    });
+  </script>
+</body>
+
+</html>
