@@ -17,7 +17,7 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?v330_5">
+	<link rel="stylesheet" href="./css/tableparser.css?v330_6">
 
 	<script>
 		const build = "330",
@@ -505,9 +505,6 @@
 		}
 
 
-
-
-
 		function loading(show) {
 			const loaderId = 'custom-loading-overlay';
 
@@ -610,8 +607,42 @@
 
 		window.addEventListener('scroll', menuCursor);
 
+		function addNewYearHat() {
+			const now = new Date();
+			const month = now.getMonth(); // 0 = январь, 11 = декабрь
+			const day = now.getDate();
 
+			let isInRange = false;
 
+			// если декабрь и день >= 30
+			if (month === 11 && day >= 30) {
+				isInRange = true;
+			}
+
+			// если январь и день <= 5
+			if (month === 0 && day <= 5) {
+				isInRange = true;
+			}
+
+			if (isInRange) {
+				const style = document.createElement("style");
+				style.textContent = `
+					table:after {
+						content: '';
+						height: 90px;
+						width: 90px;
+						position: absolute;
+						top: -33px;
+						right: -30px;
+						background: url(./images/hat.png);
+						background-size: 100%;
+					}
+					`;
+				document.head.appendChild(style);
+			}
+		}
+
+		document.addEventListener("DOMContentLoaded", addNewYearHat);
 
 		function capitalizeWords(text) {
 			return text
@@ -1467,5 +1498,6 @@ CHANGELOG
 • Если надпись отсутствует, то верстка не едет
 • Нормальный контроль контрастности текста
 • Исключаем одинаковые картинки
+• Готовь сани летом, а новогоднюю пасхалку осенью
 
 -->

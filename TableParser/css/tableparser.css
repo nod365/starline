@@ -319,6 +319,7 @@ td {
     padding: 1px 10px;
     font-size: 20px;
     text-align: center;
+    position: relative;
 }
 
 tr:not(.ultraborder):not(.aboutWrap) td {
