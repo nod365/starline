@@ -576,6 +576,12 @@ tr.semired:nth-child(odd):not(.red) .gradientLeft {
     padding-left: 25px;
 }
 
+td.gradientLeft {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
 td.left.forceWhite {
     background: transparent !important;
     padding-left: 1px;
