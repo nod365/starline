@@ -17,10 +17,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?2601061817">
+	<link rel="stylesheet" href="./css/tableparser.css?2601061833">
 
 	<script>
-		const build = "2601061817",
+		const build = "2601061833",
 			buildReleaseDate = "23 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -725,8 +725,8 @@
 		}
 
 		function PrintImage(tableID, button) {
-			const source = document.querySelector('#id' + tableID);
-			console.log('PAPAPA')
+			const source = document.querySelector('#' + tableID);
+			//console.log('PAPAPA')
 			if (!source) return;
 
 			const html = `
@@ -736,6 +736,7 @@
 				<meta charset="UTF-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://nod365.github.io/starline/TableParser/css/tableparser.css">
 
 				<title>Print</title>
 
