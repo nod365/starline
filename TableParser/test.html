@@ -17,10 +17,10 @@
 	<script src="./script/darkside.js"></script>
 	<script src="./script/squircle.js"></script>
 	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?2511041728">
+	<link rel="stylesheet" href="./css/tableparser.css?2601061817">
 
 	<script>
-		const build = "2511041728",
+		const build = "2601061817",
 			buildReleaseDate = "23 октября 2025";
 		let debug = 0,
 			ignoreError = 0,
@@ -725,9 +725,9 @@
 		}
 
 		function PrintImage(tableID, button) {
-			const source = "TEST TEST TEST"//document.querySelector('#id' + tableID);
+			const source = document.querySelector('#id' + tableID);
 			console.log('PAPAPA')
-			//if (!source) return;
+			if (!source) return;
 
 			const html = `
 				<!DOCTYPE html>
@@ -766,7 +766,7 @@
 
 				<body>
 				<div class="page">
-					${source/*.innerHTML*/}
+					${source.innerHTML}
 				</div>
 				</body>
 				</html>
