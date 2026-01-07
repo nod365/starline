@@ -2,528 +2,529 @@
 <html lang="ru">
 
 <head>
-	<title>Mango Office Table Parser 4</title>
-	<meta charset="UTF-8" />
-	<meta name="theme-color" content="#EEE" />
-	<meta name="mobile-web-app-capable" content="yes" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mango Office Table Parser 4</title>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#EEE" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link rel="icon" href="./icons/favicon.ico" sizes="any"><!-- 32×32 -->
-	<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><!-- 180×180 -->
-	<link rel="manifest" href="./manifest.webmanifest">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
-	<script src="./script/dom-to-image.min.js"></script>
-	<script src="./script/darkside.js"></script>
-	<script src="./script/squircle.js"></script>
-	<script src="./script/vaporwave.js"></script>
-	<link rel="stylesheet" href="./css/tableparser.css?2511041728">
+    <link rel="icon" href="./icons/favicon.ico" sizes="any"><!-- 32×32 -->
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><!-- 180×180 -->
+    <link rel="manifest" href="./manifest.webmanifest">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+    <script src="./script/dom-to-image.min.js"></script>
+    <script src="./script/darkside.js"></script>
+    <script src="./script/squircle.js"></script>
+    <script src="./script/vaporwave.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="./css/tableparser.css?2601071450">
 
-	<script>
-		const build = "2511041728",
-			buildReleaseDate = "23 октября 2025";
-		let debug = 0,
-			ignoreError = 0,
-			buildString = "";
+    <script>
+        const build = "2601071450",
+            buildReleaseDate = "07 января 2026";
+        let debug = 0,
+            ignoreError = 0,
+            buildString = "";
 
-		function formatVersion(versionString) {
-			// Проверяем, что строка имеет правильную длину
-			if (versionString.length !== 10) {
-				throw new Error('Некорректный формат версии. Ожидается строка длиной 10 символов: ГГММДДЧЧММ');
-			}
+        function formatVersion(versionString) {
+            // Проверяем, что строка имеет правильную длину
+            if (versionString.length !== 10) {
+                throw new Error('Некорректный формат версии. Ожидается строка длиной 10 символов: ГГММДДЧЧММ');
+            }
 
-			// Извлекаем компоненты даты и времени
-			const year = '20' + versionString.substring(0, 2); // Добавляем "20" для полного года
-			const month = versionString.substring(2, 4);
-			const day = versionString.substring(4, 6);
-			const hours = versionString.substring(6, 8);
-			const minutes = versionString.substring(8, 10);
+            // Извлекаем компоненты даты и времени
+            const year = '20' + versionString.substring(0, 2); // Добавляем "20" для полного года
+            const month = versionString.substring(2, 4);
+            const day = versionString.substring(4, 6);
+            const hours = versionString.substring(6, 8);
+            const minutes = versionString.substring(8, 10);
 
-			// Создаем объект Date
-			const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}:00`);
+            // Создаем объект Date
+            const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}:00`);
 
-			// Проверяем валидность даты
-			if (isNaN(date.getTime())) {
-				throw new Error('Некорректная дата в версии');
-			}
+            // Проверяем валидность даты
+            if (isNaN(date.getTime())) {
+                throw new Error('Некорректная дата в версии');
+            }
 
-			// Массив с названиями месяцев
-			const months = [
-				'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-				'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-			];
+            // Массив с названиями месяцев
+            const months = [
+                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+            ];
 
-			// Форматируем результат
-			const formattedDate = `${parseInt(day)} ${months[parseInt(month) - 1]} ${year} ${hours}:${minutes}`;
+            // Форматируем результат
+            const formattedDate = `${parseInt(day)} ${months[parseInt(month) - 1]} ${year} ${hours}:${minutes}`;
 
-			return formattedDate;
-		}
+            return formattedDate;
+        }
 
-		function scaleReportLogos() {
-			const logos = document.querySelectorAll('.reportLogo');
-			logos.forEach(logo => {
-				// Высота самого логотипа
-				const logoHeight = (logo.getBBox().height);
-				console.log('logoHeight '+logoHeight)
+        function scaleReportLogos() {
+            const logos = document.querySelectorAll('.reportLogo');
+            logos.forEach(logo => {
+                // Высота самого логотипа
+                const logoHeight = (logo.getBBox().height);
+                console.log('logoHeight ' + logoHeight)
 
-				// Третий родитель
-				const parent = logo.closest('tbody');
-				if (!parent) return;
+                // Третий родитель
+                const parent = logo.closest('tbody');
+                if (!parent) return;
 
-				console.log('parent '+parent)
-				const parentHeight = (parent.offsetHeight)-(document.querySelector('.tableCopyrightInfo').offsetHeight)-60;
+                console.log('parent ' + parent)
+                const parentHeight = (parent.offsetHeight) - (document.querySelector('.tableCopyrightInfo').offsetHeight) - 60;
 
-				// Проверка на нулевые значения
-				if (parentHeight === 0 || logoHeight === 0) return;
+                // Проверка на нулевые значения
+                if (parentHeight === 0 || logoHeight === 0) return;
 
-				if (parentHeight>logoHeight) {
-					console.log('Место для лого больше, не уменьшаем');
-					return;
-				}
-				
-				// Рассчёт разницы
-				//console.log(parentHeight)
-				//console.log(logoHeight)
-				const scale = parentHeight / (logoHeight);
+                if (parentHeight > logoHeight) {
+                    console.log('Место для лого больше, не уменьшаем');
+                    return;
+                }
 
-				// Применяем масштабирование
-				console.log(scale)
-				logo.style.transform = `scale(${scale})`;
-				//logo.style.transformOrigin = 'top left'; // чтобы масштаб шёл от угла, можно поменять по вкусу
-			});
-		}
+                // Рассчёт разницы
+                //console.log(parentHeight)
+                //console.log(logoHeight)
+                const scale = parentHeight / (logoHeight);
 
-		function checkUpdates() {
-			console.log(product.MOTP.currentBuild)
-			buildString = "Mango Office Table Parser 4. Вы пользуетесь " + "сборкой от " + formatVersion(build.toString()) + "." + (build != product.MOTP.currentBuild ? (" Последняя сборка на сервере " + "от " + formatVersion(product.MOTP.currentBuild.toString())) : ' Актуальная версия.')
+                // Применяем масштабирование
+                console.log(scale)
+                logo.style.transform = `scale(${scale})`;
+                //logo.style.transformOrigin = 'top left'; // чтобы масштаб шёл от угла, можно поменять по вкусу
+            });
+        }
 
-			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
+        function checkUpdates() {
+            console.log(product.MOTP.currentBuild)
+            buildString = "Mango Office Table Parser 4. Вы пользуетесь " + "сборкой от " + formatVersion(build.toString()) + "." + (build != product.MOTP.currentBuild ? (" Последняя сборка на сервере " + "от " + formatVersion(product.MOTP.currentBuild.toString())) : ' Актуальная версия.')
 
-			let animeVersion = build.match(/\d/g).map(Number);
-			let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="${num}">`).join("");
-			document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="animeCounter">' + animeVersionParsed + '</div>');
+            document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
 
-			if (build < product.MOTP.currentBuild) {
-				//Версия устарела 
-				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Версия устарела ' + build + '</div>'
+            let animeVersion = build.match(/\d/g).map(Number);
+            let animeVersionParsed = animeVersion.map(num => `<img src="https://nod365.github.io/tape/safebooru/${num}.gif" alt="${num}">`).join("");
+            document.getElementById("startpage").insertAdjacentHTML('beforeend', '<div class="animeCounter">' + animeVersionParsed + '</div>');
 
-			} else if (build > product.MOTP.currentBuild) {
-				//Insider mode 						
-				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo"><emoji>✨</emoji>Insider Mode ' + build + '</div>'
-				debug = 1;
+            if (build < product.MOTP.currentBuild) {
+                //Версия устарела 
+                document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Версия устарела ' + build + '</div>'
 
-			} else {
-				//Версия актуальна
-				document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo goodColor">Версия от ' + formatVersion(build.toString()) + '</div>'
+            } else if (build > product.MOTP.currentBuild) {
+                //Insider mode 						
+                document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo"><emoji>✨</emoji>Insider Mode ' + build + '</div>'
+                debug = 1;
 
-			}
+            } else {
+                //Версия актуальна
+                document.getElementById('updatesinfo').innerHTML = '<div class="leftButton Logo goodColor">Версия от ' + formatVersion(build.toString()) + '</div>'
 
-		}
+            }
 
-		var scr = document.createElement("script");
-		scr.src = "https://nod365.github.io/starline/updates.js" + "?ts=" + new Date().getTime();
-		document.getElementsByTagName("head")[0].appendChild(scr);
-	</script>
+        }
+
+        var scr = document.createElement("script");
+        scr.src = "https://nod365.github.io/starline/updates.js" + "?ts=" + new Date().getTime();
+        document.getElementsByTagName("head")[0].appendChild(scr);
+    </script>
 
 </head>
 
 <body>
-	<wrap class="dark">
-		<leftmenu>
-			<div>
-				<div class="leftButton Logo buttonLogoSelected">
-					<emoji>🥭</emoji>Mango Office <b>Table Parser 4</b>
-				</div>
-				<a href="./performance.html">
-					<div>
-						<div class="leftButton">
-							<emoji>📈</emoji>Call Center <b>Performance 2</b>
-						</div>
-					</div>
-				</a>
-				<!--<a href="./recall.html">
+    <wrap class="dark">
+        <leftmenu>
+            <div>
+                <div class="leftButton Logo buttonLogoSelected">
+                    <emoji>🥭</emoji>Mango Office <b>Table Parser 4</b>
+                </div>
+                <a href="./performance.html">
+                    <div>
+                        <div class="leftButton">
+                            <emoji>📈</emoji>Call Center <b>Performance 2</b>
+                        </div>
+                    </div>
+                </a>
+                <!--<a href="./recall.html">
 					<div>
 						<div class="leftButton">
 							<emoji>☎️</emoji>Response <b>Time Analytics</b>
 						</div>
 					</div>
 				</a>-->
-				<div class="leftButton" id="themeToggleBtn">
-					<emoji>🌚</emoji>Тёмная тема
-				</div>
-				<a target="_blank" href="https://github.com/nod365/starline">
-					<div>
-						<div class="leftButton">
-							<emoji>🍴</emoji>Fork me on GitHub
-						</div>
-					</div>
-				</a>
-				<div>
-					<h1>Инструменты</h1>
-					<div class="app-hr"></div>
-				</div>
-				<div class="leftButton" id="opencsv">
-					<emoji>📄</emoji>Открыть CSV-файл
-				</div>
-				<div class="leftButton" id="gethelp">
-					<emoji>📚</emoji>Руководство
-				</div>
-			</div>
-			<div class="flexible" id="editable">
-				<div>
-					<h1>Добро пожаловать</h1>
-					<div class="app-hr"></div>
-				</div>
-				<div class="leftButton buttonSelected">
-					<emoji>👩🏻‍💻</emoji>Генератор таблиц
-				</div>
-				<!--
+                <div class="leftButton" id="themeToggleBtn">
+                    <emoji>🌚</emoji>Тёмная тема
+                </div>
+                <a target="_blank" href="https://github.com/nod365/starline">
+                    <div>
+                        <div class="leftButton">
+                            <emoji>🍴</emoji>Fork me on GitHub
+                        </div>
+                    </div>
+                </a>
+                <div>
+                    <h1>Инструменты</h1>
+                    <div class="app-hr"></div>
+                </div>
+                <div class="leftButton" id="opencsv">
+                    <emoji>📄</emoji>Открыть CSV-файл
+                </div>
+                <div class="leftButton" id="gethelp">
+                    <emoji>📚</emoji>Руководство
+                </div>
+            </div>
+            <div class="flexible" id="editable">
+                <div>
+                    <h1>Добро пожаловать</h1>
+                    <div class="app-hr"></div>
+                </div>
+                <div class="leftButton buttonSelected">
+                    <emoji>👩🏻‍💻</emoji>Генератор таблиц
+                </div>
+                <!--
 				<div><h1>Информация</h1><div class="app-hr"></div></div>
 				<div class="leftButton"><emoji>👍</emoji>Кнопка 1</div>
 				-->
-			</div>
-			<div>
-				<div class="app-hr"></div>
-				<div id="infoplace"></div>
-				<div id="updatesinfo">
-					<div class="leftButton Logo">
-						<emoji class="rotating">⏳</emoji>Проверяю обновления...
-					</div>
-				</div>
-			</div>
-		</leftmenu>
-		<container>
-			<output>
-				<div class="parent" id="startpageAnime">
-					<div class="parent dimmer">
-						<div class="child" id="startpage">
-							<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;">
-								<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 298" width="900"
-									height="298">
-									<path id="Mango Office" fill="currentColor" class="s0"
-										d="m847.6 172.9q-3.1 4.6-8.5 7.2-0.3 0.1-0.6 0.3l17.4 24.9h-18l-15-22.6h-27.1l-0.9 22.6h-14.9l2.5-63.5h45.9q6.9 0 12.1 2.5 5.2 2.6 7.9 7.2 2.8 4.6 2.6 10.7-0.3 6.1-3.4 10.7zm-13.7-16.3q-2.2-2.1-6-2.1h-31l-0.6 15.4h31q3.8 0 6.1-2 2.4-2.1 2.5-5.7 0.1-3.5-2-5.6zm-134.7-2.2l0.5-12.6h75.2l-0.5 12.6zm72.6 25.2h-73.5l0.5-12.5h73.5zm0.7 25.7h-75.2l0.5-12.6h75.2zm-98.7-49.6q-4.5-2.4-9.3-2.4-4.7 0-7.7 1.7-3 1.8-3.1 4.7-0.1 1.6 1.1 2.7 1.1 1.2 4 2 2.9 0.9 8.1 1.8 8 1.2 13.3 3.9 5.3 2.6 7.9 6.7 2.6 4.1 2.3 9.7-0.2 6.2-3.8 10.8-3.7 4.5-9.8 7-6.1 2.4-14 2.4-9.3 0-16.5-3.3-7.2-3.4-11.6-8.6l10.2-10.2q1.8 2.8 4.9 4.9 3.1 2 6.7 3.1 3.6 1 7.2 1 3.7 0 6.3-0.7 2.6-0.8 3.9-2.2 1.4-1.3 1.4-3.2 0.1-2.7-2.7-4.5-2.7-1.8-10.5-3-8.3-1.2-13.5-3.8-5.3-2.5-7.8-6.4-2.4-3.8-2.2-9.1 0.2-5.9 3.7-10.6 3.5-4.6 9.3-7.2 5.9-2.6 13.3-2.6 8.7 0 15.4 3.3 6.6 3.3 11 8.5l-10.1 10.1q-2.8-4.1-7.4-6.5zm-46.2 17.1q-3.1 4.6-8.5 7.2-0.3 0.2-0.6 0.3l17.4 25h-18l-15-22.7h-27.1l-0.8 22.7h-14.9l2.4-63.6h45.9q6.9 0 12.1 2.6 5.2 2.6 8 7.1 2.7 4.6 2.5 10.7-0.2 6.1-3.4 10.7zm-13.7-16.3q-2.2-2.1-6-2.1h-31l-0.6 15.5h31q3.8 0 6.2-2.1 2.3-2.1 2.4-5.7 0.2-3.5-2-5.6zm-32.4-59.8q2.1 3.6 5.6 5.5 3.6 2 8.3 2 8.6 0 14.2-7l5.8 6.4q-3.5 4-8.7 6.4-5.3 2.3-11.7 2.3-7.6 0-13.5-3-5.8-3.1-9.1-8.6-3.3-5.4-3.3-12.4 0-7 3.1-12.5 3.2-5.4 8.7-8.5 5.6-3.1 12.4-3.1 6.7 0 11.9 3.1 5.2 3 8.2 8.3 3 5.3 3 12.3v0.1 0.4 3.1h-36.7q0.5 2.8 1.8 5.2zm23.1-17.2q-1.7-3.4-4.6-5.3-2.9-1.8-6.8-1.8-4 0-7.2 1.9-3.1 2-4.8 5.5-1.1 2.1-1.5 4.8h26.4q-0.4-2.8-1.5-5.1zm-66.9 22.3q3.3 2 7.4 2 4.3 0 7.3-1.9 3.1-1.9 5.1-4.9l6.5 6.4q-3.4 4.1-8.3 6.5-4.8 2.4-11.2 2.4-7 0-12.4-3.1-5.5-3.1-8.7-8.5-3.2-5.4-3.2-12.5 0-6.9 3.2-12.3 3.2-5.4 8.7-8.5 5.6-3.2 12.7-3.2 6.1 0 11 2.4 4.8 2.3 8.2 6.6l-6.5 6.3q-2-3-5.1-4.9-3-1.9-7.3-1.9-4.1 0-7.4 2-3.2 2-5.1 5.5-1.8 3.5-1.8 8 0 4.6 1.8 8.1 1.9 3.5 5.1 5.5zm16.5 103.5h-16l-3.6-11.6h-25.2l-4.5 11.6h-15.5l26.6-63.6h16.5zm-30.8-47l-9 22.7h16.2zm-12.7-47.4h-10.2v-45.2h10.2zm-5.1-54.5q-2.6 0-4.5-1.8-1.9-1.8-1.9-4.4 0-2.7 1.9-4.5 1.9-1.8 4.5-1.8 2.7 0 4.6 1.8 1.8 1.8 1.8 4.4 0 2.7-1.8 4.5-1.9 1.8-4.6 1.8zm-11.9 116.5q-3.1 4.6-8.5 7.2-5.4 2.5-12.3 2.5h-31l-0.9 22.7h-14.9l2.4-63.6h45.9q7 0 12.2 2.6 5.1 2.6 7.9 7.2 2.8 4.6 2.5 10.7-0.2 6-3.3 10.7zm-13.8-16.4q-2.1-2-5.9-2.1h-31l-0.6 15.5h31q3.8 0 6.1-2.1 2.3-2.1 2.5-5.6 0.1-3.6-2.1-5.7zm0.3-45.6h-10.1v-36.9h-8.4v-8.3h8.4v-8q0-12 12-12h10v8.1h-6.8q-2.7 0-3.9 1.1-1.2 1.2-1.2 4v6.8h11.9v8.3h-11.9zm-35.5 0h-10.1v-37h-8.4v-8.2h8.4v-8q0-12.1 12-12.1h10v8.1h-6.8q-2.7 0-3.9 1.2-1.2 1.2-1.2 4v6.8h11.9v8.2h-11.9zm-35.9-8.2q-4.7 4.6-10.9 7.1-6.3 2.6-13.7 2.6-7.4 0-13.7-2.6-6.2-2.5-10.8-7.1-4.7-4.6-7.2-10.8-2.5-6.2-2.5-13.4 0-7.3 2.5-13.4 2.5-6.2 7.2-10.8 4.6-4.5 10.8-7.1 6.3-2.5 13.7-2.5 7.4 0 13.7 2.5 6.2 2.6 10.9 7.1 4.6 4.6 7.1 10.8 2.6 6.1 2.6 13.4 0 7.2-2.6 13.4-2.5 6.2-7.1 10.8zm-4.2-36.9q-3-5.5-8.3-8.7-5.2-3.2-12.1-3.2-6.8 0-12.1 3.2-5.3 3.2-8.3 8.7-3 5.5-3 12.7 0 7.1 3 12.7 3 5.6 8.3 8.7 5.3 3.2 12.1 3.2 6.9 0 12.1-3.2 5.3-3.1 8.3-8.7 3-5.6 3-12.7 0-7.2-3-12.7zm-92.6 43.5q-5.6 3.1-12.9 3.1-7.1 0-12.7-3.1-5.6-3.1-8.7-8.5-3.2-5.5-3.2-12.5 0-7 3.2-12.5 3.1-5.4 8.7-8.5 5.6-3.1 12.7-3.1 7.3 0 12.9 3.1 5.5 3.1 8.7 8.5 3.1 5.5 3.1 12.5 0 7-3.1 12.5-3.2 5.4-8.7 8.5zm-0.5-29.1q-1.8-3.5-4.9-5.4-3.2-2-7.4-2-4.1 0-7.4 1.9-3.2 2-4.9 5.5-1.8 3.5-1.8 8.1 0 4.6 1.8 8.1 1.7 3.5 4.9 5.4 3.3 2 7.4 2 4.2 0 7.4-2 3.1-1.9 4.9-5.4 1.8-3.5 1.8-8.1 0-4.6-1.8-8.1zm-58.6 46.7q-5.7 3-13 3-6.4 0-11.9-2.1-5.4-2.1-8.9-5.8l5.8-6.8q2.7 2.9 6.3 4.6 3.5 1.7 8.2 1.7 4.8 0 8.2-1.9 3.5-1.9 5.4-5.3 1.9-3.3 1.9-7.9v-2.7q-2.1 3.1-5.6 5.1-4.4 2.5-10.3 2.5-6.4 0-11.7-3-5.2-2.9-8.2-8.2-3-5.3-3-12.2 0-7 3.1-12.3 3-5.3 8.2-8.3 5.2-3.1 11.4-3.1 4.8 0 8.7 1.9 3.8 1.8 6.4 5.2 0.6 0.8 1.1 1.8v-7.4h10.1v40.2q0 7.2-3.3 12.6-3.2 5.4-8.9 8.4zm2-37.9q0-5.4-2-8.9-2-3.6-5.1-5.5-3.2-1.8-7.1-1.8-4.2 0-7.3 2-3.2 1.9-5 5.3-1.7 3.4-1.7 7.7 0 4.4 1.8 7.7 1.8 3.4 5.1 5.3 3.2 1.9 7.6 1.9 3.7 0 6.8-1.5 3.1-1.5 5.2-4.2 1.1-1.6 1.7-3.4zm-32.1 54.8q4.6 2.1 7.1 5.8 2.4 3.6 2.2 8.6-0.1 4.7-2.9 8.4-2.3 3.1-6.2 5.1 0 0 0.1 0 5.1 2.1 7.9 5.9 2.8 3.8 2.6 9.1-0.2 5.6-3.3 9.8-3.1 4.2-8.4 6.5-5.4 2.4-12.4 2.4h-47.3l2.4-63.6h47.4q6.2 0 10.8 2zm-45.3 49h32.6q3.8 0 6.1-1.9 2.3-1.9 2.4-5.3 0.1-3.1-2-4.9-2.2-1.8-6-1.8h-32.5zm37.8-36.9q-1.7-1.6-4.9-1.6h-31.4l-0.5 12.5h31.4q3.2 0 5.1-1.7 1.8-1.8 1.9-4.8 0.1-2.8-1.6-4.4zm-18.3-71q0-6.1-2.7-9.1-2.8-2.9-7.4-2.9-3.3 0-6.3 1.7-2.9 1.7-4.7 5.4-1.8 3.7-1.8 9.6v21.4h-10.2v-45.2h10.1v8.6q0.8-2.3 2.1-3.9 2.7-3.4 6.2-4.8 3.5-1.4 7.3-1.4 8.1 0 12.8 5 4.7 5 4.7 14.5v27.2h-10.1zm-60.4 108.9h-25.1l-4.6 11.6h-15.5l26.6-63.6h16.6l21.7 63.6h-16zm-11.2-35.5l-9 22.8h16.2zm18.5-53.1q-2.3 2.9-5.7 4.7-4.5 2.4-10.3 2.4-5.2 0-9.2-1.9-4-1.9-6.1-5.1-2.2-3.3-2.2-7.6 0-4.8 2.7-8.1 2.7-3.3 7.6-5 4.8-1.8 11.2-1.8h11.5q0-4.9-3.2-7.7-3.3-2.8-8.9-2.8-4.1 0-7.6 1.6-3.4 1.6-6 4.5l-5.8-6.3q3.7-3.7 8.7-5.8 5-2.1 11.1-2.1 6.4 0 11.2 2.2 4.9 2.3 7.6 6.4 2.7 4.2 2.7 10v28.1h-9.3zm-0.5-15.5h-10.6q-5.4 0-8.7 1.9-3.3 1.9-3.3 5.7 0 3.3 2.5 5.3 2.6 1.9 6.6 1.9 3.9 0 7.2-1.6 3.3-1.7 5.2-4.5 0.7-1 1.1-2.1zm-71.4 64.8l-1.9 50.7h-14.9l1.9-50.7h-28.6l0.5-12.9h72.1l-0.5 12.9zm18-92.9l-20.5 42.8h-7.7l-20.5-42.8v49.2h-10.2v-64.7h12.5l22.2 46.4 22.1-46.4h12.3v64.7h-10.2zm166.6 80l-1.8 45-0.3 6.3h47.8l-0.5 12.3h-62.6l2.5-63.6zm127.2 51.3l-0.5 12.3h-75.2l0.4-12.3zm-74.7-13.4l0.5-12.6h73.6l-0.5 12.6zm1.5-37.9h75.2l-0.5 12.7h-75.2z" />
-								</svg>
-								<br>
-								<h2>Чтобы сформировать таблицу, нажмите <div class="supportButton fakeCur"
-										onclick="document.getElementById('files').click();">
-										<emoji>📄</emoji>Открыть CSV-файл
-									</div> в&nbsp;левом&nbsp;меню.</h2> <br>
-								<div>Нужна дополнительная помощь с экспортом? Нажмите <div class="supportButton fakeCur"
-										onclick="PU()">
-										<emoji>📚</emoji>Руководство
-									</div> в&nbsp;левом&nbsp;меню.</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</output>
-		</container>
-	</wrap>
-	<render style="display:none;">
-	</render>
-	<files style="display: none;">
-		<input type="file" id="files" accept=".csv">
-	</files>
+            </div>
+            <div>
+                <div class="app-hr"></div>
+                <div id="infoplace"></div>
+                <div id="updatesinfo">
+                    <div class="leftButton Logo">
+                        <emoji class="rotating">⏳</emoji>Проверяю обновления...
+                    </div>
+                </div>
+            </div>
+        </leftmenu>
+        <container>
+            <output>
+                <div class="parent" id="startpageAnime">
+                    <div class="parent dimmer">
+                        <div class="child" id="startpage">
+                            <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;">
+                                <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 298" width="900"
+                                    height="298">
+                                    <path id="Mango Office" fill="currentColor" class="s0"
+                                        d="m847.6 172.9q-3.1 4.6-8.5 7.2-0.3 0.1-0.6 0.3l17.4 24.9h-18l-15-22.6h-27.1l-0.9 22.6h-14.9l2.5-63.5h45.9q6.9 0 12.1 2.5 5.2 2.6 7.9 7.2 2.8 4.6 2.6 10.7-0.3 6.1-3.4 10.7zm-13.7-16.3q-2.2-2.1-6-2.1h-31l-0.6 15.4h31q3.8 0 6.1-2 2.4-2.1 2.5-5.7 0.1-3.5-2-5.6zm-134.7-2.2l0.5-12.6h75.2l-0.5 12.6zm72.6 25.2h-73.5l0.5-12.5h73.5zm0.7 25.7h-75.2l0.5-12.6h75.2zm-98.7-49.6q-4.5-2.4-9.3-2.4-4.7 0-7.7 1.7-3 1.8-3.1 4.7-0.1 1.6 1.1 2.7 1.1 1.2 4 2 2.9 0.9 8.1 1.8 8 1.2 13.3 3.9 5.3 2.6 7.9 6.7 2.6 4.1 2.3 9.7-0.2 6.2-3.8 10.8-3.7 4.5-9.8 7-6.1 2.4-14 2.4-9.3 0-16.5-3.3-7.2-3.4-11.6-8.6l10.2-10.2q1.8 2.8 4.9 4.9 3.1 2 6.7 3.1 3.6 1 7.2 1 3.7 0 6.3-0.7 2.6-0.8 3.9-2.2 1.4-1.3 1.4-3.2 0.1-2.7-2.7-4.5-2.7-1.8-10.5-3-8.3-1.2-13.5-3.8-5.3-2.5-7.8-6.4-2.4-3.8-2.2-9.1 0.2-5.9 3.7-10.6 3.5-4.6 9.3-7.2 5.9-2.6 13.3-2.6 8.7 0 15.4 3.3 6.6 3.3 11 8.5l-10.1 10.1q-2.8-4.1-7.4-6.5zm-46.2 17.1q-3.1 4.6-8.5 7.2-0.3 0.2-0.6 0.3l17.4 25h-18l-15-22.7h-27.1l-0.8 22.7h-14.9l2.4-63.6h45.9q6.9 0 12.1 2.6 5.2 2.6 8 7.1 2.7 4.6 2.5 10.7-0.2 6.1-3.4 10.7zm-13.7-16.3q-2.2-2.1-6-2.1h-31l-0.6 15.5h31q3.8 0 6.2-2.1 2.3-2.1 2.4-5.7 0.2-3.5-2-5.6zm-32.4-59.8q2.1 3.6 5.6 5.5 3.6 2 8.3 2 8.6 0 14.2-7l5.8 6.4q-3.5 4-8.7 6.4-5.3 2.3-11.7 2.3-7.6 0-13.5-3-5.8-3.1-9.1-8.6-3.3-5.4-3.3-12.4 0-7 3.1-12.5 3.2-5.4 8.7-8.5 5.6-3.1 12.4-3.1 6.7 0 11.9 3.1 5.2 3 8.2 8.3 3 5.3 3 12.3v0.1 0.4 3.1h-36.7q0.5 2.8 1.8 5.2zm23.1-17.2q-1.7-3.4-4.6-5.3-2.9-1.8-6.8-1.8-4 0-7.2 1.9-3.1 2-4.8 5.5-1.1 2.1-1.5 4.8h26.4q-0.4-2.8-1.5-5.1zm-66.9 22.3q3.3 2 7.4 2 4.3 0 7.3-1.9 3.1-1.9 5.1-4.9l6.5 6.4q-3.4 4.1-8.3 6.5-4.8 2.4-11.2 2.4-7 0-12.4-3.1-5.5-3.1-8.7-8.5-3.2-5.4-3.2-12.5 0-6.9 3.2-12.3 3.2-5.4 8.7-8.5 5.6-3.2 12.7-3.2 6.1 0 11 2.4 4.8 2.3 8.2 6.6l-6.5 6.3q-2-3-5.1-4.9-3-1.9-7.3-1.9-4.1 0-7.4 2-3.2 2-5.1 5.5-1.8 3.5-1.8 8 0 4.6 1.8 8.1 1.9 3.5 5.1 5.5zm16.5 103.5h-16l-3.6-11.6h-25.2l-4.5 11.6h-15.5l26.6-63.6h16.5zm-30.8-47l-9 22.7h16.2zm-12.7-47.4h-10.2v-45.2h10.2zm-5.1-54.5q-2.6 0-4.5-1.8-1.9-1.8-1.9-4.4 0-2.7 1.9-4.5 1.9-1.8 4.5-1.8 2.7 0 4.6 1.8 1.8 1.8 1.8 4.4 0 2.7-1.8 4.5-1.9 1.8-4.6 1.8zm-11.9 116.5q-3.1 4.6-8.5 7.2-5.4 2.5-12.3 2.5h-31l-0.9 22.7h-14.9l2.4-63.6h45.9q7 0 12.2 2.6 5.1 2.6 7.9 7.2 2.8 4.6 2.5 10.7-0.2 6-3.3 10.7zm-13.8-16.4q-2.1-2-5.9-2.1h-31l-0.6 15.5h31q3.8 0 6.1-2.1 2.3-2.1 2.5-5.6 0.1-3.6-2.1-5.7zm0.3-45.6h-10.1v-36.9h-8.4v-8.3h8.4v-8q0-12 12-12h10v8.1h-6.8q-2.7 0-3.9 1.1-1.2 1.2-1.2 4v6.8h11.9v8.3h-11.9zm-35.5 0h-10.1v-37h-8.4v-8.2h8.4v-8q0-12.1 12-12.1h10v8.1h-6.8q-2.7 0-3.9 1.2-1.2 1.2-1.2 4v6.8h11.9v8.2h-11.9zm-35.9-8.2q-4.7 4.6-10.9 7.1-6.3 2.6-13.7 2.6-7.4 0-13.7-2.6-6.2-2.5-10.8-7.1-4.7-4.6-7.2-10.8-2.5-6.2-2.5-13.4 0-7.3 2.5-13.4 2.5-6.2 7.2-10.8 4.6-4.5 10.8-7.1 6.3-2.5 13.7-2.5 7.4 0 13.7 2.5 6.2 2.6 10.9 7.1 4.6 4.6 7.1 10.8 2.6 6.1 2.6 13.4 0 7.2-2.6 13.4-2.5 6.2-7.1 10.8zm-4.2-36.9q-3-5.5-8.3-8.7-5.2-3.2-12.1-3.2-6.8 0-12.1 3.2-5.3 3.2-8.3 8.7-3 5.5-3 12.7 0 7.1 3 12.7 3 5.6 8.3 8.7 5.3 3.2 12.1 3.2 6.9 0 12.1-3.2 5.3-3.1 8.3-8.7 3-5.6 3-12.7 0-7.2-3-12.7zm-92.6 43.5q-5.6 3.1-12.9 3.1-7.1 0-12.7-3.1-5.6-3.1-8.7-8.5-3.2-5.5-3.2-12.5 0-7 3.2-12.5 3.1-5.4 8.7-8.5 5.6-3.1 12.7-3.1 7.3 0 12.9 3.1 5.5 3.1 8.7 8.5 3.1 5.5 3.1 12.5 0 7-3.1 12.5-3.2 5.4-8.7 8.5zm-0.5-29.1q-1.8-3.5-4.9-5.4-3.2-2-7.4-2-4.1 0-7.4 1.9-3.2 2-4.9 5.5-1.8 3.5-1.8 8.1 0 4.6 1.8 8.1 1.7 3.5 4.9 5.4 3.3 2 7.4 2 4.2 0 7.4-2 3.1-1.9 4.9-5.4 1.8-3.5 1.8-8.1 0-4.6-1.8-8.1zm-58.6 46.7q-5.7 3-13 3-6.4 0-11.9-2.1-5.4-2.1-8.9-5.8l5.8-6.8q2.7 2.9 6.3 4.6 3.5 1.7 8.2 1.7 4.8 0 8.2-1.9 3.5-1.9 5.4-5.3 1.9-3.3 1.9-7.9v-2.7q-2.1 3.1-5.6 5.1-4.4 2.5-10.3 2.5-6.4 0-11.7-3-5.2-2.9-8.2-8.2-3-5.3-3-12.2 0-7 3.1-12.3 3-5.3 8.2-8.3 5.2-3.1 11.4-3.1 4.8 0 8.7 1.9 3.8 1.8 6.4 5.2 0.6 0.8 1.1 1.8v-7.4h10.1v40.2q0 7.2-3.3 12.6-3.2 5.4-8.9 8.4zm2-37.9q0-5.4-2-8.9-2-3.6-5.1-5.5-3.2-1.8-7.1-1.8-4.2 0-7.3 2-3.2 1.9-5 5.3-1.7 3.4-1.7 7.7 0 4.4 1.8 7.7 1.8 3.4 5.1 5.3 3.2 1.9 7.6 1.9 3.7 0 6.8-1.5 3.1-1.5 5.2-4.2 1.1-1.6 1.7-3.4zm-32.1 54.8q4.6 2.1 7.1 5.8 2.4 3.6 2.2 8.6-0.1 4.7-2.9 8.4-2.3 3.1-6.2 5.1 0 0 0.1 0 5.1 2.1 7.9 5.9 2.8 3.8 2.6 9.1-0.2 5.6-3.3 9.8-3.1 4.2-8.4 6.5-5.4 2.4-12.4 2.4h-47.3l2.4-63.6h47.4q6.2 0 10.8 2zm-45.3 49h32.6q3.8 0 6.1-1.9 2.3-1.9 2.4-5.3 0.1-3.1-2-4.9-2.2-1.8-6-1.8h-32.5zm37.8-36.9q-1.7-1.6-4.9-1.6h-31.4l-0.5 12.5h31.4q3.2 0 5.1-1.7 1.8-1.8 1.9-4.8 0.1-2.8-1.6-4.4zm-18.3-71q0-6.1-2.7-9.1-2.8-2.9-7.4-2.9-3.3 0-6.3 1.7-2.9 1.7-4.7 5.4-1.8 3.7-1.8 9.6v21.4h-10.2v-45.2h10.1v8.6q0.8-2.3 2.1-3.9 2.7-3.4 6.2-4.8 3.5-1.4 7.3-1.4 8.1 0 12.8 5 4.7 5 4.7 14.5v27.2h-10.1zm-60.4 108.9h-25.1l-4.6 11.6h-15.5l26.6-63.6h16.6l21.7 63.6h-16zm-11.2-35.5l-9 22.8h16.2zm18.5-53.1q-2.3 2.9-5.7 4.7-4.5 2.4-10.3 2.4-5.2 0-9.2-1.9-4-1.9-6.1-5.1-2.2-3.3-2.2-7.6 0-4.8 2.7-8.1 2.7-3.3 7.6-5 4.8-1.8 11.2-1.8h11.5q0-4.9-3.2-7.7-3.3-2.8-8.9-2.8-4.1 0-7.6 1.6-3.4 1.6-6 4.5l-5.8-6.3q3.7-3.7 8.7-5.8 5-2.1 11.1-2.1 6.4 0 11.2 2.2 4.9 2.3 7.6 6.4 2.7 4.2 2.7 10v28.1h-9.3zm-0.5-15.5h-10.6q-5.4 0-8.7 1.9-3.3 1.9-3.3 5.7 0 3.3 2.5 5.3 2.6 1.9 6.6 1.9 3.9 0 7.2-1.6 3.3-1.7 5.2-4.5 0.7-1 1.1-2.1zm-71.4 64.8l-1.9 50.7h-14.9l1.9-50.7h-28.6l0.5-12.9h72.1l-0.5 12.9zm18-92.9l-20.5 42.8h-7.7l-20.5-42.8v49.2h-10.2v-64.7h12.5l22.2 46.4 22.1-46.4h12.3v64.7h-10.2zm166.6 80l-1.8 45-0.3 6.3h47.8l-0.5 12.3h-62.6l2.5-63.6zm127.2 51.3l-0.5 12.3h-75.2l0.4-12.3zm-74.7-13.4l0.5-12.6h73.6l-0.5 12.6zm1.5-37.9h75.2l-0.5 12.7h-75.2z" />
+                                </svg>
+                                <br>
+                                <h2>Чтобы сформировать таблицу, нажмите <div class="supportButton fakeCur"
+                                        onclick="document.getElementById('files').click();">
+                                        <emoji>📄</emoji>Открыть CSV-файл
+                                    </div> в&nbsp;левом&nbsp;меню.</h2> <br>
+                                <div>Нужна дополнительная помощь с экспортом? Нажмите <div class="supportButton fakeCur"
+                                        onclick="PU()">
+                                        <emoji>📚</emoji>Руководство
+                                    </div> в&nbsp;левом&nbsp;меню.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </output>
+        </container>
+    </wrap>
+    <render style="display:none;">
+    </render>
+    <files style="display: none;">
+        <input type="file" id="files" accept=".csv">
+    </files>
 
-	<script>
+    <script>
 
-		document.getElementById('opencsv').addEventListener('click', function () {
-			document.getElementById('files').click();
-		});
+        document.getElementById('opencsv').addEventListener('click', function () {
+            document.getElementById('files').click();
+        });
 
-		document.getElementById('gethelp').addEventListener('click', PU);
+        document.getElementById('gethelp').addEventListener('click', PU);
 
-		window.addEventListener('resize', function () {
-			const container = document.querySelector('container');
-			const leftmenu = document.querySelector('leftmenu');
+        window.addEventListener('resize', function () {
+            const container = document.querySelector('container');
+            const leftmenu = document.querySelector('leftmenu');
 
-			if (container) {
-				const containerWidth = container.offsetWidth;
-				if ((window.innerWidth - leftmenu.offsetWidth) < 1100) {
-					const scaleValue = 1 / 1100 * (window.innerWidth - leftmenu.offsetWidth);
-					container.style.zoom = scaleValue;
-				} else {
-					container.style.zoom = 1;
-				}
+            if (container) {
+                const containerWidth = container.offsetWidth;
+                if ((window.innerWidth - leftmenu.offsetWidth) < 1100) {
+                    const scaleValue = 1 / 1100 * (window.innerWidth - leftmenu.offsetWidth);
+                    container.style.zoom = scaleValue;
+                } else {
+                    container.style.zoom = 1;
+                }
 
-				//console.log('containerWidth :' + containerWidth)
-			}
-		});
+                //console.log('containerWidth :' + containerWidth)
+            }
+        });
 
-		// Для первого запуска скрипта, если страница уже загружена и элемент есть на странице
-		window.dispatchEvent(new Event('resize'));
+        // Для первого запуска скрипта, если страница уже загружена и элемент есть на странице
+        window.dispatchEvent(new Event('resize'));
 
-		function scrollTo(id) {
-			document.querySelector('#' + id + '_scroll').scrollIntoView({
-				behavior: 'smooth'
-			});
-		}
-		/*
-				async function setBingImageAsBackground() {
-					console.log('Pending image...')
-		  try {
-			// Запрос к API Bing
-			const response = await fetch("https://avenuetaxi.ru/microsoft/bing.php");
-			const data = await response.json();
-		
-			// Извлечение URL изображения
-			const imageUrl =   "https://bing.com" + data.images[0].url;
-			const imgName = data.images[0].title
-			
-			document.body.style.backgroundImage = 'url(' +imageUrl+ ')'
-			document.body.dataset.locked = "true";
-		
-		
-			getAdjustedMainColor(imageUrl, function(hexColor) {
-				console.log("Итоговый цвет:", hexColor);
-		
-				const style = document.createElement('style');
-				style.textContent = `
-					* { color: ${hexColor} } 
-					.semicolortext, .semicolortext * { color: ${hexColor}b0 } 
-					tr:nth-child(even):not(.red) td {    background-color: ${hexColor}11; }
-					tr:nth-child(even):not(.red) .gradientLeft {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}11 100%); }
-					tr.ultraborder.colorborder td {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}70 20%, ${hexColor}70 80%, ${hexColor}00 100%); }
-					tr.aboutWrap { background: linear-gradient(90deg, #59c14733 0%, #ec4b251a 12%, #f9d11e33 24%, ${hexColor}14 36%); }
-					.about { color: ${hexColor} }
-				`;
-				document.head.appendChild(style);
-			});
-		
-			// Создание тега <style> с CSS
-			const style = document.createElement('style');
-			style.textContent = `
-				th.left.GR, .dark th.left.GR { background-image: url('${imageUrl}'); background-size: cover; background-position: center; color: #FFF; }
-				
-				span.dateHeader.opacitytext.minitext { background: #ffffffeb; border-radius: 10px 20px 20px 20px; opacity: 1; padding: 0 8px; }
-				
-				span.thName { background: #ffffffeb; border-radius: 20px 20px 20px 10px; }
-				.desIcon.parkid { display: none; }
-		
-				.dark span.dateHeader.opacitytext.minitext,
-				.dark span.thName {
-					color: #FFF !important;
-					background: #242424;
-				}
-		
-				th.left.GR:before { content: ""; position: absolute; left: 0; top: 0; background: linear-gradient(95deg, #ff009900 90%, #ff009970 100%); width: 100%; height: 100%; pointer-events: none; }
-				
-				th.left.GR:after { content: '${imgName} (Bing)'; position: absolute; bottom: 5px; right: 7px; text-shadow: 1px 1px #000; white-space: nowrap; font-size: 14px; font-weight: 100; }
-		
-			`;
-		
-			// Добавление стиля в конец <head>
-			document.head.appendChild(style);
-		  } catch (error) {
-			console.error("Ошибка при получении изображения Bing:", error);
-		  }
-		}
-		
-		function getAdjustedMainColor(imageUrl, callback) {
-		  const img = new Image();
-		  img.crossOrigin = "Anonymous";
-		  img.src = imageUrl;
-		
-		  img.onload = () => {
-			const colorThief = new ColorThief();
-			const color = colorThief.getColor(img); // [r, g, b]
-		
-			let hex = rgbToHex(color[0], color[1], color[2]);
-			if (!hasGoodContrast(color)) {
-			  const darkerColor = darkenColor(color, 0.25);
-			  hex = rgbToHex(darkerColor[0], darkerColor[1], darkerColor[2]);
-			}
-		
-			callback(hex); // возвращает финальный hex цвет
-		  };
-		
-		  img.onerror = () => {
-			console.error("Ошибка загрузки изображения.");
-			callback(null);
-		  };
-		
-		  // Helpers
-		  function rgbToHex(r, g, b) {
-			return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-		  }
-		
-		  function luminance(r, g, b) {
-			const [rs, gs, bs] = [r, g, b].map(v => {
-			  v /= 255;
-			  return v <= 0.03928
-				? v / 12.92
-				: Math.pow((v + 0.055) / 1.055, 2.4);
-			});
-			return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-		  }
-		
-		  function contrast(rgb1, rgb2) {
-			const lum1 = luminance(...rgb1);
-			const lum2 = luminance(...rgb2);
-			const brightest = Math.max(lum1, lum2);
-			const darkest = Math.min(lum1, lum2);
-			return (brightest + 0.05) / (darkest + 0.05);
-		  }
-		
-		  function hasGoodContrast(rgb) {
-			const white = [255, 255, 255];
-			return contrast(rgb, white) >= 4.5; // WCAG AA уровень
-		  }
-		
-		  function darkenColor([r, g, b], factor = 0.2) {
-			return [
-			  Math.max(0, Math.floor(r * (1 - factor))),
-			  Math.max(0, Math.floor(g * (1 - factor))),
-			  Math.max(0, Math.floor(b * (1 - factor)))
-			];
-		  }
-		}
-		
-		*/
-
-
-		function setBackgroundImageDefault(category) {
-			const categories = [
-				"nature",
-				"abstract",
-				"bokeh",
-				"gradient",
-				"cityscape",
-				"outdoor",
-				"estate",
-				"automotive"
-			];
-
-			// если аргумент не передан или некорректный — берём случайный
-			if (!category || !categories.includes(category)) {
-				const randomIndex = Math.floor(Math.random() * categories.length);
-				category = categories[randomIndex];
-			}
-
-			const url = `https://static.photos/${category}/1200x630?random=${Math.floor(Math.random() * 9999) + 1}`;
-			const caption = category.charAt(0).toUpperCase() + category.slice(1) + " (© static.photos)";
-
-			setBackgroundImage(url, caption);
-		}
+        function scrollTo(id) {
+            document.querySelector('#' + id + '_scroll').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        /*
+                async function setBingImageAsBackground() {
+                    console.log('Pending image...')
+          try {
+            // Запрос к API Bing
+            const response = await fetch("https://avenuetaxi.ru/microsoft/bing.php");
+            const data = await response.json();
+    	
+            // Извлечение URL изображения
+            const imageUrl =   "https://bing.com" + data.images[0].url;
+            const imgName = data.images[0].title
+        	
+            document.body.style.backgroundImage = 'url(' +imageUrl+ ')'
+            document.body.dataset.locked = "true";
+    	
+    	
+            getAdjustedMainColor(imageUrl, function(hexColor) {
+                console.log("Итоговый цвет:", hexColor);
+    	
+                const style = document.createElement('style');
+                style.textContent = `
+                    * { color: ${hexColor} } 
+                    .semicolortext, .semicolortext * { color: ${hexColor}b0 } 
+                    tr:nth-child(even):not(.red) td {    background-color: ${hexColor}11; }
+                    tr:nth-child(even):not(.red) .gradientLeft {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}11 100%); }
+                    tr.ultraborder.colorborder td {    background: linear-gradient(90deg, ${hexColor}00 0%, ${hexColor}70 20%, ${hexColor}70 80%, ${hexColor}00 100%); }
+                    tr.aboutWrap { background: linear-gradient(90deg, #59c14733 0%, #ec4b251a 12%, #f9d11e33 24%, ${hexColor}14 36%); }
+                    .about { color: ${hexColor} }
+                `;
+                document.head.appendChild(style);
+            });
+    	
+            // Создание тега <style> с CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                th.left.GR, .dark th.left.GR { background-image: url('${imageUrl}'); background-size: cover; background-position: center; color: #FFF; }
+            	
+                span.dateHeader.opacitytext.minitext { background: #ffffffeb; border-radius: 10px 20px 20px 20px; opacity: 1; padding: 0 8px; }
+            	
+                span.thName { background: #ffffffeb; border-radius: 20px 20px 20px 10px; }
+                .desIcon.parkid { display: none; }
+    	
+                .dark span.dateHeader.opacitytext.minitext,
+                .dark span.thName {
+                    color: #FFF !important;
+                    background: #242424;
+                }
+    	
+                th.left.GR:before { content: ""; position: absolute; left: 0; top: 0; background: linear-gradient(95deg, #ff009900 90%, #ff009970 100%); width: 100%; height: 100%; pointer-events: none; }
+            	
+                th.left.GR:after { content: '${imgName} (Bing)'; position: absolute; bottom: 5px; right: 7px; text-shadow: 1px 1px #000; white-space: nowrap; font-size: 14px; font-weight: 100; }
+    	
+            `;
+    	
+            // Добавление стиля в конец <head>
+            document.head.appendChild(style);
+          } catch (error) {
+            console.error("Ошибка при получении изображения Bing:", error);
+          }
+        }
+    	
+        function getAdjustedMainColor(imageUrl, callback) {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.src = imageUrl;
+    	
+          img.onload = () => {
+            const colorThief = new ColorThief();
+            const color = colorThief.getColor(img); // [r, g, b]
+    	
+            let hex = rgbToHex(color[0], color[1], color[2]);
+            if (!hasGoodContrast(color)) {
+              const darkerColor = darkenColor(color, 0.25);
+              hex = rgbToHex(darkerColor[0], darkerColor[1], darkerColor[2]);
+            }
+    	
+            callback(hex); // возвращает финальный hex цвет
+          };
+    	
+          img.onerror = () => {
+            console.error("Ошибка загрузки изображения.");
+            callback(null);
+          };
+    	
+          // Helpers
+          function rgbToHex(r, g, b) {
+            return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+          }
+    	
+          function luminance(r, g, b) {
+            const [rs, gs, bs] = [r, g, b].map(v => {
+              v /= 255;
+              return v <= 0.03928
+                ? v / 12.92
+                : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+          }
+    	
+          function contrast(rgb1, rgb2) {
+            const lum1 = luminance(...rgb1);
+            const lum2 = luminance(...rgb2);
+            const brightest = Math.max(lum1, lum2);
+            const darkest = Math.min(lum1, lum2);
+            return (brightest + 0.05) / (darkest + 0.05);
+          }
+    	
+          function hasGoodContrast(rgb) {
+            const white = [255, 255, 255];
+            return contrast(rgb, white) >= 4.5; // WCAG AA уровень
+          }
+    	
+          function darkenColor([r, g, b], factor = 0.2) {
+            return [
+              Math.max(0, Math.floor(r * (1 - factor))),
+              Math.max(0, Math.floor(g * (1 - factor))),
+              Math.max(0, Math.floor(b * (1 - factor)))
+            ];
+          }
+        }
+    	
+        */
 
 
-		async function translateText(text) {
-			const response = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ru&dt=t&q=' + encodeURIComponent(text));
-			const result = await response.json();
-			return result[0][0][0]; // Переведённая строка
-		}
+        function setBackgroundImageDefault(category) {
+            const categories = [
+                "nature",
+                "abstract",
+                "bokeh",
+                "gradient",
+                "cityscape",
+                "outdoor",
+                "estate",
+                "automotive"
+            ];
+
+            // если аргумент не передан или некорректный — берём случайный
+            if (!category || !categories.includes(category)) {
+                const randomIndex = Math.floor(Math.random() * categories.length);
+                category = categories[randomIndex];
+            }
+
+            const url = `https://static.photos/${category}/1200x630?random=${Math.floor(Math.random() * 9999) + 1}`;
+            const caption = category.charAt(0).toUpperCase() + category.slice(1) + " (© static.photos)";
+
+            setBackgroundImage(url, caption);
+        }
+
+
+        async function translateText(text) {
+            const response = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ru&dt=t&q=' + encodeURIComponent(text));
+            const result = await response.json();
+            return result[0][0][0]; // Переведённая строка
+        }
 
 
 
-		function setBackgroundImage(imageUrl = 'https://avenuetaxi.ru/microsoft/duck.php', titleString = 'No copyright information available.', needTranslate = 0) {
-			const image = new Image();
-			image.src = imageUrl;
-			image.crossOrigin = "Anonymous"; // Для работы с изображениями с другого домена
+        function setBackgroundImage(imageUrl = 'https://avenuetaxi.ru/microsoft/duck.php', titleString = 'No copyright information available.', needTranslate = 0) {
+            const image = new Image();
+            image.src = imageUrl;
+            image.crossOrigin = "Anonymous"; // Для работы с изображениями с другого домена
 
-			image.onload = function () {
-				loading(0)
-				const canvas = document.createElement('canvas');
-				canvas.width = image.width;
-				canvas.height = image.height;
-				const ctx = canvas.getContext('2d');
-				ctx.drawImage(image, 0, 0);
-
-
-				const dataURL = canvas.toDataURL(); // Получаем base64
-
-				// Ставим base64 как фон
-				document.body.style.backgroundImage = `url(${dataURL})`;
-				document.body.dataset.locked = "true";
-
-				const colorThief = new ColorThief();
-				const [r, g, b] = colorThief.getColor(image);
-
-				// Проверяем контраст с белым фоном
-				const hasGoodContrast = ([r, g, b]) => {
-					const luminance = (r, g, b) => {
-						const a = [r, g, b].map(v => {
-							v /= 255;
-							return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-						});
-						return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
-					};
-					const contrastRatio = (l1, l2) => {
-						const brightest = Math.max(l1, l2);
-						const darkest = Math.min(l1, l2);
-						return (brightest + 0.05) / (darkest + 0.05);
-					};
-					return contrastRatio(luminance(r, g, b), luminance(255, 255, 255)) >= 4.5;
-				};
-
-				// Затемняем цвет, если контраст плохой
-				// Функции для работы с HSL
-				function rgbToHsl(r, g, b) {
-					r /= 255; g /= 255; b /= 255;
-					const max = Math.max(r, g, b), min = Math.min(r, g, b);
-					let h, s, l = (max + min) / 2;
-
-					if (max === min) {
-						h = s = 0; // серый
-					} else {
-						const d = max - min;
-						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-						switch (max) {
-							case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-							case g: h = (b - r) / d + 2; break;
-							case b: h = (r - g) / d + 4; break;
-						}
-						h /= 6;
-					}
-					return [h, s, l];
-				}
-
-				function hslToRgb(h, s, l) {
-					let r, g, b;
-					if (s === 0) {
-						r = g = b = l; // серый
-					} else {
-						const hue2rgb = (p, q, t) => {
-							if (t < 0) t += 1;
-							if (t > 1) t -= 1;
-							if (t < 1 / 6) return p + (q - p) * 6 * t;
-							if (t < 1 / 2) return q;
-							if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-							return p;
-						};
-						const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-						const p = 2 * l - q;
-						r = hue2rgb(p, q, h + 1 / 3);
-						g = hue2rgb(p, q, h);
-						b = hue2rgb(p, q, h - 1 / 3);
-					}
-					return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-				}
-
-				// Автозатемнение до контрастности 4.5
-				let [adjR, adjG, adjB] = [r, g, b];
-				if (!hasGoodContrast([adjR, adjG, adjB])) {
-					let [h, s, l] = rgbToHsl(r, g, b);
-					// постепенно уменьшаем lightness, пока не станет норм контраст
-					while (l > 0 && !hasGoodContrast(hslToRgb(h, s, l))) {
-						l -= 0.02; // шаг затемнения (2%)
-					}
-					[adjR, adjG, adjB] = hslToRgb(h, s, Math.max(0, l));
-				}
+            image.onload = function () {
+                loading(0)
+                const canvas = document.createElement('canvas');
+                canvas.width = image.width;
+                canvas.height = image.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0);
 
 
-				const rgbColor = `rgb(${adjR}, ${adjG}, ${adjB})`;
+                const dataURL = canvas.toDataURL(); // Получаем base64
+
+                // Ставим base64 как фон
+                document.body.style.backgroundImage = `url(${dataURL})`;
+                document.body.dataset.locked = "true";
+
+                const colorThief = new ColorThief();
+                const [r, g, b] = colorThief.getColor(image);
+
+                // Проверяем контраст с белым фоном
+                const hasGoodContrast = ([r, g, b]) => {
+                    const luminance = (r, g, b) => {
+                        const a = [r, g, b].map(v => {
+                            v /= 255;
+                            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+                        });
+                        return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+                    };
+                    const contrastRatio = (l1, l2) => {
+                        const brightest = Math.max(l1, l2);
+                        const darkest = Math.min(l1, l2);
+                        return (brightest + 0.05) / (darkest + 0.05);
+                    };
+                    return contrastRatio(luminance(r, g, b), luminance(255, 255, 255)) >= 4.5;
+                };
+
+                // Затемняем цвет, если контраст плохой
+                // Функции для работы с HSL
+                function rgbToHsl(r, g, b) {
+                    r /= 255; g /= 255; b /= 255;
+                    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                    let h, s, l = (max + min) / 2;
+
+                    if (max === min) {
+                        h = s = 0; // серый
+                    } else {
+                        const d = max - min;
+                        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                        switch (max) {
+                            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                            case g: h = (b - r) / d + 2; break;
+                            case b: h = (r - g) / d + 4; break;
+                        }
+                        h /= 6;
+                    }
+                    return [h, s, l];
+                }
+
+                function hslToRgb(h, s, l) {
+                    let r, g, b;
+                    if (s === 0) {
+                        r = g = b = l; // серый
+                    } else {
+                        const hue2rgb = (p, q, t) => {
+                            if (t < 0) t += 1;
+                            if (t > 1) t -= 1;
+                            if (t < 1 / 6) return p + (q - p) * 6 * t;
+                            if (t < 1 / 2) return q;
+                            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                            return p;
+                        };
+                        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                        const p = 2 * l - q;
+                        r = hue2rgb(p, q, h + 1 / 3);
+                        g = hue2rgb(p, q, h);
+                        b = hue2rgb(p, q, h - 1 / 3);
+                    }
+                    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+                }
+
+                // Автозатемнение до контрастности 4.5
+                let [adjR, adjG, adjB] = [r, g, b];
+                if (!hasGoodContrast([adjR, adjG, adjB])) {
+                    let [h, s, l] = rgbToHsl(r, g, b);
+                    // постепенно уменьшаем lightness, пока не станет норм контраст
+                    while (l > 0 && !hasGoodContrast(hslToRgb(h, s, l))) {
+                        l -= 0.02; // шаг затемнения (2%)
+                    }
+                    [adjR, adjG, adjB] = hslToRgb(h, s, Math.max(0, l));
+                }
 
 
-				// Устанавливаем цвет фона и цвет текста
-				let hexColor = '#' + rgbColor.match(/\d+/g).map(x => (+x).toString(16).padStart(2, '0')).join('');
+                const rgbColor = `rgb(${adjR}, ${adjG}, ${adjB})`;
 
-				// Удаляем предыдущий, если есть
-				const oldStyle = document.getElementById('dynamic-bg-style');
-				if (oldStyle) oldStyle.remove();
 
-				const style = document.createElement('style');
-				style.id = 'dynamic-bg-style';
-				style.textContent = `
+                // Устанавливаем цвет фона и цвет текста
+                let hexColor = '#' + rgbColor.match(/\d+/g).map(x => (+x).toString(16).padStart(2, '0')).join('');
+
+                // Удаляем предыдущий, если есть
+                const oldStyle = document.getElementById('dynamic-bg-style');
+                if (oldStyle) oldStyle.remove();
+
+                const style = document.createElement('style');
+                style.id = 'dynamic-bg-style';
+                style.textContent = `
 					* { color: ${hexColor} } 
 					.semicolortext, .semicolortext * { color: ${hexColor}b0 } 
 					tr:nth-child(even):not(.red) td {    background-color: ${hexColor}11; }
@@ -555,47 +556,47 @@
 					.leftButton::after { background: ${hexColor}; }
 				`;
 
-				document.head.appendChild(style);
-				if (needTranslate) {
-					translateText(titleString).then(function (ruRU) {
-						const style = document.createElement('style');
-						style.textContent = `
+                document.head.appendChild(style);
+                if (needTranslate) {
+                    translateText(titleString).then(function (ruRU) {
+                        const style = document.createElement('style');
+                        style.textContent = `
 							.elCopyright:before {    content: '${ruRU}';}
 				`;
-						document.head.appendChild(style);
-					}); // → Привет, мир!
-				}
-			};
+                        document.head.appendChild(style);
+                    }); // → Привет, мир!
+                }
+            };
 
-			image.onerror = function () {
-				console.error("Не удалось загрузить изображение.");
-				loading(0)
-			};
-		}
+            image.onerror = function () {
+                console.error("Не удалось загрузить изображение.");
+                loading(0)
+            };
+        }
 
 
-		function loading(show) {
-			const loaderId = 'custom-loading-overlay';
+        function loading(show) {
+            const loaderId = 'custom-loading-overlay';
 
-			if (show) {
-				// Проверка, не существует ли уже элемент
-				if (document.getElementById(loaderId)) return;
+            if (show) {
+                // Проверка, не существует ли уже элемент
+                if (document.getElementById(loaderId)) return;
 
-				const loader = document.createElement('div');
-				loader.id = loaderId;
-				loader.style.position = 'fixed';
-				loader.style.top = 0;
-				loader.style.left = 0;
-				loader.style.width = '100vw';
-				loader.style.height = '100vh';
-				loader.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-				loader.style.backdropFilter = 'blur(15px)';
-				loader.style.zIndex = 999;
-				loader.style.display = 'flex';
-				loader.style.alignItems = 'center';
-				loader.style.justifyContent = 'center';
+                const loader = document.createElement('div');
+                loader.id = loaderId;
+                loader.style.position = 'fixed';
+                loader.style.top = 0;
+                loader.style.left = 0;
+                loader.style.width = '100vw';
+                loader.style.height = '100vh';
+                loader.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                loader.style.backdropFilter = 'blur(15px)';
+                loader.style.zIndex = 999;
+                loader.style.display = 'flex';
+                loader.style.alignItems = 'center';
+                loader.style.justifyContent = 'center';
 
-				loader.innerHTML = `
+                loader.innerHTML = `
 					<div class="spinner"></div>
 					<style>
 						.spinner {
@@ -614,90 +615,90 @@
 					</style>
 				`;
 
-				document.body.appendChild(loader);
-			} else {
-				const existingLoader = document.getElementById(loaderId);
-				if (existingLoader) {
-					existingLoader.remove();
-				}
-			}
-		}
+                document.body.appendChild(loader);
+            } else {
+                const existingLoader = document.getElementById(loaderId);
+                if (existingLoader) {
+                    existingLoader.remove();
+                }
+            }
+        }
 
 
-		function menuCursor() {
-			let elements = [];
-			let screenMiddle = window.innerHeight / 2;
+        function menuCursor() {
+            let elements = [];
+            let screenMiddle = window.innerHeight / 2;
 
-			// Поиск всех элементов с id вида #id0, #id1, #id2, ...
-			let i = 0;
-			while (document.getElementById(`id${i}`)) {
-				elements.push(document.getElementById(`id${i}`));
-				i++;
-			}
+            // Поиск всех элементов с id вида #id0, #id1, #id2, ...
+            let i = 0;
+            while (document.getElementById(`id${i}`)) {
+                elements.push(document.getElementById(`id${i}`));
+                i++;
+            }
 
-			let selectedId = null;
+            let selectedId = null;
 
-			// Проверяем, какие элементы выше середины экрана
-			elements.forEach(el => {
-				let rect = el.getBoundingClientRect();
-				if (rect.top < screenMiddle) {
-					selectedId = el.id; // Берем самый последний, который выше середины экрана
-				}
-			});
+            // Проверяем, какие элементы выше середины экрана
+            elements.forEach(el => {
+                let rect = el.getBoundingClientRect();
+                if (rect.top < screenMiddle) {
+                    selectedId = el.id; // Берем самый последний, который выше середины экрана
+                }
+            });
 
-			if (selectedId) {
-				// Очищаем все прошлые `buttonSelected`
-				document.querySelectorAll('.buttonSelected').forEach(btn => {
-					btn.classList.remove('buttonSelected');
-				});
+            if (selectedId) {
+                // Очищаем все прошлые `buttonSelected`
+                document.querySelectorAll('.buttonSelected').forEach(btn => {
+                    btn.classList.remove('buttonSelected');
+                });
 
-				// Добавляем `buttonSelected` к соответствующей кнопке
-				let menuButton = document.getElementById(`${selectedId}_menu`);
-				if (menuButton) {
-					menuButton.classList.add('buttonSelected');
-					function scrollMenu(element) {
-						const container = document.getElementById("editable");
-						if (!container || !element) return;
+                // Добавляем `buttonSelected` к соответствующей кнопке
+                let menuButton = document.getElementById(`${selectedId}_menu`);
+                if (menuButton) {
+                    menuButton.classList.add('buttonSelected');
+                    function scrollMenu(element) {
+                        const container = document.getElementById("editable");
+                        if (!container || !element) return;
 
-						const containerRect = container.getBoundingClientRect();
-						const elementRect = element.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+                        const elementRect = element.getBoundingClientRect();
 
-						if (elementRect.top < containerRect.top || elementRect.bottom > containerRect.bottom) {
-							container.scrollTo({
-								top: container.scrollTop + elementRect.top - containerRect.top,
-								behavior: "smooth"
-							});
-						}
-					}
-					scrollMenu(menuButton)
-				}
-			}
-		}
+                        if (elementRect.top < containerRect.top || elementRect.bottom > containerRect.bottom) {
+                            container.scrollTo({
+                                top: container.scrollTop + elementRect.top - containerRect.top,
+                                behavior: "smooth"
+                            });
+                        }
+                    }
+                    scrollMenu(menuButton)
+                }
+            }
+        }
 
-		window.addEventListener('scroll', menuCursor);
+        window.addEventListener('scroll', menuCursor);
 
-		function addNewYearHat() {
-			const now = new Date();
-			const month = now.getMonth(); // 0 = январь, 11 = декабрь
-			const day = now.getDate();
+        function addNewYearHat() {
+            const now = new Date();
+            const month = now.getMonth(); // 0 = январь, 11 = декабрь
+            const day = now.getDate();
 
-			let isInRange = false;
+            let isInRange = false;
 
-			// если декабрь и день >= 30
-			if (month === 11 && day >= 30) {
-				isInRange = true;
-			}
+            // если декабрь и день >= 30
+            if (month === 11 && day >= 30) {
+                isInRange = true;
+            }
 
-			// если январь и день <= 5
-			if (month === 0 && day <= 5) {
-				isInRange = true;
-			}
+            // если январь и день <= 5
+            if (month === 0 && day <= 5) {
+                isInRange = true;
+            }
 
-			//isInRange = true;
-			
-			if (isInRange) {
-				const style = document.createElement("style");
-				style.textContent = `
+            //isInRange = true;
+
+            if (isInRange) {
+                const style = document.createElement("style");
+                style.textContent = `
 					table:after {
 						content: '';
 						height: 90px;
@@ -709,173 +710,306 @@
 						background-size: 100%;
 					}
 					`;
-				document.head.appendChild(style);
-			}
-		}
+                document.head.appendChild(style);
+            }
+        }
 
-		document.addEventListener("DOMContentLoaded", addNewYearHat);
+        document.addEventListener("DOMContentLoaded", addNewYearHat);
 
-		function capitalizeWords(text) {
-			return text
-				.toLowerCase() // Преобразуем строку в нижний регистр
-				.split(" ") // Разбиваем строку на массив слов
-				.map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Делаем первую букву заглавной
-				.join(" ") // Собираем слова обратно в строку
-				.replace('Мкад', 'МКАД'); // МКАД исключение =)
-		}
+        function capitalizeWords(text) {
+            return text
+                .toLowerCase() // Преобразуем строку в нижний регистр
+                .split(" ") // Разбиваем строку на массив слов
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Делаем первую букву заглавной
+                .join(" ") // Собираем слова обратно в строку
+                .replace('Мкад', 'МКАД'); // МКАД исключение =)
+        }
 
-		function GetImage(tableID, button) {
-			button.innerHTML = '<emoji class="rotating">⏳</emoji>Подождите...';
-			document.getElementsByTagName('render')[0].innerHTML = '<div class="tableOutput" id="renderOutput">' + document.getElementById(tableID).innerHTML + '</div>'
-			document.getElementsByTagName('render')[0].style.display = "inherit"
+        function toLocalISOString(date = new Date()) {
+            const tzOffset = -date.getTimezoneOffset();
+            const sign = tzOffset >= 0 ? '+' : '-';
+            const hours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
+            const minutes = String(Math.abs(tzOffset) % 60).padStart(2, '0');
 
-			domtoimage.toBlob(document.getElementById('renderOutput'))
-				.then(function (blob) {
-					try {
-						navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-							.then(() => {
-								showError(button, '<emoji>✔️</emoji>Скопировано!');
-								setBackgroundImageDefault()
-							})
-							.catch(err => {
-								console.error('Ошибка при копировании в буфер обмена:', err);
-								showError(button, '<emoji>❌</emoji>Ошибка копирования');
-							});
-					} catch (error) {
-						console.error('Ошибка внутри try/catch:', error);
-						showError(button, '<emoji>❌</emoji>Ошибка копирования');
-					}
-				})
-				.catch(function (error) {
-					console.error('Ошибка при создании изображения:', error);
-					showError(button, '<emoji>❌</emoji>Ошибка создания изображения');
-				});
-		}
+            return (
+                new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .slice(0, -1) +
+                `${sign}${hours}:${minutes}`
+            );
+        }
 
-		// Функция для показа ошибки на кнопке
-		function showError(button, message) {
-			button.innerHTML = message;
-			setTimeout(() => {
-				button.innerHTML = '<emoji>📋</emoji>Скопировать';
-			}, 4000);
-			document.getElementsByTagName('render')[0].style.display = "none"
-			document.getElementsByTagName('render')[0].innerHTML = ''
+        function PrintImage(tableID, button) {
+            console.log(tableID)
+            const source = document.querySelector('#' + tableID);
+            
+            if (!source) return;
 
-		}
+            const html = `
+				<!DOCTYPE html>
+				<html lang="ru">
+				<head>
+				<meta charset="UTF-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://nod365.github.io/starline/TableParser/css/tableparser.css?${build}">
+
+				<title>Print</title>
+
+				<style>
+                    .squircle {
+    clip-path: unset !important;
+}
+    
+				@page {
+				size: A4;
+				margin: 0;
+				}
+
+				body {
+				background: #444;
+				margin: 0;
+				padding: 0;
+				}
+
+				.page {
+				background: #FFF;
+				width: 210mm;
+				height: 297mm;
+				padding: 5mm;
+				box-sizing: border-box;
+				margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+				}
+                
+                .minitext { font-size: 15px; }
+                .opacitytext { opacity: 1; }
+                .tableCopyrightInfo { opacity: .5; }
+                th.GR { border-radius: 30px 0 0 30px; }
+                th.color2 { border-radius: 0 30px 30px 0; }
+                thead th {box-shadow: none !important}
+                .elCopyright:before {    content: '${ CryptoJS.MD5( source.innerHTML ).toString() } at ${toLocalISOString()}'; }
+
+				</style>
+				</head>
+
+				<body>
+				<div class="page">
+                    <div class="print-content">
+					    ${source.innerHTML}
+	    			</div>
+				</div>
+                
+				</body>
+               
+				</html>
+				`;
+
+            const js = `
+                (function () {
+                    function fitTableToPage() {
+    const page = document.querySelector('.page');
+    const content = document.querySelector('.print-content');
+    if (!page || !content) return;
+
+    const pageRect = page.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+
+    const style = window.getComputedStyle(page);
+
+    const paddingX =
+        parseFloat(style.paddingLeft) +
+        parseFloat(style.paddingRight);
+
+    const paddingY =
+        parseFloat(style.paddingTop) +
+        parseFloat(style.paddingBottom);
+
+    const availableWidth = pageRect.width - paddingX;
+    const availableHeight = pageRect.height - paddingY;
+
+    const scaleX = availableWidth / contentRect.width;
+    const scaleY = availableHeight / contentRect.height;
+
+    const scale = Math.min(scaleX, scaleY, 1);
+
+    content.style.transformOrigin = 'center';
+    content.style.transform = 'scale(' + scale + ')';
+}
+
+                    window.addEventListener('load', function () {
+                        requestAnimationFrame(function () {
+                            requestAnimationFrame(function () {
+                                setTimeout(fitTableToPage, 0);
+                            });
+                        });
+                    });
+                })();
+            `;
+
+            const win = window.open('', '_blank');
+            win.document.open();
+            win.document.write(html);
+            win.eval(js);
+            win.document.close();
+        }
 
 
-		function PU() {
-			let tempHTML = '<style>body{background:#222}</style>'
-			tempHTML += '<div style="margin:auto;width: min-content;border-radius: 30px;overflow:hidden;">'
-			tempHTML += "<img src='./images/TableParser4.png'>"
-			tempHTML += '</div>'
-			window.open('about:blank').document.documentElement.innerHTML = '<title>Инструкция MANGO OFFICE</title>' + tempHTML
-		}
+        function GetImage(tableID, button) {
+            button.innerHTML = '<emoji class="rotating">⏳</emoji>Подождите...';
+            document.getElementsByTagName('render')[0].innerHTML = '<div class="tableOutput" id="renderOutput">' + document.getElementById(tableID).innerHTML + '</div>'
+            document.getElementsByTagName('render')[0].style.display = "inherit"
 
-		let tableNames = ['"Количество пропущенных вызовов"', '"Процент пропущенных вызовов"', '"Количество принятых вызовов"', '"Суммарное время входящих разговоров"', '"Количество совершенных вызовов"', '"Количество попыток дозвона"']
-		let tableParseName = ['Пропущенные', 'Процент проп.', 'Принятые', 'Время разговора', 'Исходящие', 'Попыток дозв.']
+            domtoimage.toBlob(document.getElementById('renderOutput'))
+                .then(function (blob) {
+                    try {
+                        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+                            .then(() => {
+                                showError(button, '<emoji>✔️</emoji>Скопировано!');
+                                setBackgroundImageDefault()
+                            })
+                            .catch(err => {
+                                console.error('Ошибка при копировании в буфер обмена:', err);
+                                showError(button, '<emoji>❌</emoji>Ошибка копирования');
+                            });
+                    } catch (error) {
+                        console.error('Ошибка внутри try/catch:', error);
+                        showError(button, '<emoji>❌</emoji>Ошибка копирования');
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Ошибка при создании изображения:', error);
+                    showError(button, '<emoji>❌</emoji>Ошибка создания изображения');
+                });
+        }
 
-		// Начало обработки файла
+        // Функция для показа ошибки на кнопке
+        function showError(button, message) {
+            button.innerHTML = message;
+            setTimeout(() => {
+                button.innerHTML = '<emoji>📋</emoji>Скопировать';
+            }, 4000);
+            document.getElementsByTagName('render')[0].style.display = "none"
+            document.getElementsByTagName('render')[0].innerHTML = ''
 
-		const input = document.getElementById('files');
-
-		input.type = 'file';
-		input.addEventListener('change', (event) => {
-
-			let test = 0;
-			const file = event.target.files[0];
-
-			const reader = new FileReader();
-
-			reader.onload = (e) => {
-				const contents = e.target.result;
-				const lines = contents.split('\n');
-				let data = [];
-
-				lines.forEach((line) => {
-					const row = line.split(';');
-					data.push(row);
-				});
-
-				console.log('----- DATA BEGIN -----')
-				console.log(data);
-				console.log('----- DATA END -----')
-
-				document.getElementsByTagName('output')[0].innerHTML = ''
-				document.getElementById('editable').innerHTML = '<div><h1>Отчеты по дням</h1><div class="app-hr"></div></div>'
-
-				if (data[0][0] == "Группа" && data[0][1] == "Дата") {
-
-					let tableIndex = []
-
-					for (i = 0; i < tableNames.length; i++) {
-						let tempIndex = data[0].indexOf(tableNames[i])
-						tableIndex.push(tempIndex)
-						//console.log('tableIndex '+tableIndex)
-					}
-
-					let structure = {}
-
-					for (i = 0; i < data.length; i++) {
-						if (data[i][0].includes('ОТЧЕТ')  /*|| data[i][0].includes('КАЛУГА') || data[i][0].includes('ПРИЕМ-СДАЧА')*/ || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+        }
 
 
-							let varDate = data[i][1]
-							if (data[i][0] == data[i][1]) { // отсекаем общие звонки
-								varDate = '"31.12.2999"'
-							}
+        function PU() {
+            let tempHTML = '<style>body{background:#222}</style>'
+            tempHTML += '<div style="margin:auto;width: min-content;border-radius: 30px;overflow:hidden;">'
+            tempHTML += "<img src='./images/TableParser4.png'>"
+            tempHTML += '</div>'
+            window.open('about:blank').document.documentElement.innerHTML = '<title>Инструкция MANGO OFFICE</title>' + tempHTML
+        }
 
-							if (!structure[varDate]) {
-								structure[varDate] = {}
-							}
+        let tableNames = ['"Количество пропущенных вызовов"', '"Процент пропущенных вызовов"', '"Количество принятых вызовов"', '"Суммарное время входящих разговоров"', '"Количество совершенных вызовов"', '"Количество попыток дозвона"']
+        let tableParseName = ['Пропущенные', 'Процент проп.', 'Принятые', 'Время разговора', 'Исходящие', 'Попыток дозв.']
 
-							data[i][0] = data[i][0].replaceAll('ОБЛ.', 'ОБЛАСТЬ ')
+        // Начало обработки файла
 
-							let splitName = data[i][0]
-							const lastSpaceIndex = splitName.lastIndexOf(" ");
-							splitName = lastSpaceIndex !== -1 ? splitName.slice(0, lastSpaceIndex) : splitName;
-							splitName = splitName.replaceAll('"', '')
+        const input = document.getElementById('files');
 
-							if (!structure[varDate][splitName]) {
-								structure[varDate][splitName] = []
-							}
+        input.type = 'file';
+        input.addEventListener('change', (event) => {
 
-							structure[varDate][splitName].push(data[i])
+            let test = 0;
+            const file = event.target.files[0];
 
-						}
-						//} 
-					}
+            const reader = new FileReader();
 
-					// готово под парсинг
-					console.log('----- STRUCTURE BEGIN -----')
-					console.log(structure)
-					console.log('----- STRUCTURE END -----')
-					//console.log(JSON.stringify(structure))
+            reader.onload = (e) => {
+                const contents = e.target.result;
+                const lines = contents.split('\n');
+                let data = [];
 
-					const parkInfo = {
-						"БАРХАТ": ['ТК Бархат', 'Ступинский пр-д., вл8, 1 эт.'],
-						"ВАРШАВСКАЯ": ['Мёд', 'Варшавское ш., 170Бс4'],
-						"ИЗМАЙЛОВО": ['Измайлово', '1-я ул. Измайловского Зверинца, 8'],
-						"МЕЛИТОПОЛЬСКАЯ": ['Avenue Group', 'Ступинский пр-д., вл8, 3 эт.'],
-						"МКАД 33": ['Red Taxi', 'МКАД, 33-й км, 6с5'],
-						"ОТРАДНОЕ": ['ТК Магия', 'Высоковольтный пр-д., 2'],
-						"МОСПАРК": ['МОСПАРК', '1-я ул. Измайловского Зверинца, 8'],
-						"ЦАРИЦЫНО": ['Борт №1', 'Кавказский бул., 52Б'],
-						"ГОРБУНОВА": ['Горбунова', 'Горбунова yл., 8, стр. 1']
-					}
+                lines.forEach((line) => {
+                    const row = line.split(';');
+                    data.push(row);
+                });
 
-					function findParkName(parkName) {
-						return parkInfo.hasOwnProperty(parkName) ? parkInfo[parkName] : false;
-					}
+                console.log('----- DATA BEGIN -----')
+                console.log(data);
+                console.log('----- DATA END -----')
 
-					const checkData = {
-						"БАРХАТ": {
-							"ОТЧЕТ": 2,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},/*
+                document.getElementsByTagName('output')[0].innerHTML = ''
+                document.getElementById('editable').innerHTML = '<div><h1>Отчеты по дням</h1><div class="app-hr"></div></div>'
+
+                if (data[0][0] == "Группа" && data[0][1] == "Дата") {
+
+                    let tableIndex = []
+
+                    for (i = 0; i < tableNames.length; i++) {
+                        let tempIndex = data[0].indexOf(tableNames[i])
+                        tableIndex.push(tempIndex)
+                        //console.log('tableIndex '+tableIndex)
+                    }
+
+                    let structure = {}
+
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i][0].includes('ОТЧЕТ')  /*|| data[i][0].includes('КАЛУГА') || data[i][0].includes('ПРИЕМ-СДАЧА')*/ || data[i][0].includes('СЕРВИС') || data[i][0].includes('АДМИН') || data[i][0].includes('ДИСПЕТЧЕР') || data[i][0].includes('ОФОРМЛЕНИЕ')) { //отсекаем кроме отчет диспетчер оформление
+
+
+                            let varDate = data[i][1]
+                            if (data[i][0] == data[i][1]) { // отсекаем общие звонки
+                                varDate = '"31.12.2999"'
+                            }
+
+                            if (!structure[varDate]) {
+                                structure[varDate] = {}
+                            }
+
+                            data[i][0] = data[i][0].replaceAll('ОБЛ.', 'ОБЛАСТЬ ')
+
+                            let splitName = data[i][0]
+                            const lastSpaceIndex = splitName.lastIndexOf(" ");
+                            splitName = lastSpaceIndex !== -1 ? splitName.slice(0, lastSpaceIndex) : splitName;
+                            splitName = splitName.replaceAll('"', '')
+
+                            if (!structure[varDate][splitName]) {
+                                structure[varDate][splitName] = []
+                            }
+
+                            structure[varDate][splitName].push(data[i])
+
+                        }
+                        //} 
+                    }
+
+                    // готово под парсинг
+                    console.log('----- STRUCTURE BEGIN -----')
+                    console.log(structure)
+                    console.log('----- STRUCTURE END -----')
+                    //console.log(JSON.stringify(structure))
+
+                    const parkInfo = {
+                        "БАРХАТ": ['ТК Бархат', 'Ступинский пр-д., вл8, 1 эт.'],
+                        "ВАРШАВСКАЯ": ['Мёд', 'Варшавское ш., 170Бс4'],
+                        "ИЗМАЙЛОВО": ['Измайлово', '1-я ул. Измайловского Зверинца, 8'],
+                        "МЕЛИТОПОЛЬСКАЯ": ['Avenue Group', 'Ступинский пр-д., вл8, 3 эт.'],
+                        "МКАД 33": ['Red Taxi', 'МКАД, 33-й км, 6с5'],
+                        "ОТРАДНОЕ": ['ТК Магия', 'Высоковольтный пр-д., 2'],
+                        "МОСПАРК": ['МОСПАРК', '1-я ул. Измайловского Зверинца, 8'],
+                        "ЦАРИЦЫНО": ['Борт №1', 'Кавказский бул., 52Б'],
+                        "ГОРБУНОВА": ['Горбунова', 'Горбунова yл., 8, стр. 1']
+                    }
+
+                    function findParkName(parkName) {
+                        return parkInfo.hasOwnProperty(parkName) ? parkInfo[parkName] : false;
+                    }
+
+                    const checkData = {
+                        "БАРХАТ": {
+                            "ОТЧЕТ": 2,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },/*
 						"ОБЛАСТЬ": {
 							"ОТЧЕТ": 0,
 							"ДИСПЕТЧЕР": 0,
@@ -883,475 +1017,482 @@
 							"СЕРВИС": 0,
 							"АДМИН": 0
 						},*/
-						"ВАРШАВСКАЯ": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"МЕЛИТОПОЛЬСКАЯ": {
-							"ОТЧЕТ": 2,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"МКАД 33": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"МОСПАРК": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 1
-						},
-						"ИЗМАЙЛОВО": {
-							"ОТЧЕТ": 2,
-							"ДИСПЕТЧЕР": 0,
-							"ОФОРМЛЕНИЕ": 0,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"ОТРАДНОЕ": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						"ЦАРИЦЫНО": {
-							"ОТЧЕТ": 3,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 1,
-							"АДМИН": 1
-						},
-						"ГОРБУНОВА": {
-							"ОТЧЕТ": 1,
-							"ДИСПЕТЧЕР": 1,
-							"ОФОРМЛЕНИЕ": 1,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-
-						/*
-						"ВАРШАВСКАЯ": {
-							"ОТЧЕТ": 0,
-							"ДИСПЕТЧЕР": 0,
-							"ОФОРМЛЕНИЕ": 0,
-							"СЕРВИС": 0,
-							"АДМИН": 0
-						},
-						
-						*/
-					};
-
-					let errorTextAdvise = ''
-
-					function checkReports(data, checkData) {
-						let result = {};
-						let errorMessages = {}; // Сюда будем собирать ошибки по датам
-						
-
-						for (let date in data) { // Перебираем даты
-							result[date] = {};
-							errorMessages[date] = [];
-							let warningSign = '<emoji>⚠️</emoji>',
-								crossSign = '<emoji>❌</emoji>';
-
-							let parksInData = new Set(Object.keys(data[date])); // Все парки в parsedData на эту дату
-							let parksInCheckData = new Set(Object.keys(checkData)); // Все парки в checkData
-
-							if (!ignoreError) {
-								// Проверяем парки, которые есть в checkData
-								for (let park in checkData) {
-									if (!data[date][park]) {
-										errorMessages[date].push(`${crossSign}Отсутствуют данные: ${park}`);
-										result[date][park] = "❌ Отсутствует в данных";
-										errorTextAdvise = '<br><br>Похоже, что в данных не хватает ожидаемого парка.<br> Проверьте в Контакт-центре MANGO OFFICE параметры экспорта.<br> Выберите "Все парки" и сформируйте заново.<br> Если это не помогло, обратитесь администратору ВАТС.'
-										continue;
-									}
-
-									let parkData = data[date][park];
-									let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0, "СЕРВИС": 0, "АДМИН": 0 };
-
-									// Подсчитываем количество записей по ключевым словам
-									for (let entry of parkData) {
-										let name = entry[0].toUpperCase();
-										if (name.includes("ОТЧЕТ")) counts["ОТЧЕТ"]++;
-										if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
-										if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
-										if (name.includes("СЕРВИС")) counts["СЕРВИС"]++;
-										if (name.includes("АДМИН")) counts["АДМИН"]++;
-									}
-
-									// Сравниваем с ожидаемыми значениями
-									result[date][park] = {};
-									for (let key in checkData[park]) {
-										if (counts[key] !== checkData[park][key]) {
-											let errorMsg = `${crossSign}Несоответствие: ${park} - ${key}. Ожидалось ${checkData[park][key]}, найдено ${counts[key]}`;
-											errorMessages[date].push(errorMsg);
-											result[date][park][key] = `❌ ${errorMsg}`;
-										} else {
-											result[date][park][key] = "✅ Совпадает";
-										}
-									}
-								}
-
-								// Проверяем неизвестные парки (есть в parsedData, но нет в checkData)
-								for (let park of parksInData) {
-									if (!parksInCheckData.has(park)) {
-										errorMessages[date].push(`${warningSign}Новый неизвестный парк: ${park}`);
-										result[date][park] = "⚠️ Неизвестный парк";
-									}
-								}
-							}
-						}
-
-						// Выводим ошибки в строковом формате
-						/*
-						for (let date in errorMessages) {
-							if (errorMessages[date].length > 0) {
-								console.log(`❗ Ошибки за ${date}:`);
-								console.log(errorMessages[date].join("; "));
-							} else {
-								console.log(`✅ Данные за ${date} без ошибок.`);
-							}
-						}
-						*/
-
-						if (ignoreError) {
-							// выключена проверка
-							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo"><emoji>ℹ️</emoji>Проверка отключена</div>'
-						} else if (Object.values(errorMessages).some(errors => errors.length > 0)) {
-							// есть ошибки 
-							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
-						} else {
-							// нет ошибок
-							document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
-						}
-
-						console.log('----- CHECK RESULT BEGIN -----')
-						console.log(result)
-						console.log('----- CHECK RESULT END -----')
-
-						return errorMessages;
-					}
-
-
-					// Запускает тест данных
-					const validationResult = checkReports(structure, checkData);
-					console.log('----- VALIDATION RESULT BEGIN -----')
-					console.log(validationResult);
-					console.log('----- VALIDATION RESULT END -----')
-
-					let keys = Object.keys(structure).sort((a, b) => {
-						let dateA = new Date(a.replace(/"/g, '').split('.').reverse().join('-'));
-						let dateB = new Date(b.replace(/"/g, '').split('.').reverse().join('-'));
-						return dateA - dateB;
-					});
-
-					function findMinMaxDates(keys) {
-						const dates = keys
-							.map(date => date.replace(/"/g, '')) // Убираем кавычки
-							.map(date => date.split('.').reverse().join('-')) // Преобразуем в формат YYYY-MM-DD
-							.filter(date => date !== '2999-12-31') // Исключаем 31.12.2999
-							.map(date => new Date(date)); // Преобразуем в объект Date
-
-						if (dates.length === 0) return { minDate: null, maxDate: null };
-
-						const minDate = new Date(Math.min(...dates));
-						const maxDate = new Date(Math.max(...dates));
-
-						return {
-							minDate: minDate.toISOString().split('T')[0].split('-').reverse().join('.'),
-							maxDate: maxDate.toISOString().split('T')[0].split('-').reverse().join('.')
-						};
-					}
-
-					function getDayOfWeek(dateString) {
-						const cleanDate = dateString.replace(/"/g, "");
-						const [day, month, year] = cleanDate.split(".");
-						const date = new Date(year, month - 1, day);
-						const daysOfWeek = [
-							"Воскресенье", "Понедельник", "Вторник", "Среда",
-							"Четверг", "Пятница", "Суббота"
-						];
-						const dayOfWeek = daysOfWeek[date.getDay()];
-						if (dateString != '"31.12.2999"') {
-							return `${cleanDate}, ${dayOfWeek}`;
-						} else {
-							return 'Все звонки ' + findMinMaxDates(keys).minDate + ' - ' + findMinMaxDates(keys).maxDate
-						}
-					}
-
-
-					console.log('----- KEYS BEGIN -----')
-					console.log(keys)
-					console.log('----- keys.length -----')
-					console.log(keys.length)
-					console.log('----- KEYS MIN-MAX DATES -----')
-					console.log(findMinMaxDates(keys))
-					console.log('----- KEYS END -----')
-
-					let tableExport = [0, 2, 4]
-					let tableSubExport = [1, 3, 5]
-
-					for (i = 0; i < (keys.length > 2 ? keys.length : 1); i++) {
-						let randomID = 'id' + i
-						let localHTML = ''
-
-						let div = document.createElement('div');
-
-						div.innerHTML = '<emoji>📅</emoji>' + getDayOfWeek(keys[i]);
-						div.classList.add('leftButton');
-						div.id = randomID + '_menu';
-						div.addEventListener('click', () => {
-							scrollTo(randomID)
-						});
-						document.getElementById('editable').appendChild(div);
-
-						//localHTML += '<button id="randomID'+randomID+'_button" onclick="GetImage(\''+randomID+'\')"> Скопировать таблицу </button>'
-						localHTML += '<div class="scrollHere" id="' + randomID + '_scroll"></div>'
-						localHTML += '<div class="tableWrap ' + (keys.length > 2 ? (i == 0 ? 'firstInListing' : (i == keys.length - 1 ? 'lastInListing' : '')) : 'oneInListing') + '">'
-						localHTML += '<div class="intableFlex">'
-						localHTML += '<div>' + getDayOfWeek(keys[i]) + '</div>'
-						//localHTML += '<div class="intableButton"><emoji>💾</emoji>Скачать</div>'
-						localHTML += '<div class="intableButton blinkOnce copybutton" data-id="' + randomID + '"><emoji>📋</emoji>Скопировать</div>'
-						localHTML += '</div>'
-
-						foundError = validationResult[keys[i]].length > 0
-						if (foundError) {
-							localHTML += '<div class="errorInfo">'
-							localHTML += '<div class="badColor">'
-							localHTML += validationResult[keys[i]].join('</div><div class="badColor">') + errorTextAdvise
-							localHTML += '</div>'
-							localHTML += '</div>'
-						}
-						localHTML += '<div class="tableOutput ' + (foundError ? 'opacitytext' : '') + '" id="' + randomID + '">'
-
-						let reportLogoVariable = '<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 1184" width="96" height="1184" class="reportLogo"><path fill="currentColor" d="m46.9 11.9q6.6 4.4 10.3 12.2 0.2 0.4 0.5 0.8l35.6-24.9v25.8l-32.4 21.4v38.8l32.4 1.3v21.3l-90.9-3.6v-65.6q0-9.9 3.6-17.4 3.7-7.4 10.3-11.3 6.6-4 15.3-3.7 8.8 0.5 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22 0.9v-44.4q0-5.4-2.8-8.7-3-3.4-8.2-3.6-5-0.1-8 2.9zm-3.1 192.7l-18.1-0.8v-107.5l18.1 0.7zm36-103.8v105.1l-17.9-0.7v-105.2zm36.8-1v107.6l-18-0.7v-107.6zm-71 141.2q-3.4 6.4-3.4 13.3 0 6.7 2.4 11 2.6 4.3 6.7 4.4 2.3 0.2 3.9-1.5 1.7-1.6 2.9-5.7 1.3-4.2 2.5-11.6 1.8-11.5 5.6-19.1 3.7-7.5 9.6-11.3 5.9-3.7 13.9-3.2 8.8 0.2 15.4 5.4 6.5 5.3 10 14 3.5 8.7 3.5 20 0 13.3-4.7 23.6-4.9 10.3-12.3 16.6l-14.6-14.6q4-2.5 7-7 2.8-4.4 4.4-9.6 1.4-5.1 1.4-10.3 0-5.2-1-9-1.1-3.7-3.1-5.5-1.9-2-4.6-2-3.9-0.2-6.4 3.8-2.6 3.9-4.3 15-1.7 11.9-5.5 19.3-3.5 7.6-9.1 11.2-5.4 3.4-13 3.1-8.5-0.2-15.2-5.2-6.6-5.1-10.3-13.3-3.7-8.5-3.7-19.1 0-12.4 4.7-22 4.7-9.4 12.2-15.7l14.4 14.4q-5.8 4-9.3 10.6zm24.5 66.1q6.6 4.4 10.3 12.1 0.3 0.5 0.4 0.9l35.8-24.9v25.8l-32.5 21.4v38.8l32.5 1.1v21.3l-91-3.4v-65.7q0-9.8 3.7-17.3 3.7-7.4 10.2-11.4 6.6-3.9 15.3-3.6 8.7 0.3 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22.1 0.9v-44.4q0-5.4-3-8.9-3-3.2-8.1-3.4-5-0.3-8 2.9zm69.8 85.4v22.9l-16.6 5.1v36l16.6 6.5v22.2l-91-38.1v-23.6zm-67.2 44.1l32.4 12.8v-23.1zm20.9 42.4q6.6 4.5 10.3 12.2 3.6 7.7 3.6 17.6v44.3l32.5 1.3v21.3l-91-3.4v-65.6q0-10.1 3.7-17.5 3.7-7.3 10.3-11.3 6.6-4 15.3-3.6 8.6 0.3 15.3 4.7zm-23.4 19.8q-2.9 3-3 8.4v44.4l22.1 0.8v-44.3q0-5.5-3-8.7-3-3.3-8-3.6-5.1-0.2-8.1 3zm-18.2 367.7q3-6.6 8.3-10.1 5.1-3.5 12.3-3.2 6.7 0.2 12 4.2 4.4 3.3 7.3 8.8 0 0 0-0.1 3-7.3 8.4-11.3 5.5-4 13.1-3.7 8 0.3 14 4.7 6 4.4 9.3 12 3.4 7.7 3.4 17.8v67.6l-91-3.4v-67.8q0-8.9 2.9-15.5zm70.1 64.8v-46.6q0-5.4-2.7-8.7-2.7-3.3-7.6-3.5-4.4-0.1-7 2.9-2.6 3.1-2.6 8.6v46.5zm-52.8-54.1q-2.3 2.4-2.3 7v44.9l17.9 0.7v-44.9q0-4.6-2.4-7.3-2.6-2.5-6.9-2.7-4-0.1-6.3 2.3zm54.2 112.6v35.9l16.6 6.5v22.2l-90.9-38v-23.8l90.9-31v22.9zm-50.7 16l32.6 12.9v-23.2zm-5.5 76.4l72.5 2.7v21.3l-72.5-2.7v40.9l-18.4-0.7v-103.1l18.4 0.7zm-18.4-264.1l64.3 2.6 9.1 0.4v-68.3l17.5 0.7v89.5l-90.9-3.6zm73.4-181.9l17.5 0.7v107.6l-17.5-0.6zm-19.2 106.8l-18-0.7v-105.2l18 0.7zm-54.2-2.2v-107.5l18.1 0.7v107.5z"/></svg>'
-
-						localHTML += '<table>'
-						localHTML += '<thead><tr class="squircle">'
-						localHTML += '<th colspan="2" class="left GR"><div class="desIcon parkid"></div><span class="thName">Парки и подразделения</span><br><span class="dateHeader opacitytext minitext">' + getDayOfWeek(keys[i]) + '</span>' + '</th>'
-
-						for (j = 0; j < tableExport.length; j++) {
-							let widthColSpan = j==tableExport.length-1?3:2
-							localHTML += '<th colspan="'+widthColSpan+'" class="minitext color' + j + '">'
-							localHTML += '<div class="callIcon"></div><br>' + tableParseName[tableExport[j]] + '<br>' + '<span class="minitext semiWhite">' + tableParseName[tableSubExport[j]] + '</span>'
-							localHTML += '</th>'
-						}
-						localHTML += '</tr></thead>'
-						localHTML += '<tbody>'
-						localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
-
-						let parkKeys = Object.keys(structure[keys[i]]).sort()
-
-						for (j = 0; j < parkKeys.length; j++) {
-
-							keys.forEach((key) => {
-								const parkKeys = Object.keys(structure[key]);
-
-								parkKeys.forEach((parkKey) => {
-									structure[key][parkKey].sort((a, b) => {
-										const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ', 'АДМИН', 'СЕРВИС', 'ПРИЕМ'];
-
-										// Функция для определения индекса и извлечения числа
-										const getSortInfo = (str) => {
-											let index = -1;
-											let number = Infinity;
-
-											// Ищем совпадение по ключевому слову
-											for (let i = 0; i < order.length; i++) {
-												if (str.includes(order[i])) {
-													index = i;
-
-													// Извлекаем число, связанное с ключевым словом
-													const match = str.match(new RegExp(`${order[i]}\\D*(\\d+)`, 'i'));
-													if (match) {
-														number = parseInt(match[1], 10);
-													}
-													break;
-												}
-											}
-
-											return { index, number };
-										};
-
-										// Получаем информацию для сортировки
-										const infoA = getSortInfo(a[0]);
-										const infoB = getSortInfo(b[0]);
-
-										// Сравниваем индексы ключевых слов
-										if (infoA.index !== infoB.index) {
-											return infoA.index - infoB.index;
-										}
-
-										// Сравниваем числа, если ключевые слова совпадают
-										return infoA.number - infoB.number;
-									});
-								});
-							});
-
-
-							for (x = 0; x < structure[keys[i]][parkKeys[j]].length; x++) {
-
-								let red = structure[keys[i]][parkKeys[j]][x][tableIndex[tableSubExport[0]]].replaceAll('"', '')
-
-								let callCheck = 0
-								for (z = 0; z < tableExport.length; z++) {
-									callCheck = callCheck + parseInt(structure[keys[i]][parkKeys[j]][x][tableIndex[tableExport[z]]])
-								}
-
-								if (red.includes('%')) {
-									red = parseFloat(red.replace('%', ''))
-									if (red == 0 && callCheck > 0) {
-										red = 'okay'
-									} else if (red >= 95) {
-										red = 'red'
-									} else if (red > 75) {
-										red = 'red'
-									} else if (red >= 50) {
-										red = 'warning'
-									} else {
-										red = ''
-									}
-
-								}
-
-								localHTML += '<tr class="' + red + '">'
-								if (x == 0) {
-									localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length + 0) + '">' + (j == 0 ? reportLogoVariable : '') + capitalizeWords(parkKeys[j])
-									if (structure[keys[i]][parkKeys[j]].length > 1) {
-										let parkInfo = findParkName(parkKeys[j])
-
-										let checkLengthReport = 0
-										if (structure[keys[i]][parkKeys[j]].length > 3) {
-											checkLengthReport = 1
-										}
-
-										if (parkInfo != false) {
-											localHTML += '<br>' + (checkLengthReport ? ('<span class="minitext semicolortext">' + parkInfo[0] + '</span><br>') : "") + ' <span class="minitext semicolortext">• ' + parkInfo[1] + '</span>'
-										}
-									}
-									localHTML += '</td>'
-								}
-								let name = structure[keys[i]][parkKeys[j]][x][0].replaceAll(parkKeys[j], '').replaceAll('"', '').replaceAll(' АВТО', '')
-								if (name.includes('ОТЧ')) {
-									name = name.replaceAll('ОТЧЕТ', 'ОТЧЁТ').replaceAll('_', ' – П')
-								}
-
-								let icon = ''
-								let color = ''
-								if (name.includes('ОТЧ')) {
-									icon = 'otchet'
-								} else if (name.includes('ДИСП')) {
-									icon = 'disp'
-								} else if (name.includes('ОФОР')) {
-									icon = 'oform'
-								} else if (name.includes('СЕРВИС')) {
-									icon = 'wrench'
-								} else if (name.includes('ПРИЕМ')) {
-									icon = 'handshake'
-								} else if (name.includes('АДМИН')) {
-									icon = 'adminFace'
-								} else {
-									icon = 'undefinedType'
-								}
-
-								localHTML += '<td class="left gradientLeft ' + icon + '"><div class="desIcon"></div>' + capitalizeWords(name) + '</td>'
-
-
-
-								if (callCheck == 0) {
-									localHTML += '<td class="noPaddingRight right semicolortext">0</td><td class="noPaddingLeft minitext semicolortext left" colspan="5">/ Нет звонков </td>'
-								} else {
-									for (z = 0; z < tableExport.length; z++) {
-
-										localHTML += '<td class="noPaddingRight right info' + z + '">'
-										localHTML += '<div class="needColor">' + structure[keys[i]][parkKeys[j]][x][tableIndex[tableExport[z]]] + '</div> '
-										localHTML += '</td>'
-										localHTML += '<td class="noPaddingLeft left info' + z + '">'
-										localHTML += '<div class="minitext opacitytext "> / ' + structure[keys[i]][parkKeys[j]][x][tableIndex[tableSubExport[z]]].replaceAll('"', '') + '</div>'
-										localHTML += '</td>'
-									}
-								}
-								localHTML += '<td class="tdWarning"> <div class="warningSideIcon"></div> </td>'
-								localHTML += '</tr>'
-
-								if (x == structure[keys[i]][parkKeys[j]].length - 1 && j != parkKeys.length - 1) {
-									localHTML += '<tr class="ultraborder"><td></td></tr>  <tr class="ultraborder colorborder" data-x="' + x + '" data-i="' + i + '" data-j="' + j + '" ><td colspan="8"></td></tr>  <tr class="ultraborder"><td></td></tr>'
-								}
-								//console.log( structure[keys[i]][parkKeys[j]][x] )
-							}
-						}
-						//localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
-
-						let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
-						isWeb = isWeb == 1 ? "web" : ""
-						//мешает 
-						isWeb = ''
-
-						//localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
-
-						if (foundError) {
-							localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
-							localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
-							localHTML += '<div class="badColor">'
-							localHTML += validationResult[keys[i]].join('</div><div class="badColor">')
-							localHTML += '</div>'
-							localHTML += '</td></tr>'
-						}
-
-
-						localHTML += '<tr class="tableCopyrightInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
-						localHTML += '<div class="minitext newFlex">'
-						localHTML += '<div class="elCopyright"> </div>'
-						localHTML += '<div> build ' + build.toString() +'</div>'
-						localHTML += '</div>'
-						localHTML += '</td></tr>'
-
-
-						localHTML += '</tbody>'
-						localHTML += '</table>'
-						localHTML += '</div>'
-						localHTML += '</div>'
-
-						document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', localHTML);
-						menuCursor();
-						applyClipPathToSquarcles();
-
-					}
-
-					document.querySelectorAll('.copybutton').forEach(button => {
-						button.addEventListener('click', function () {
-							let id = this.getAttribute('data-id'); // Получаем id из data-id
-							GetImage(id, this);
-						});
-					});
-
-					// Тряска на сервере
-
-					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
-					//
-
-					scaleReportLogos()
-					loading(1)
-					setBackgroundImageDefault()
-
-				} else {
-					let dynamicErrorMSG = 'Неверный формат, проверьте данные экспорта.'
-					if (data[0][0] == 'ФИО' && data[0][1] == "Дата") {
-						dynamicErrorMSG = 'Вы ошиблись и экспортировали из Mango "Производительность сотрудников", а нужно экспортировать "Производительность групп"!'
-					}
-					document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', `
+                        "ВАРШАВСКАЯ": {
+                            "ОТЧЕТ": 3,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                        "МЕЛИТОПОЛЬСКАЯ": {
+                            "ОТЧЕТ": 2,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                        "МКАД 33": {
+                            "ОТЧЕТ": 3,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                        "МОСПАРК": {
+                            "ОТЧЕТ": 3,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 1
+                        },
+                        "ИЗМАЙЛОВО": {
+                            "ОТЧЕТ": 2,
+                            "ДИСПЕТЧЕР": 0,
+                            "ОФОРМЛЕНИЕ": 0,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                        "ОТРАДНОЕ": {
+                            "ОТЧЕТ": 3,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                        "ЦАРИЦЫНО": {
+                            "ОТЧЕТ": 3,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 1,
+                            "АДМИН": 1
+                        },
+                        "ГОРБУНОВА": {
+                            "ОТЧЕТ": 1,
+                            "ДИСПЕТЧЕР": 1,
+                            "ОФОРМЛЕНИЕ": 1,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+
+                        /*
+                        "ВАРШАВСКАЯ": {
+                            "ОТЧЕТ": 0,
+                            "ДИСПЕТЧЕР": 0,
+                            "ОФОРМЛЕНИЕ": 0,
+                            "СЕРВИС": 0,
+                            "АДМИН": 0
+                        },
+                    	
+                        */
+                    };
+
+                    let errorTextAdvise = ''
+
+                    function checkReports(data, checkData) {
+                        let result = {};
+                        let errorMessages = {}; // Сюда будем собирать ошибки по датам
+
+
+                        for (let date in data) { // Перебираем даты
+                            result[date] = {};
+                            errorMessages[date] = [];
+                            let warningSign = '<emoji>⚠️</emoji>',
+                                crossSign = '<emoji>❌</emoji>';
+
+                            let parksInData = new Set(Object.keys(data[date])); // Все парки в parsedData на эту дату
+                            let parksInCheckData = new Set(Object.keys(checkData)); // Все парки в checkData
+
+                            if (!ignoreError) {
+                                // Проверяем парки, которые есть в checkData
+                                for (let park in checkData) {
+                                    if (!data[date][park]) {
+                                        errorMessages[date].push(`${crossSign}Отсутствуют данные: ${park}`);
+                                        result[date][park] = "❌ Отсутствует в данных";
+                                        errorTextAdvise = '<br><br>Похоже, что в данных не хватает ожидаемого парка.<br> Проверьте в Контакт-центре MANGO OFFICE параметры экспорта.<br> Выберите "Все парки" и сформируйте заново.<br> Если это не помогло, обратитесь администратору ВАТС.'
+                                        continue;
+                                    }
+
+                                    let parkData = data[date][park];
+                                    let counts = { "ОТЧЕТ": 0, "ДИСПЕТЧЕР": 0, "ОФОРМЛЕНИЕ": 0, "СЕРВИС": 0, "АДМИН": 0 };
+
+                                    // Подсчитываем количество записей по ключевым словам
+                                    for (let entry of parkData) {
+                                        let name = entry[0].toUpperCase();
+                                        if (name.includes("ОТЧЕТ")) counts["ОТЧЕТ"]++;
+                                        if (name.includes("ДИСПЕТЧЕР")) counts["ДИСПЕТЧЕР"]++;
+                                        if (name.includes("ОФОРМЛЕНИЕ")) counts["ОФОРМЛЕНИЕ"]++;
+                                        if (name.includes("СЕРВИС")) counts["СЕРВИС"]++;
+                                        if (name.includes("АДМИН")) counts["АДМИН"]++;
+                                    }
+
+                                    // Сравниваем с ожидаемыми значениями
+                                    result[date][park] = {};
+                                    for (let key in checkData[park]) {
+                                        if (counts[key] !== checkData[park][key]) {
+                                            let errorMsg = `${crossSign}Несоответствие: ${park} - ${key}. Ожидалось ${checkData[park][key]}, найдено ${counts[key]}`;
+                                            errorMessages[date].push(errorMsg);
+                                            result[date][park][key] = `❌ ${errorMsg}`;
+                                        } else {
+                                            result[date][park][key] = "✅ Совпадает";
+                                        }
+                                    }
+                                }
+
+                                // Проверяем неизвестные парки (есть в parsedData, но нет в checkData)
+                                for (let park of parksInData) {
+                                    if (!parksInCheckData.has(park)) {
+                                        errorMessages[date].push(`${warningSign}Новый неизвестный парк: ${park}`);
+                                        result[date][park] = "⚠️ Неизвестный парк";
+                                    }
+                                }
+                            }
+                        }
+
+                        // Выводим ошибки в строковом формате
+                        /*
+                        for (let date in errorMessages) {
+                            if (errorMessages[date].length > 0) {
+                                console.log(`❗ Ошибки за ${date}:`);
+                                console.log(errorMessages[date].join("; "));
+                            } else {
+                                console.log(`✅ Данные за ${date} без ошибок.`);
+                            }
+                        }
+                        */
+
+                        if (ignoreError) {
+                            // выключена проверка
+                            document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo"><emoji>ℹ️</emoji>Проверка отключена</div>'
+                        } else if (Object.values(errorMessages).some(errors => errors.length > 0)) {
+                            // есть ошибки 
+                            document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
+                        } else {
+                            // нет ошибок
+                            document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo goodColor"><emoji>✔️</emoji>Данные проверены</div>'
+                        }
+
+                        console.log('----- CHECK RESULT BEGIN -----')
+                        console.log(result)
+                        console.log('----- CHECK RESULT END -----')
+
+                        return errorMessages;
+                    }
+
+
+                    // Запускает тест данных
+                    const validationResult = checkReports(structure, checkData);
+                    console.log('----- VALIDATION RESULT BEGIN -----')
+                    console.log(validationResult);
+                    console.log('----- VALIDATION RESULT END -----')
+
+                    let keys = Object.keys(structure).sort((a, b) => {
+                        let dateA = new Date(a.replace(/"/g, '').split('.').reverse().join('-'));
+                        let dateB = new Date(b.replace(/"/g, '').split('.').reverse().join('-'));
+                        return dateA - dateB;
+                    });
+
+                    function findMinMaxDates(keys) {
+                        const dates = keys
+                            .map(date => date.replace(/"/g, '')) // Убираем кавычки
+                            .map(date => date.split('.').reverse().join('-')) // Преобразуем в формат YYYY-MM-DD
+                            .filter(date => date !== '2999-12-31') // Исключаем 31.12.2999
+                            .map(date => new Date(date)); // Преобразуем в объект Date
+
+                        if (dates.length === 0) return { minDate: null, maxDate: null };
+
+                        const minDate = new Date(Math.min(...dates));
+                        const maxDate = new Date(Math.max(...dates));
+
+                        return {
+                            minDate: minDate.toISOString().split('T')[0].split('-').reverse().join('.'),
+                            maxDate: maxDate.toISOString().split('T')[0].split('-').reverse().join('.')
+                        };
+                    }
+
+                    function getDayOfWeek(dateString) {
+                        const cleanDate = dateString.replace(/"/g, "");
+                        const [day, month, year] = cleanDate.split(".");
+                        const date = new Date(year, month - 1, day);
+                        const daysOfWeek = [
+                            "Воскресенье", "Понедельник", "Вторник", "Среда",
+                            "Четверг", "Пятница", "Суббота"
+                        ];
+                        const dayOfWeek = daysOfWeek[date.getDay()];
+                        if (dateString != '"31.12.2999"') {
+                            return `${cleanDate}, ${dayOfWeek}`;
+                        } else {
+                            return 'Все звонки ' + findMinMaxDates(keys).minDate + ' - ' + findMinMaxDates(keys).maxDate
+                        }
+                    }
+
+
+                    console.log('----- KEYS BEGIN -----')
+                    console.log(keys)
+                    console.log('----- keys.length -----')
+                    console.log(keys.length)
+                    console.log('----- KEYS MIN-MAX DATES -----')
+                    console.log(findMinMaxDates(keys))
+                    console.log('----- KEYS END -----')
+
+                    let tableExport = [0, 2, 4]
+                    let tableSubExport = [1, 3, 5]
+
+                    for (i = 0; i < (keys.length > 2 ? keys.length : 1); i++) {
+                        let randomID = 'id' + i
+                        let localHTML = ''
+
+                        let div = document.createElement('div');
+
+                        div.innerHTML = '<emoji>📅</emoji>' + getDayOfWeek(keys[i]);
+                        div.classList.add('leftButton');
+                        div.id = randomID + '_menu';
+                        div.addEventListener('click', () => {
+                            scrollTo(randomID)
+                        });
+                        document.getElementById('editable').appendChild(div);
+
+                        //localHTML += '<button id="randomID'+randomID+'_button" onclick="GetImage(\''+randomID+'\')"> Скопировать таблицу </button>'
+                        localHTML += '<div class="scrollHere" id="' + randomID + '_scroll"></div>'
+                        localHTML += '<div class="tableWrap ' + (keys.length > 2 ? (i == 0 ? 'firstInListing' : (i == keys.length - 1 ? 'lastInListing' : '')) : 'oneInListing') + '">'
+                        localHTML += '<div class="intableFlex">'
+                        localHTML += '<div>' + getDayOfWeek(keys[i]) + '</div>'
+                        localHTML += '<div class="intableButton printbutton" data-id="' + randomID + '"><emoji>🖨️</emoji>Печатать</div>'
+                        localHTML += '<div class="intableButton blinkOnce copybutton" data-id="' + randomID + '"><emoji>📋</emoji>Скопировать</div>'
+                        localHTML += '</div>'
+
+                        foundError = validationResult[keys[i]].length > 0
+                        if (foundError) {
+                            localHTML += '<div class="errorInfo">'
+                            localHTML += '<div class="badColor">'
+                            localHTML += validationResult[keys[i]].join('</div><div class="badColor">') + errorTextAdvise
+                            localHTML += '</div>'
+                            localHTML += '</div>'
+                        }
+                        localHTML += '<div class="tableOutput ' + (foundError ? 'opacitytext' : '') + '" id="' + randomID + '">'
+
+                        let reportLogoVariable = '<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 1184" width="96" height="1184" class="reportLogo"><path fill="currentColor" d="m46.9 11.9q6.6 4.4 10.3 12.2 0.2 0.4 0.5 0.8l35.6-24.9v25.8l-32.4 21.4v38.8l32.4 1.3v21.3l-90.9-3.6v-65.6q0-9.9 3.6-17.4 3.7-7.4 10.3-11.3 6.6-4 15.3-3.7 8.8 0.5 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22 0.9v-44.4q0-5.4-2.8-8.7-3-3.4-8.2-3.6-5-0.1-8 2.9zm-3.1 192.7l-18.1-0.8v-107.5l18.1 0.7zm36-103.8v105.1l-17.9-0.7v-105.2zm36.8-1v107.6l-18-0.7v-107.6zm-71 141.2q-3.4 6.4-3.4 13.3 0 6.7 2.4 11 2.6 4.3 6.7 4.4 2.3 0.2 3.9-1.5 1.7-1.6 2.9-5.7 1.3-4.2 2.5-11.6 1.8-11.5 5.6-19.1 3.7-7.5 9.6-11.3 5.9-3.7 13.9-3.2 8.8 0.2 15.4 5.4 6.5 5.3 10 14 3.5 8.7 3.5 20 0 13.3-4.7 23.6-4.9 10.3-12.3 16.6l-14.6-14.6q4-2.5 7-7 2.8-4.4 4.4-9.6 1.4-5.1 1.4-10.3 0-5.2-1-9-1.1-3.7-3.1-5.5-1.9-2-4.6-2-3.9-0.2-6.4 3.8-2.6 3.9-4.3 15-1.7 11.9-5.5 19.3-3.5 7.6-9.1 11.2-5.4 3.4-13 3.1-8.5-0.2-15.2-5.2-6.6-5.1-10.3-13.3-3.7-8.5-3.7-19.1 0-12.4 4.7-22 4.7-9.4 12.2-15.7l14.4 14.4q-5.8 4-9.3 10.6zm24.5 66.1q6.6 4.4 10.3 12.1 0.3 0.5 0.4 0.9l35.8-24.9v25.8l-32.5 21.4v38.8l32.5 1.1v21.3l-91-3.4v-65.7q0-9.8 3.7-17.3 3.7-7.4 10.2-11.4 6.6-3.9 15.3-3.6 8.7 0.3 15.3 4.9zm-23.3 19.6q-3 3.1-3 8.6v44.3l22.1 0.9v-44.4q0-5.4-3-8.9-3-3.2-8.1-3.4-5-0.3-8 2.9zm69.8 85.4v22.9l-16.6 5.1v36l16.6 6.5v22.2l-91-38.1v-23.6zm-67.2 44.1l32.4 12.8v-23.1zm20.9 42.4q6.6 4.5 10.3 12.2 3.6 7.7 3.6 17.6v44.3l32.5 1.3v21.3l-91-3.4v-65.6q0-10.1 3.7-17.5 3.7-7.3 10.3-11.3 6.6-4 15.3-3.6 8.6 0.3 15.3 4.7zm-23.4 19.8q-2.9 3-3 8.4v44.4l22.1 0.8v-44.3q0-5.5-3-8.7-3-3.3-8-3.6-5.1-0.2-8.1 3zm-18.2 367.7q3-6.6 8.3-10.1 5.1-3.5 12.3-3.2 6.7 0.2 12 4.2 4.4 3.3 7.3 8.8 0 0 0-0.1 3-7.3 8.4-11.3 5.5-4 13.1-3.7 8 0.3 14 4.7 6 4.4 9.3 12 3.4 7.7 3.4 17.8v67.6l-91-3.4v-67.8q0-8.9 2.9-15.5zm70.1 64.8v-46.6q0-5.4-2.7-8.7-2.7-3.3-7.6-3.5-4.4-0.1-7 2.9-2.6 3.1-2.6 8.6v46.5zm-52.8-54.1q-2.3 2.4-2.3 7v44.9l17.9 0.7v-44.9q0-4.6-2.4-7.3-2.6-2.5-6.9-2.7-4-0.1-6.3 2.3zm54.2 112.6v35.9l16.6 6.5v22.2l-90.9-38v-23.8l90.9-31v22.9zm-50.7 16l32.6 12.9v-23.2zm-5.5 76.4l72.5 2.7v21.3l-72.5-2.7v40.9l-18.4-0.7v-103.1l18.4 0.7zm-18.4-264.1l64.3 2.6 9.1 0.4v-68.3l17.5 0.7v89.5l-90.9-3.6zm73.4-181.9l17.5 0.7v107.6l-17.5-0.6zm-19.2 106.8l-18-0.7v-105.2l18 0.7zm-54.2-2.2v-107.5l18.1 0.7v107.5z"/></svg>'
+
+                        localHTML += '<table>'
+                        localHTML += '<thead><tr class="squircle">'
+                        localHTML += '<th colspan="2" class="left GR"><div class="desIcon parkid"></div><span class="thName">Парки и подразделения</span><br><span class="dateHeader opacitytext minitext">' + getDayOfWeek(keys[i]) + '</span>' + '</th>'
+
+                        for (j = 0; j < tableExport.length; j++) {
+                            let widthColSpan = j == tableExport.length - 1 ? 3 : 2
+                            localHTML += '<th colspan="' + widthColSpan + '" class="minitext color' + j + '">'
+                            localHTML += '<div class="callIcon"></div><br>' + tableParseName[tableExport[j]] + '<br>' + '<span class="minitext semiWhite">' + tableParseName[tableSubExport[j]] + '</span>'
+                            localHTML += '</th>'
+                        }
+                        localHTML += '</tr></thead>'
+                        localHTML += '<tbody>'
+                        localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
+
+                        let parkKeys = Object.keys(structure[keys[i]]).sort()
+
+                        for (j = 0; j < parkKeys.length; j++) {
+
+                            keys.forEach((key) => {
+                                const parkKeys = Object.keys(structure[key]);
+
+                                parkKeys.forEach((parkKey) => {
+                                    structure[key][parkKey].sort((a, b) => {
+                                        const order = ['ОТЧЕТ', 'ДИСПЕТЧЕРЫ', 'ОФОРМЛЕНИЕ', 'АДМИН', 'СЕРВИС', 'ПРИЕМ'];
+
+                                        // Функция для определения индекса и извлечения числа
+                                        const getSortInfo = (str) => {
+                                            let index = -1;
+                                            let number = Infinity;
+
+                                            // Ищем совпадение по ключевому слову
+                                            for (let i = 0; i < order.length; i++) {
+                                                if (str.includes(order[i])) {
+                                                    index = i;
+
+                                                    // Извлекаем число, связанное с ключевым словом
+                                                    const match = str.match(new RegExp(`${order[i]}\\D*(\\d+)`, 'i'));
+                                                    if (match) {
+                                                        number = parseInt(match[1], 10);
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            return { index, number };
+                                        };
+
+                                        // Получаем информацию для сортировки
+                                        const infoA = getSortInfo(a[0]);
+                                        const infoB = getSortInfo(b[0]);
+
+                                        // Сравниваем индексы ключевых слов
+                                        if (infoA.index !== infoB.index) {
+                                            return infoA.index - infoB.index;
+                                        }
+
+                                        // Сравниваем числа, если ключевые слова совпадают
+                                        return infoA.number - infoB.number;
+                                    });
+                                });
+                            });
+
+
+                            for (x = 0; x < structure[keys[i]][parkKeys[j]].length; x++) {
+
+                                let red = structure[keys[i]][parkKeys[j]][x][tableIndex[tableSubExport[0]]].replaceAll('"', '')
+
+                                let callCheck = 0
+                                for (z = 0; z < tableExport.length; z++) {
+                                    callCheck = callCheck + parseInt(structure[keys[i]][parkKeys[j]][x][tableIndex[tableExport[z]]])
+                                }
+
+                                if (red.includes('%')) {
+                                    red = parseFloat(red.replace('%', ''))
+                                    if (red == 0 && callCheck > 0) {
+                                        red = 'okay'
+                                    } else if (red >= 95) {
+                                        red = 'red'
+                                    } else if (red > 75) {
+                                        red = 'red'
+                                    } else if (red >= 50) {
+                                        red = 'warning'
+                                    } else {
+                                        red = ''
+                                    }
+
+                                }
+
+                                localHTML += '<tr class="' + red + '">'
+                                if (x == 0) {
+                                    localHTML += '<td class="left forceWhite ' + (j < (parkKeys.length - 1) ? '' : 'hideUndrln') + '" rowspan="' + (structure[keys[i]][parkKeys[j]].length + 0) + '">' + (j == 0 ? reportLogoVariable : '') + capitalizeWords(parkKeys[j])
+                                    if (structure[keys[i]][parkKeys[j]].length > 1) {
+                                        let parkInfo = findParkName(parkKeys[j])
+
+                                        let checkLengthReport = 0
+                                        if (structure[keys[i]][parkKeys[j]].length > 3) {
+                                            checkLengthReport = 1
+                                        }
+
+                                        if (parkInfo != false) {
+                                            localHTML += '<br>' + (checkLengthReport ? ('<span class="minitext semicolortext">' + parkInfo[0] + '</span><br>') : "") + ' <span class="minitext semicolortext">• ' + parkInfo[1] + '</span>'
+                                        }
+                                    }
+                                    localHTML += '</td>'
+                                }
+                                let name = structure[keys[i]][parkKeys[j]][x][0].replaceAll(parkKeys[j], '').replaceAll('"', '').replaceAll(' АВТО', '')
+                                if (name.includes('ОТЧ')) {
+                                    name = name.replaceAll('ОТЧЕТ', 'ОТЧЁТ').replaceAll('_', ' – П')
+                                }
+
+                                let icon = ''
+                                let color = ''
+                                if (name.includes('ОТЧ')) {
+                                    icon = 'otchet'
+                                } else if (name.includes('ДИСП')) {
+                                    icon = 'disp'
+                                } else if (name.includes('ОФОР')) {
+                                    icon = 'oform'
+                                } else if (name.includes('СЕРВИС')) {
+                                    icon = 'wrench'
+                                } else if (name.includes('ПРИЕМ')) {
+                                    icon = 'handshake'
+                                } else if (name.includes('АДМИН')) {
+                                    icon = 'adminFace'
+                                } else {
+                                    icon = 'undefinedType'
+                                }
+
+                                localHTML += '<td class="left gradientLeft ' + icon + '"><div class="desIcon"></div>' + capitalizeWords(name) + '</td>'
+
+
+
+                                if (callCheck == 0) {
+                                    localHTML += '<td class="noPaddingRight right semicolortext">0</td><td class="noPaddingLeft minitext semicolortext left" colspan="5">/ Нет звонков </td>'
+                                } else {
+                                    for (z = 0; z < tableExport.length; z++) {
+
+                                        localHTML += '<td class="noPaddingRight right info' + z + '">'
+                                        localHTML += '<div class="needColor">' + structure[keys[i]][parkKeys[j]][x][tableIndex[tableExport[z]]] + '</div> '
+                                        localHTML += '</td>'
+                                        localHTML += '<td class="noPaddingLeft left info' + z + '">'
+                                        localHTML += '<div class="minitext opacitytext "> / ' + structure[keys[i]][parkKeys[j]][x][tableIndex[tableSubExport[z]]].replaceAll('"', '') + '</div>'
+                                        localHTML += '</td>'
+                                    }
+                                }
+                                localHTML += '<td class="tdWarning"> <div class="warningSideIcon"></div> </td>'
+                                localHTML += '</tr>'
+
+                                if (x == structure[keys[i]][parkKeys[j]].length - 1 && j != parkKeys.length - 1) {
+                                    localHTML += '<tr class="ultraborder"><td></td></tr>  <tr class="ultraborder colorborder" data-x="' + x + '" data-i="' + i + '" data-j="' + j + '" ><td colspan="8"></td></tr>  <tr class="ultraborder"><td></td></tr>'
+                                }
+                                //console.log( structure[keys[i]][parkKeys[j]][x] )
+                            }
+                        }
+                        //localHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
+
+                        let isWeb = window.location.href.includes("nod365.github.io/starline/TableParser");
+                        isWeb = isWeb == 1 ? "web" : ""
+                        //мешает 
+                        isWeb = ''
+
+                        //localHTML += '<tr class="aboutWrap ' + (foundError ? 'warningLogoBottom' : '') + '"><td class="left minitext" colspan=2><div class="about aico ' + (debug ? 'insico' : '') + '">' + (!debug ? 'Mango Office <b>Table Parser</b>' : '~$ MangoOfficeTableParser -InsiderMode _') + '</div></td><td colspan="' + (tableExport.length * 2) + '" class="right about minitext">' + (foundError ? 'Найдены ошибки в данных / ' : '') + '' + (ignoreError ? 'Проверка данных отключена / ' : '') + 'build ' + build + ' ' + isWeb + '</td></tr>'
+
+                        if (foundError) {
+                            localHTML += '<tr class="tableErrorInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
+                            localHTML += '<div style="padding-bottom: 5px; font-weight: bold">Обратите внимание:</div>'
+                            localHTML += '<div class="badColor">'
+                            localHTML += validationResult[keys[i]].join('</div><div class="badColor">')
+                            localHTML += '</div>'
+                            localHTML += '</td></tr>'
+                        }
+
+
+                        localHTML += '<tr class="tableCopyrightInfo"><td style="background: transparent" colspan="' + (tableExport.length * 2 + 3) + '">'
+                        localHTML += '<div class="minitext newFlex">'
+                        localHTML += '<div class="elCopyright"> </div>'
+                        localHTML += '<div> build ' + build.toString() + '</div>'
+                        localHTML += '</div>'
+                        localHTML += '</td></tr>'
+
+
+                        localHTML += '</tbody>'
+                        localHTML += '</table>'
+                        localHTML += '</div>'
+                        localHTML += '</div>'
+
+                        document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', localHTML);
+                        menuCursor();
+                        applyClipPathToSquarcles();
+
+                    }
+
+                    document.querySelectorAll('.copybutton').forEach(button => {
+                        button.addEventListener('click', function () {
+                            let id = this.getAttribute('data-id'); // Получаем id из data-id
+                            GetImage(id, this);
+                        });
+                    });
+
+                    document.querySelectorAll('.printbutton').forEach(button => {
+                        button.addEventListener('click', function () {
+                            let id = this.getAttribute('data-id'); // Получаем id из data-id
+                            PrintImage(id, this);
+                        });
+                    });
+
+                    // Тряска на сервере
+
+                    document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', '<div class="serverUpdatesInfo minitext opacitytext">' + buildString + '</div>');
+                    //
+
+                    scaleReportLogos()
+                    loading(1)
+                    setBackgroundImageDefault()
+
+                } else {
+                    let dynamicErrorMSG = 'Неверный формат, проверьте данные экспорта.'
+                    if (data[0][0] == 'ФИО' && data[0][1] == "Дата") {
+                        dynamicErrorMSG = 'Вы ошиблись и экспортировали из Mango "Производительность сотрудников", а нужно экспортировать "Производительность групп"!'
+                    }
+                    document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', `
 						<div class="issueInfo">
 							<div class="badColor"><emoji>❌</emoji>${dynamicErrorMSG}</div>
 							<br><br>Ознакомьтесь <span style="text-decoration: underline; cursor: pointer;" onclick="PU()">с инструкцией!</span>
@@ -1359,18 +1500,18 @@
 						</div>
 					`)
 
-					document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
-				}
+                    document.getElementById('infoplace').innerHTML = '<div class="leftButton Logo badColor"><emoji>❌</emoji>Найдены ошибки в данных</div>'
+                }
 
-			}
-
-
-			// Read the file as text
-			reader.readAsText(file, 'WINDOWS-1251');
+            }
 
 
-		});
-	</script>
+            // Read the file as text
+            reader.readAsText(file, 'WINDOWS-1251');
+
+
+        });
+    </script>
 </body>
 
 </html>
@@ -1655,5 +1796,9 @@ CHANGELOG
 
 (339) 2511041728
 • Номер версии можно скопировать по картинкам снизу
+
+(340) 2601071450
+• Исправил отображение эмодзи в подразделениях
+• Вывод на печать формата А4
 
 -->

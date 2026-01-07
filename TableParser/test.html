@@ -17,11 +17,12 @@
     <script src="./script/darkside.js"></script>
     <script src="./script/squircle.js"></script>
     <script src="./script/vaporwave.js"></script>
-    <link rel="stylesheet" href="./css/tableparser.css?2601061920">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="./css/tableparser.css?2601071450">
 
     <script>
-        const build = "2601061920",
-            buildReleaseDate = "06 января 2026";
+        const build = "2601071450",
+            buildReleaseDate = "07 января 2026";
         let debug = 0,
             ignoreError = 0,
             buildString = "";
@@ -724,10 +725,24 @@
                 .replace('Мкад', 'МКАД'); // МКАД исключение =)
         }
 
+        function toLocalISOString(date = new Date()) {
+            const tzOffset = -date.getTimezoneOffset();
+            const sign = tzOffset >= 0 ? '+' : '-';
+            const hours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
+            const minutes = String(Math.abs(tzOffset) % 60).padStart(2, '0');
+
+            return (
+                new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .slice(0, -1) +
+                `${sign}${hours}:${minutes}`
+            );
+        }
+
         function PrintImage(tableID, button) {
             console.log(tableID)
             const source = document.querySelector('#' + tableID);
-            //console.log('PAPAPA')
+            
             if (!source) return;
 
             const html = `
@@ -742,6 +757,10 @@
 				<title>Print</title>
 
 				<style>
+                    .squircle {
+    clip-path: unset !important;
+}
+    
 				@page {
 				size: A4;
 				margin: 0;
@@ -763,7 +782,17 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                overflow: hidden;
 				}
+                
+                .minitext { font-size: 15px; }
+                .opacitytext { opacity: 1; }
+                .tableCopyrightInfo { opacity: .5; }
+                th.GR { border-radius: 30px 0 0 30px; }
+                th.color2 { border-radius: 0 30px 30px 0; }
+                thead th {box-shadow: none !important}
+                .elCopyright:before {    content: '${ CryptoJS.MD5( source.innerHTML ).toString() } at ${toLocalISOString()}'; }
+
 				</style>
 				</head>
 
@@ -780,31 +809,46 @@
 				`;
 
             const js = `
-(function () {
-    function fitTableToPage() {
-        const page = document.querySelector('.page');
-        const content = document.querySelector('.print-content');
-        if (!page || !content) return;
+                (function () {
+                    function fitTableToPage() {
+    const page = document.querySelector('.page');
+    const content = document.querySelector('.print-content');
+    if (!page || !content) return;
 
-        const pageRect = page.getBoundingClientRect();
-        const contentRect = content.getBoundingClientRect();
+    const pageRect = page.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
 
-        const scaleX = pageRect.width / contentRect.width;
-        const scaleY = pageRect.height / contentRect.height;
+    const style = window.getComputedStyle(page);
 
-        const scale = Math.min(scaleX, scaleY, 1);
-        content.style.transform = 'scale(' + scale + ')';
-    }
+    const paddingX =
+        parseFloat(style.paddingLeft) +
+        parseFloat(style.paddingRight);
 
-    window.addEventListener('load', function () {
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                setTimeout(fitTableToPage, 0);
-            });
-        });
-    });
-})();
-`;
+    const paddingY =
+        parseFloat(style.paddingTop) +
+        parseFloat(style.paddingBottom);
+
+    const availableWidth = pageRect.width - paddingX;
+    const availableHeight = pageRect.height - paddingY;
+
+    const scaleX = availableWidth / contentRect.width;
+    const scaleY = availableHeight / contentRect.height;
+
+    const scale = Math.min(scaleX, scaleY, 1);
+
+    content.style.transformOrigin = 'center';
+    content.style.transform = 'scale(' + scale + ')';
+}
+
+                    window.addEventListener('load', function () {
+                        requestAnimationFrame(function () {
+                            requestAnimationFrame(function () {
+                                setTimeout(fitTableToPage, 0);
+                            });
+                        });
+                    });
+                })();
+            `;
 
             const win = window.open('', '_blank');
             win.document.open();
@@ -1752,5 +1796,9 @@ CHANGELOG
 
 (339) 2511041728
 • Номер версии можно скопировать по картинкам снизу
+
+(340) 2601071450
+• Исправил отображение эмодзи в подразделениях
+• Вывод на печать формата А4
 
 -->
