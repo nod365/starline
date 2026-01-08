@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>TB Call Tracking</title>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#EEE" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="./icons/favicon.ico" sizes="any"><!-- 32×32 -->
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><!-- 180×180 -->
+    <link rel="manifest" href="./manifest.webmanifest">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+    <script src="./script/dom-to-image.min.js"></script>
+    <script src="./script/darkside.js"></script>
+    <script src="./script/squircle.js"></script>
+    <script src="./script/pie.js"></script>
+    <script src="./script/vaporwave.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="./css/tableparser.css?2601071450">
+
+    <script>
+        const build = 2601081530
+    </script>
+
+    <style>
+        tr td:first-child {
+            border-radius: 30px 0 0 30px !important;
+        }
+
+        tr:nth-child(even):not(.red).subBlockRow td {
+            background-color: #0096061c;
+        }
+
+        tr:not(.red).subBlockRow td,
+        tr:not(.red).subBlockRow td .opacitytext {
+            color: #009606;
+        }
+
+        th.GR {
+            background: linear-gradient(90deg, rgba(235, 237, 255, 1) 70%, #d1e5d2 100%);
+            padding-right: 50px;
+        }
+
+        th.color1 {
+            background: #4CAF50;
+        }
+
+        th.color2 {
+            background: #439846;
+        }
+
+        th.color0 {
+            background: #358138;
+        }
+
+        svg.chart {
+            margin: auto;
+            display: block;
+        }
+
+        .elCopyright:before {
+            content: 'Table Parser Call Tracking';
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <wrap class="dark">
+        <leftmenu>
+            <div>
+                <a href="./index.html">
+                    <div>
+                        <div class="leftButton">
+                            <emoji>🥭</emoji>Mango Office <b>Table Parser 4</b>
+                        </div>
+                    </div>
+                </a>
+                <a href="./performance.html">
+                    <div>
+                        <div class="leftButton">
+                            <emoji>📈</emoji>Call Center <b>Performance 2</b>
+                        </div>
+                    </div>
+                </a>
+                <div class="leftButton Logo buttonLogoSelected">
+                    <emoji>➡️</emoji>Table Parser <b>Call Tracking</b>
+                </div>
+                <!--<a href="./recall.html">
+					<div>
+						<div class="leftButton">
+							<emoji>☎️</emoji>Response <b>Time Analytics</b>
+						</div>
+					</div>
+				</a>-->
+                <div class="leftButton" id="themeToggleBtn">
+                    <emoji>🌚</emoji>Тёмная тема
+                </div>
+                <a target="_blank" href="https://github.com/nod365/starline">
+                    <div>
+                        <div class="leftButton">
+                            <emoji>🍴</emoji>Fork me on GitHub
+                        </div>
+                    </div>
+                </a>
+                <div>
+                    <h1>Инструменты</h1>
+                    <div class="app-hr"></div>
+                </div>
+                <div class="leftButton" id="opencsv">
+                    <emoji>📄</emoji>Открыть CSV-файл
+                </div>
+                <div class="leftButton" id="gethelp">
+                    <emoji>📚</emoji>Руководство
+                </div>
+            </div>
+            <div class="flexible" id="editable">
+                <!--
+				<div><h1>Информация</h1><div class="app-hr"></div></div>
+				<div class="leftButton"><emoji>👍</emoji>Кнопка 1</div>
+				-->
+            </div>
+            <div>
+                <div class="app-hr"></div>
+                <div id="infoplace"></div>
+                <div id="updatesinfo">
+                    <div class="leftButton Logo">
+                        <emoji class="rotating">⏳</emoji>Проверяю обновления...
+                    </div>
+                </div>
+            </div>
+        </leftmenu>
+        <container>
+            <output>
+                <div class="parent" id="startpageAnime">
+                    <div class="parent dimmer">
+                        <div class="child" id="startpage">
+                            <div class="container">
+                                <h1>Анализатор CSV для Call-Center групп (расширенный)</h1>
+
+                                <div class="upload-section">
+                                    <input type="file" id="csvFile" accept=".csv">
+                                    <button onclick="loadCSV()">Загрузить и проанализировать CSV</button>
+                                    <p class="small">Кодировка: Windows-1251 (если CSV в другой кодировке — заранее
+                                        перекодируйте)</p>
+                                </div>
+
+                                <div id="dateRange" class="date-range"></div>
+
+                                <div id="tableContainer"></div>
+
+                                <div class="info">
+                                    <p><strong>Целевые группы:</strong> Call - Center, Call - Center [ДТП], Call -
+                                        Center [Поломки], Call -
+                                        Center [ГИБДД], КОНТРОЛЬ КАЧЕСТВА</p>
+                                    <p class="small">Программа использует только итоговые строки — те, где значение в
+                                        колонке "Дата" совпадает с
+                                        названием группы (это ваша "итоговая" строка).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </output>
+        </container>
+    </wrap>
+    <render style="display:none;">
+    </render>
+    <files style="display: none;">
+        <input type="file" id="files" accept=".csv">
+    </files>
+
+    <script>
+        let daterangetable = '';
+        function createChartObject() {
+            let data = [];
+
+            const handler = {
+                get(target, prop) {
+                    if (prop === 'add' || prop === '+=') {
+                        return function (item) {
+                            data.push(item);
+                            return proxy;
+                        };
+                    }
+                    if (prop === 'data') return data;
+                    if (prop === 'toObject') return () => ({ data: [...data] });
+                    return target[prop];
+                }
+            };
+
+            const proxy = new Proxy({}, handler);
+            return proxy;
+        }
+
+        let chartObj = createChartObject();
+
+        const targetGroups = [
+            "Call - Center",
+            "Call - Center [ДТП]",
+            "Call - Center [Поломки]",
+            "Call - Center [ГИБДД]",
+            "КОНТРОЛЬ КАЧЕСТВА"
+        ];
+
+        function loadCSV() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Пожалуйста, выберите CSV файл');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const contents = e.target.result;
+                processCSV(contents);
+            };
+
+            reader.readAsText(file, 'Windows-1251');
+        }
+
+        function processCSV(csvText) {
+            const lines = csvText.split('\n');
+            const data = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line) {
+                    const row = parseCSVLine(line);
+                    data.push(row);
+                }
+            }
+
+            if (data.length < 2) {
+                alert('CSV файл пуст или содержит недостаточно данных');
+                return;
+            }
+
+            const headers = data[0].map(h => h.replace(/"/g, '').trim());
+            const groupIndex = headers.indexOf('Группа');
+            const dateIndex = headers.indexOf('Дата');
+            const acceptedIndex = headers.indexOf('Количество принятых вызовов');
+            const completedIndex = headers.indexOf('Количество совершенных вызовов');
+            const missedIndex = headers.indexOf('Количество пропущенных вызовов');
+
+            if (groupIndex === -1 || dateIndex === -1) {
+                alert('CSV файл не содержит необходимых колонок (Группа, Дата)');
+                return;
+            }
+
+            // Собираем только итоговые строки (где Группа === Дата)
+            const finalRows = [];
+            const allDates = [];
+
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                if (row.length <= Math.max(groupIndex, dateIndex)) continue;
+                const group = (row[groupIndex] || '').replace(/"/g, '').trim();
+                const date = (row[dateIndex] || '').replace(/"/g, '').trim();
+
+                // Сохраняем даты для определения диапазона
+                if (group && /^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+                    allDates.push(date);
+                }
+
+                // ТОЛЬКО строки где Группа === Дата
+                if (group && date && group === date) {
+                    const accepted = acceptedIndex !== -1 ? parseInt((row[acceptedIndex] || '0').replace(/"/g, '')) || 0 : 0;
+                    const completed = completedIndex !== -1 ? parseInt((row[completedIndex] || '0').replace(/"/g, '')) || 0 : 0;
+                    const missed = missedIndex !== -1 ? parseInt((row[missedIndex] || '0').replace(/"/g, '')) || 0 : 0;
+                    finalRows.push({ group, accepted, completed, missed });
+                }
+            }
+
+            // Находим диапазон дат
+            let minDate = null, maxDate = null;
+            if (allDates.length > 0) {
+                const dateObjects = allDates.map(dateStr => {
+                    const [d, m, y] = dateStr.split('.');
+                    return new Date(y, m - 1, d);
+                });
+                minDate = new Date(Math.min(...dateObjects));
+                maxDate = new Date(Math.max(...dateObjects));
+            }
+
+
+            //const dateRangeElement = document.getElementById('dateRange');
+            if (minDate && maxDate) {
+                const formatDate = d => `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+                daterangetable = `Период ${formatDate(minDate)} - ${formatDate(maxDate)}`;
+            } else {
+                daterangetable = 'Диапазон дат не определен';
+            }
+
+            // Собираем данные по целевым группам ТОЛЬКО из итоговых строк
+            const groupData = {};
+            for (const t of targetGroups) groupData[t] = { accepted: 0, completed: 0, missed: 0 };
+
+            // Прочие итоговые строки (не целевые)
+            const others = [];
+
+            // Обрабатываем ТОЛЬКО итоговые строки (где group === date)
+            for (const row of finalRows) {
+                if (targetGroups.includes(row.group)) {
+                    groupData[row.group] = {
+                        accepted: row.accepted,
+                        completed: row.completed,
+                        missed: row.missed
+                    };
+                } else {
+                    others.push(row);
+                }
+            }
+
+            // Общие итоги
+            let totalAccepted = 0, totalCompleted = 0, totalMissed = 0;
+            for (const g of Object.keys(groupData)) {
+                totalAccepted += groupData[g].accepted;
+                totalCompleted += groupData[g].completed;
+                totalMissed += groupData[g].missed;
+            }
+
+            // Сбор подкатегорий для Call - Center
+            const callCenterName = 'Call - Center';
+            const callCenter = groupData[callCenterName] || { accepted: 0, completed: 0, missed: 0 };
+
+            // Критерии для подкатегорий Call-Center
+            const reports = { accepted: 0, completed: 0, missed: 0 };
+            const dispatchers = { accepted: 0, completed: 0, missed: 0 };
+            const othersForCall = { accepted: 0, completed: 0, missed: 0 };
+
+            // Отделы для категории "Соединены с другими"
+            const otherDepartments = ['оформл', 'сервис', 'админ', 'обл'];
+
+            // Рассматриваем ТОЛЬКО те строки из others, которые:
+            // 1. Являются итоговыми (уже проверено выше)
+            // 2. Не входят в targetGroups (уже отфильтровано)
+            for (const row of others) {
+                const nameLower = row.group.toLowerCase();
+
+                if (nameLower.includes('отчет')) {
+                    reports.accepted += row.accepted;
+                    reports.completed += row.completed;
+                    reports.missed += row.missed;
+                } else if (nameLower.includes('диспетч')) {
+                    dispatchers.accepted += row.accepted;
+                    dispatchers.completed += row.completed;
+                    dispatchers.missed += row.missed;
+                } else {
+                    // Проверяем, содержит ли название один из указанных отделов
+                    let isOtherDepartment = false;
+                    for (const dept of otherDepartments) {
+                        if (nameLower.includes(dept)) {
+                            isOtherDepartment = true;
+                            break;
+                        }
+                    }
+
+                    if (isOtherDepartment) {
+                        othersForCall.accepted += row.accepted;
+                        othersForCall.completed += row.completed;
+                        othersForCall.missed += row.missed;
+                    }
+                    // Если не является ни отчетом, ни диспетчером, ни указанным отделом - игнорируем
+                }
+            }
+
+            // 'Решили сами' = то, что осталось в Call - Center после вычитания перечисленных подгрупп
+            const resolvedBySelf = {
+                accepted: Math.max(0, callCenter.accepted - (reports.accepted + dispatchers.accepted + othersForCall.accepted)),
+                completed: Math.max(0, callCenter.completed - (reports.completed + dispatchers.completed + othersForCall.completed)),
+                missed: Math.max(0, callCenter.missed - (reports.missed + dispatchers.missed + othersForCall.missed))
+            };
+
+            // Готовим структуру для отображения
+            const displayOrder = [];
+            if (groupData[callCenterName]) displayOrder.push({ name: callCenterName, data: groupData[callCenterName] });
+
+            // Подкатегории Call-Center
+            const callSub = [
+                { name: 'На отчетников', data: reports },
+                { name: 'На диспетчеров', data: dispatchers },
+                { name: 'На других', data: othersForCall },
+                { name: 'Решили сами', data: resolvedBySelf }
+            ];
+
+            // Добавляем остальные целевые группы
+            for (const t of targetGroups) {
+                if (t === callCenterName) continue;
+                if (groupData[t]) displayOrder.push({ name: t, data: groupData[t] });
+            }
+
+            // Создаём таблицу
+            createTable({ displayOrder, callSub, totals: { totalAccepted, totalCompleted, totalMissed } });
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ';' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            result.push(current);
+            return result;
+        }
+
+        function createTable({ displayOrder, callSub, totals }) {
+            const tableContainer = document.getElementById('tableContainer');
+            tableContainer.innerHTML = '';
+
+            const table = document.createElement('table');
+
+            // Заголовки
+            const header = document.createElement('tr');
+            header.classList.add('squircle');
+            header.innerHTML = `<th colspan="1" class="left GR"><div class="desIcon parkid"></div><span class="thName">Причины звонков</span><br><span class="dateHeader opacitytext minitext"> ${daterangetable} </span></th>
+                                <th colspan="2" class="minitext color1"><div class="callIcon"></div><br>Принятые</th>
+                                <th colspan="2" class="minitext color2"><div class="callIcon"></div><br>Исходящие</th>
+                                <th colspan="2" class="minitext color0"><div class="callIcon"></div><br>Пропущенные</th>
+                                `;
+            table.appendChild(header);
+
+            table.innerHTML += '<tr class="ultraborder"><td></td></tr><tr class="ultraborder"><td></td></tr>'
+
+            // Функция подсчёта процентов от общего (totals) — для строк кроме Call - Center подкатегорий
+            const totalAccepted = totals.totalAccepted;
+            const totalCompleted = totals.totalCompleted;
+            const totalMissed = totals.totalMissed;
+
+            for (const item of displayOrder) {
+                const row = document.createElement('tr');
+                const acceptedPercent = totalAccepted > 0 ? ((item.data.accepted / totalAccepted) * 100).toFixed(1) : '0.0';
+                const completedPercent = totalCompleted > 0 ? ((item.data.completed / totalCompleted) * 100).toFixed(1) : '0.0';
+                const missedPercent = totalMissed > 0 ? ((item.data.missed / totalMissed) * 100).toFixed(1) : '0.0';
+
+                item.name = item.name.replaceAll('Call - Center [', 'Линия ').replaceAll(']', '').replaceAll('ОНТРОЛЬ КАЧЕСТВА', 'онтроль качества')
+
+                row.innerHTML = `
+					<td class="left">${item.name}</td>
+					
+                    <td class="noPaddingRight right">${item.data.accepted} </td>
+                    <td class="noPaddingLeft left">
+                        <div class="minitext opacitytext">
+                            / ${acceptedPercent}%
+                        </div>
+                    </td>
+					
+                    <td class="noPaddingRight right">${item.data.completed} </td>
+                    <td class="noPaddingLeft left">
+                        <div class="minitext opacitytext">
+                            / ${completedPercent}%
+                        </div>
+                    </td>
+					
+                    <td class="noPaddingRight right">${item.data.missed} </td>
+                    <td class="noPaddingLeft left">
+                        <div class="minitext opacitytext">
+                            / ${missedPercent}%
+                        </div>
+                    </td>
+				`;
+                table.appendChild(row);
+
+                // Если это Call - Center — добавляем подкатегории прямо под ней
+                if (item.name === 'Call - Center') {
+                    const callAcceptedBase = item.data.accepted || 0;
+                    const callCompletedBase = item.data.completed || 0;
+                    const callMissedBase = item.data.missed || 0;
+
+
+
+
+                    // Вставим строки подкатегорий в контейнер
+
+                    for (const [index, sub] of callSub.entries()) {
+                        const isLast = index === callSub.length - 1;
+                        const treeSymbol = isLast ? '└' : '├';
+                        const treeSymbolReverse = isLast ? '┘' : '┤';
+
+                        const a = sub.data.accepted || 0;
+                        const c = sub.data.completed || 0;
+                        const m = sub.data.missed || 0;
+
+                        const aPct = callAcceptedBase > 0 ? ((a / callAcceptedBase) * 100).toFixed(1) : '0.0';
+                        const cPct = callCompletedBase > 0 ? ((c / callCompletedBase) * 100).toFixed(1) : '0.0';
+                        const mPct = callMissedBase > 0 ? ((m / callMissedBase) * 100).toFixed(1) : '0.0';
+
+                        const subBlockRow = document.createElement('tr');
+                        subBlockRow.classList.add('subBlockRow')
+                        chartObj.add({ label: sub.name.replaceAll('Решили сами','Общие вопросы'), value: a })
+                        subBlockRow.innerHTML = `
+                            <td class="left">${treeSymbol}─ ${sub.name}</td>
+                            <td class="noPaddingRight right">${a} ${treeSymbolReverse}</td>
+                            <td colspan="5" class="noPaddingLeft left">
+                                <div class="minitext opacitytext">  ${treeSymbol} ${aPct}%</div>
+                            </td>
+                        `;
+
+                        table.appendChild(subBlockRow);
+                    }
+
+                } else {
+                    chartObj.add({ label: item.name, value: item.data.accepted })
+                }
+            }
+
+            // Итоговая строка
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            totalRow.innerHTML = `
+				<td class="left"><strong>Итого</strong></td>
+				<td colspan="2"><strong>${totalAccepted}</strong></td>
+				<td colspan="2"><strong>${totalCompleted}</strong></td>
+				<td colspan="2"><strong>${totalMissed}</strong></td>
+			`;
+            table.appendChild(totalRow);
+            table.innerHTML += `
+                <tr class="tableCopyrightInfo"><td style="background: transparent" colspan="7">
+                <div class="minitext newFlex">
+                <div class="elCopyright"> </div>
+                <div> build ${build} </div>
+                </div>
+                </td></tr>                    
+            `
+
+            let localHTML = '';
+
+            const pieConfig = {
+                data: chartObj.data,
+                title: "Диаграмма причин входящих звонков",
+                donut: true
+            };
+
+
+            localHTML += '<div class="tableWrap oneInListing">'
+            localHTML += '<div class="intableFlex">'
+            localHTML += '<div>' + daterangetable + '</div>'
+            localHTML += '<div class="intableButton printbutton" data-id="id0"><emoji>🖨️</emoji>Печатать</div>'
+            localHTML += '<div class="intableButton blinkOnce copybutton" data-id="id0"><emoji>📋</emoji>Скопировать</div>'
+            localHTML += '</div>'
+            localHTML += '<div class="tableOutput" id="id0">'
+            localHTML += table.outerHTML
+            localHTML += pieChart(pieConfig);
+            localHTML += '</div>'
+            localHTML += '</div></div>'
+
+
+            document.getElementsByTagName('output')[0].innerHTML = ''
+            document.getElementsByTagName('output')[0].insertAdjacentHTML('beforeend', localHTML);
+            applyClipPathToSquarcles();
+
+            document.querySelectorAll('.printbutton').forEach(button => {
+                button.addEventListener('click', function () {
+                    let id = this.getAttribute('data-id'); // Получаем id из data-id
+                    PrintImage(id, this);
+                });
+            });
+
+            //tableContainer.appendChild(table);
+        }
+
+        function toLocalISOString(date = new Date()) {
+            const tzOffset = -date.getTimezoneOffset();
+            const sign = tzOffset >= 0 ? '+' : '-';
+            const hours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
+            const minutes = String(Math.abs(tzOffset) % 60).padStart(2, '0');
+
+            return (
+                new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .slice(0, -1) +
+                `${sign}${hours}:${minutes}`
+            );
+        }
+
+
+        function PrintImage(tableID, button) {
+            console.log(tableID)
+            const source = document.querySelector('#' + tableID);
+
+            if (!source) return;
+
+            const html = `
+				<!DOCTYPE html>
+				<html lang="ru">
+				<head>
+				<meta charset="UTF-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://nod365.github.io/starline/TableParser/css/tableparser.css?${build}">
+
+				<title>Print</title>
+
+				<style>
+                    .squircle {
+    clip-path: unset !important;
+}
+    
+				@page {
+				size: A4;
+				margin: 0;
+				}
+
+				body {
+				background: #444;
+				margin: 0;
+				padding: 0;
+				}
+
+				.page {
+				background: #FFF;
+				width: 210mm;
+				height: 297mm;
+				padding: 5mm;
+				box-sizing: border-box;
+				margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+				}
+                
+                .minitext { font-size: 15px; }
+                .opacitytext { opacity: 1; }
+                .tableCopyrightInfo { opacity: .5; }
+                th.GR { border-radius: 30px 0 0 30px; }
+                th.color0 { border-radius: 0 30px 30px 0; }
+                th {box-shadow: none !important}
+                .elCopyright:before {    content: '${CryptoJS.MD5(source.innerHTML).toString()} at ${toLocalISOString()}'; }
+                
+                tr td:first-child { border-radius: 30px 0 0 30px !important;}
+                tr:nth-child(even):not(.red).subBlockRow td {background-color: #0096061c;}
+                tr:not(.red).subBlockRow td, tr:not(.red).subBlockRow td .opacitytext { color: #009606; }
+                th.GR { background: linear-gradient(90deg, rgba(235, 237, 255, 1) 70%, #d1e5d2 100%); padding-right: 50px; }
+                th.color1 { background: #4CAF50; border-radius: 30px 0 0 30px; box-shadow: 0 0 0px 15px #d1e5d2 !important; }
+                th.color2 { background: #439846; }
+                th.color0 { background: #358138; }
+                svg.chart { margin: auto; display: block; }
+
+				</style>
+				</head>
+
+				<body>
+				<div class="page">
+                    <div class="print-content">
+					    ${source.innerHTML}
+	    			</div>
+				</div>
+                
+				</body>
+               
+				</html>
+				`;
+
+            const js = `
+                (function () {
+                    function fitTableToPage() {
+    const page = document.querySelector('.page');
+    const content = document.querySelector('.print-content');
+    if (!page || !content) return;
+
+    const pageRect = page.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+
+    const style = window.getComputedStyle(page);
+
+    const paddingX =
+        parseFloat(style.paddingLeft) +
+        parseFloat(style.paddingRight);
+
+    const paddingY =
+        parseFloat(style.paddingTop) +
+        parseFloat(style.paddingBottom);
+
+    const availableWidth = pageRect.width - paddingX;
+    const availableHeight = pageRect.height - paddingY;
+
+    const scaleX = availableWidth / contentRect.width;
+    const scaleY = availableHeight / contentRect.height;
+
+    const scale = Math.min(scaleX, scaleY, 1);
+
+    content.style.transformOrigin = 'center';
+    content.style.transform = 'scale(' + scale + ')';
+}
+
+                    window.addEventListener('load', function () {
+                        requestAnimationFrame(function () {
+                            requestAnimationFrame(function () {
+                                setTimeout(fitTableToPage, 0);
+                            });
+                        });
+                    });
+                })();
+            `;
+
+            const win = window.open('', '_blank');
+            win.document.open();
+            win.document.write(html);
+            win.eval(js);
+            win.document.close();
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+<!-- 
+CHANGELOG
+
+-->
