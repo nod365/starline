@@ -3,6 +3,7 @@ let product = {
 		currentBuild: 185,
 		currentBuildReleaseDate: '13 февраля 2026',
 		annulDate: '20.02.2026',
+		allowVersionFrom: 184,
 		support: 'https://google.com',
 	},
 	MOTP: {
@@ -307,6 +308,20 @@ function handleVersionControl(productInfo, build) {
 
 	if (annul) {
 
+		function disable() {
+			document.body.innerHTML = `
+                <div style="padding:40px;font-size:28px;color:#b30000;font-weight:bold;">
+                    Срок работы вашей версии истёк. Обновление обязательно.
+                </div>
+            `;
+			createWarningPopup(0)
+		}
+
+		if (build < productInfo.allowVersionFrom) {
+			disable()
+			return;
+		}
+
 		// Если сегодня последний день
 		if (today.toDateString() === annul.toDateString()) {
 			showAnnulCritical();
@@ -316,12 +331,7 @@ function handleVersionControl(productInfo, build) {
 
 		// Если дата прошла — блокируем
 		if (today > annul) {
-			document.body.innerHTML = `
-                <div style="padding:40px;font-size:28px;color:#b30000;font-weight:bold;">
-                    Срок работы вашей версии истёк. Обновление обязательно.
-                </div>
-            `;
-			createWarningPopup(0)
+			disable()
 			return;
 		}
 
