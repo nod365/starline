@@ -281,7 +281,7 @@ function handleVersionControl(productInfo, build) {
 	// ----------- Блокировки по версиям -----------
 
 	// Актуальная версия
-	if (diff === 0 || build < 150) {
+	if (diff <= 0 || build < 150) {
 		return;
 	}
 
