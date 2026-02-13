@@ -156,7 +156,7 @@ if (document.getElementById('search') != undefined) {
 let updateInfoShow = {
 	iconChat: 'https://nod365.github.io/starline/media/ALN.png',
 	nameChat: 'Avenue — Лента новостей',
-	urlChat: 'https://t.me/c/3328975232/11',
+	urlChat: 'https://t.me/c/3328975232/101',
 	iconManager: 'https://nod365.github.io/starline/media/ZAIR.png',
 	nameManager: 'Заир',
 	urlManager: 'https://t.me/Dofomin07'
