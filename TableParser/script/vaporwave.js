@@ -47,6 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
         newBackground();
     }
 
-    printImages();
+    //printImages();
 
 });
